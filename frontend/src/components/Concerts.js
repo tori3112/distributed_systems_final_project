@@ -1,12 +1,16 @@
 import React from 'react';
 
+import example1 from "../images/example1.png"
+import example2 from "../images/example2.png"
+import example3 from "../images/example3.png"
+
 const concerts = [
     {
       title: 'Electric Dreams Festival',
       artist: 'The Neon Lights',
       date: 'Saturday, June 17th',
       venue: 'Tubby Arena',
-      image: '/public/concert_image1.jpg',
+      image: example1,
       link: '/concert/electric-dreams'
     },
     {
@@ -14,7 +18,7 @@ const concerts = [
       artist: 'Wildfire Band',
       date: 'Friday, July 21st',
       venue: 'Sunset Stage',
-      image: '/images/concert_image2.jpg',
+      image: example2,
       link: '/concert/rockin-summer-nights'
     },
     {
@@ -22,7 +26,7 @@ const concerts = [
       artist: 'DJ Groovy',
       date: 'Saturday, August 19th',
       venue: 'Groove City Hall',
-      image: '/images/concert_image3.jpg',
+      image: example3,
       link: '/concert/groove-academy'
     }
   ];
@@ -38,24 +42,22 @@ const Concerts = () => {
             </div>
 
 
-
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
             {concerts.map((concert, index) => (
-                <div key={index} class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+                <div key={index} class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm">
                 <a href={concert.link}>
                     <img class="rounded-t-lg" src={concert.image} alt={`${concert.title} at ${concert.venue}`} />
                 </a>
                 <div class="p-5">
                     <a href={concert.link}>
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{concert.title}</h5>
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">{concert.title}</h5>
                     </a>
-                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                    <p class="mb-3 font-normal text-gray-700">
                     Featuring {concert.artist}<br />
                     {concert.date}<br />
                     {concert.venue}
                     </p>
-                    <a href={concert.link} class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-fuchsia-700 rounded-lg hover:bg-fuchsia-800 focus:ring-4 focus:outline-none focus:ring-fuchsia-300 dark:bg-blue-600 dark:hover:bg-fuchsia-700 dark:focus:ring-fuchsia-800">
+                    <a href={concert.link} class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-fuchsia-700 rounded-lg hover:bg-fuchsia-800 focus:ring-4 focus:outline-none focus:ring-fuchsia-300">
                     Read More
                     <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
