@@ -2,6 +2,7 @@ package com.broker.domain;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.util.*;
 
@@ -44,6 +45,11 @@ public class PackageRepository {
 
     public Collection<Package> getAllPackages(){
         return packages.values();
+    }
+    public Optional<Package> findPackage(String id){
+        Assert.notNull(id,"Package id must be non null!");
+        Package p = packages.get(id);
+        return Optional.ofNullable(p);
     }
 }
 

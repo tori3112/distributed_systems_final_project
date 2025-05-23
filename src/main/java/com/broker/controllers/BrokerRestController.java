@@ -2,10 +2,16 @@ package com.broker.controllers;
 import com.broker.domain.Package;
 import com.broker.domain.PackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 public class BrokerRestController{
@@ -16,21 +22,29 @@ public class BrokerRestController{
     public BrokerRestController(PackageRepository packagerepo) {
         this.packagerepo = packagerepo;
     }
-    @GetMapping("/all")
-    CollectionModel<EntityModel<Package>> getPackages() {
+    @GetMapping("/")
+    CollectionModel<EntityModel<Package>> getPackages() throws Exception {
         Collection<Package> packages = packagerepo.getAllPackages();
 
-        List<EntityModel<Package>> mealEntityModels = new ArrayList<>();
+        List<EntityModel<Package>> packageEntityModels = new ArrayList<>();
         for (Package m : packages) {
-            EntityModel<Package> em = mealToEntityModel(m.getId(), m);
-            mealEntityModels.add(em);
+            EntityModel<Package> em = packageToEntityModel(m.getId(), m);
+            packageEntityModels.add(em);
         }
-        return CollectionModel.of(mealEntityModels,
-                linkTo(methodOn(MealsRestController.class).getMeals()).withSelfRel());
+        return CollectionModel.of(packageEntityModels,
+                linkTo(methodOn(BrokerRestController.class).getPackages()).withSelfRel());
     }
-    private EntityModel<Package> packageToEntityModel(String id, Meal meal) {
-        return EntityModel.of(meal,
-                linkTo(methodOn(MealsRestController.class).getMealById(id)).withSelfRel(),
-                linkTo(methodOn(MealsRestController.class).getMeals()).withRel("rest/meals"));
+
+    @GetMapping("/{id}")
+    public EntityModel<Package> getMealById(String id) throws Exception {
+        Package  pack = packagerepo.findPackage(id).orElseThrow(()->new Exception("Meal not found"));
+
+        return packageToEntityModel(id, pack);
     }
+    private EntityModel<Package> packageToEntityModel(String id, Package pack ) throws Exception {
+        return EntityModel.of(pack,
+                linkTo(methodOn(BrokerRestController.class).getMealById(id)).withSelfRel(),
+                linkTo(methodOn(BrokerRestController.class).getPackages()).withRel("/"));
+    }
+
 }
