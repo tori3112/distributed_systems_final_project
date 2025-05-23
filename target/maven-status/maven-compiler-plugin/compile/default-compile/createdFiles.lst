@@ -2,4 +2,5 @@ com/broker/controllers/BrokerRestController.class
 com/broker/domain/PackageRepository.class
 com/broker/BrokerApplication.class
 com/broker/domain/Package.class
+com/broker/BrokerApplication$1.class
 com/broker/domain/Order.class
