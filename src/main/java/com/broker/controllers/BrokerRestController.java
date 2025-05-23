@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -36,14 +37,14 @@ public class BrokerRestController{
     }
 
     @GetMapping("/{id}")
-    public EntityModel<Package> getMealById(String id) throws Exception {
-        Package  pack = packagerepo.findPackage(id).orElseThrow(()->new Exception("Meal not found"));
+    public EntityModel<Package> getPackageById(@PathVariable String id) throws Exception {
+        Package  pack = packagerepo.findPackage(id).orElseThrow(()->new Exception("Package with id "+id+" not found"));
 
         return packageToEntityModel(id, pack);
     }
     private EntityModel<Package> packageToEntityModel(String id, Package pack ) throws Exception {
         return EntityModel.of(pack,
-                linkTo(methodOn(BrokerRestController.class).getMealById(id)).withSelfRel(),
+                linkTo(methodOn(BrokerRestController.class).getPackageById(id)).withSelfRel(),
                 linkTo(methodOn(BrokerRestController.class).getPackages()).withRel("/"));
     }
 

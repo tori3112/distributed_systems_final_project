@@ -1,6 +1,7 @@
 package com.broker.domain;
 
-import jakarta.annotation.PostConstruct;
+
+import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
