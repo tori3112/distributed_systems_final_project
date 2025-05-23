@@ -29,7 +29,7 @@ export default function Packages() {
   return (
     <div className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
 
-      <p className="mx-auto mt-6 max-w-2xl text-center text-lg font-medium text-pretty text-gray-600 sm:text-xl/8">
+      <p className="mx-auto mt-6 max-w-2xl text-center text-md font-medium text-pretty text-gray-600 sm:text-xl/8">
         We believe seeing your favorite artists shouldn't empty your wallet. At TubbyPackages, we're committed to offering transparent and competitive pricing for our concert and accommodation packages.
       </p>
 

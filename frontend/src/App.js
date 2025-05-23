@@ -10,12 +10,14 @@ import AuthButtons from './components/LoginButtons';
 import Profile from './components/Profile';
 
 import {ReactComponent as Logo} from './logo.svg';
+import ConcertPackages from './components/Cart';
 
 const navigation = [
   // { name: 'Concerts', href: '/concerts' },
   { name: 'Packages', href: '/packages' },
   // { name: 'Destinations', href: '/destinations' },
   { name: 'Tubby Us', href: '/tubby' },
+  { name: 'Cart', href: '/cart'}
 ];
 
 const TubbyLogo = () => {
@@ -56,6 +58,7 @@ export default function App() {
           <Route path="/tubby" element={<TubbyUs />} />
           <Route path="/login" element={<Login />} />
           {/* Add other routes here as needed */}
+          <Route path="/cart" element={<ConcertPackages />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
