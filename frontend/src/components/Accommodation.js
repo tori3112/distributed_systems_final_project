@@ -4,12 +4,12 @@ import QuickView from './QuickView';
 const products = [
   {
     id: 1,
-    name: '45 Rue de Rivoli',
+    address: '45 Rue de Rivoli',
     href: '#',
     imageSrc: 'https://i.pinimg.com/736x/d2/c6/86/d2c686cb36add7494c231528c74031e5.jpg',
     imageAlt: "Front of men's Basic Tee in black.",
-    price: '€35',
-    color: 'Paris, France',
+    price: 35,
+    location: 'Paris, France',
     reviewCount: 34,
     rating: 3.3,
     offer: [
@@ -20,12 +20,12 @@ const products = [
   },
   {
     id: 2,
-    name: 'Vinohradská 123',
+    address: 'Vinohradská 123',
     href: '#',
     imageSrc: 'https://i.pinimg.com/736x/5c/45/0a/5c450ae64993802e5d6cd83c34064b82.jpg',
     imageAlt: "Front of men's Basic Tee in black.",
-    price: '€35',
-    color: 'Prague, Czechia',
+    price: 35,
+    location: 'Prague, Czechia',
     reviewCount: 34,
     rating: 3.3,
     offer: [
@@ -36,12 +36,12 @@ const products = [
   },
   {
     id: 3,
-    name: 'Hauptstraße 123',
+    address: 'Hauptstraße 123',
     href: '#',
     imageSrc: 'https://i.pinimg.com/564x/b2/54/d3/b254d30d90a9d483ad77014c10c8e623.jpg',
     imageAlt: "Front of men's Basic Tee in black.",
-    price: '€35',
-    color: 'Munich, Germany',
+    price: 35,
+    location: 'Munich, Germany',
     reviewCount: 34,
     rating: 3.3,
     offer: [
@@ -55,12 +55,12 @@ const products = [
   },
   {
     id: 4,
-    name: 'Calle Gran Vía, 28',
+    address: 'Calle Gran Vía, 28',
     href: '#',
     imageSrc: 'https://i.pinimg.com/1200x/96/c8/20/96c8208b22372eae52728fb7ea23f980.jpg',
     imageAlt: "Front of men's Basic Tee in black.",
-    price: '€35',
-    color: 'Cadiz, Spain',
+    price: 35,
+    location: 'Cadiz, Spain',
     reviewCount: 34,
     rating: 3.3,
     offer: [
@@ -70,12 +70,12 @@ const products = [
     ]
   },{
     id: 5,
-    name: 'Via Roma, 42',
+    address: 'Via Roma, 42',
     href: '#',
     imageSrc: 'https://i.pinimg.com/736x/47/bf/09/47bf097208c3ec72818dd504bd73af11.jpg',
     imageAlt: "Front of men's Basic Tee in black.",
-    price: '€35',
-    color: 'Turin, Italy',
+    price: 35,
+    location: 'Turin, Italy',
     reviewCount: 34,
     rating: 3.3,
     offer: [
@@ -86,12 +86,12 @@ const products = [
   },
   {
     id: 6,
-    name: 'Damstraat 12',
+    address: 'Damstraat 12',
     href: '#',
     imageSrc: 'https://i.pinimg.com/736x/4b/a1/8e/4ba18e3e8dcb1e35bb0dd6c76c5488fd.jpg',
     imageAlt: "Front of men's Basic Tee in black.",
-    price: '€35',
-    color: 'Rotterdam, Neatherlands',
+    price: 42,
+    location: 'Rotterdam, Neatherlands',
     reviewCount: 34,
     rating: 3.3,
     offer: [
@@ -102,12 +102,12 @@ const products = [
   },
   {
     id: 7,
-    name: 'Rue de la Paix 10',
+    address: 'Rue de la Paix 10',
     href: '#',
     imageSrc: 'https://i.pinimg.com/736x/63/49/02/6349022337dc9390c61bbd7892a57338.jpg',
     imageAlt: "Front of men's Basic Tee in black.",
-    price: '€35',
-    color: 'Paris, France',
+    price: 35,
+    location: 'Paris, France',
     reviewCount: 34,
     rating: 3.3,
     offer: [
@@ -152,12 +152,12 @@ export default function Destinations() {
                       }}
                       className="cursor-pointer"
                     >
-                        <span aria-hidden="true" className="absolute inset-0" />
-                        {product.name}
+                        <span aria-hidden="true" className="absolute text-red-600 inset-0" />
+                        {product.address}
                     </a>
-                  <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                  <p className="mt-1 text-sm text-gray-500">{product.location}</p>
                 </div>
-                <p className="text-sm font-medium text-gray-900">{product.price}</p>
+                <p className="text-sm font-medium text-gray-900">€{product.price}</p>
               </div>
               <button
                 onClick={() => handleQuickView(product)}
