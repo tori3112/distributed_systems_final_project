@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://104.210.36.2:8080",
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",
     "@headlessui/react": "^2.2.3",
@@ -12,6 +13,8 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "autoprefixer": "^10.4.21",
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
     "postcss": "^8.5.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
