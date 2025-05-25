@@ -1,6 +1,6 @@
 package com.broker.controllers;
+import com.broker.domain.*;
 import com.broker.domain.Package;
-import com.broker.domain.PackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -18,10 +18,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 public class BrokerRestController{
 
     private final PackageRepository packagerepo;
+    private final AccomodationRepository accomodationRepo;
+    private final TicketRepository ticketRepo;
 
     @Autowired
-    public BrokerRestController(PackageRepository packagerepo) {
+    public BrokerRestController(PackageRepository packagerepo, AccomodationRepository accomodationRepo, TicketRepository ticketRepo) {
         this.packagerepo = packagerepo;
+        this.accomodationRepo = accomodationRepo;
+        this.ticketRepo = ticketRepo;
     }
     @GetMapping("/")
     CollectionModel<EntityModel<Package>> getPackages() throws Exception {
@@ -42,10 +46,61 @@ public class BrokerRestController{
 
         return packageToEntityModel(id, pack);
     }
+    @GetMapping("/tickets")
+    CollectionModel<EntityModel<Ticket>> getTickets() throws Exception {
+        Collection<Ticket> tickets = ticketRepo.getAllTickets();
+
+        List<EntityModel<Ticket>> ticketEntityModels = new ArrayList<>();
+        for (Ticket m : tickets) {
+            EntityModel<Ticket> em = ticketToEntityModel(m.getId(), m);
+            ticketEntityModels.add(em);
+        }
+        return CollectionModel.of(ticketEntityModels,
+                linkTo(methodOn(BrokerRestController.class).getTickets()).withSelfRel());
+    }
+
+    @GetMapping("/tickets/{id}")
+    public EntityModel<Ticket> getTicketById(@PathVariable int id) throws Exception {
+        Ticket  pack = ticketRepo.findTicket(id).orElseThrow(()->new Exception("Ticket with id "+id+" not found"));
+
+        return ticketToEntityModel(id, pack);
+    }
+
+    @GetMapping("/accoms")
+    CollectionModel<EntityModel<Accomodation>> getAccoms() throws Exception {
+        Collection<Accomodation> accoms = accomodationRepo.getAllAccom();
+
+        List<EntityModel<Accomodation>> accomEntityModels = new ArrayList<>();
+        for (Accomodation m : accoms) {
+            EntityModel<Accomodation> em = accomToEntityModel(m.getId(), m);
+            accomEntityModels.add(em);
+        }
+        return CollectionModel.of(accomEntityModels,
+                linkTo(methodOn(BrokerRestController.class).getAccoms()).withSelfRel());
+    }
+
+    @GetMapping("/accoms/{id}")
+    public EntityModel<Accomodation> getAccomById(@PathVariable int id) throws Exception {
+        Accomodation a = accomodationRepo.findAccom(id).orElseThrow(()->new Exception("Accomodation with id "+id+" not found"));
+
+        return accomToEntityModel(id, a);
+    }
+
     private EntityModel<Package> packageToEntityModel(String id, Package pack ) throws Exception {
         return EntityModel.of(pack,
                 linkTo(methodOn(BrokerRestController.class).getPackageById(id)).withSelfRel(),
                 linkTo(methodOn(BrokerRestController.class).getPackages()).withRel("/"));
+    }
+    private EntityModel<Accomodation> accomToEntityModel(int id, Accomodation accom ) throws Exception {
+        return EntityModel.of(accom,
+                linkTo(methodOn(BrokerRestController.class).getAccomById(id)).withSelfRel(),
+                linkTo(methodOn(BrokerRestController.class).getAccoms()).withRel("/"));
+    }
+
+    private EntityModel<Ticket> ticketToEntityModel(int id, Ticket ticket ) throws Exception {
+        return EntityModel.of(ticket,
+                linkTo(methodOn(BrokerRestController.class).getTicketById(id)).withSelfRel(),
+                linkTo(methodOn(BrokerRestController.class).getTickets()).withRel("/"));
     }
 
 }
