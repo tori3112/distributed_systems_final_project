@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Concerts from './Concerts';
-import Destinations from './Accommodation';
+import Accommodations from './Accommodation';
 import { Description } from '@headlessui/react';
 
 export default function Packages() {
@@ -76,7 +76,7 @@ export default function Packages() {
               <Concerts />
             </div>
             <div id="tab2-group4" className={`tab-content text-stone-500 text-sm ${activeTab === 'tab2-group4' ? 'block' : 'hidden'}`}>
-              <Destinations />
+              <Accommodations />
             </div>
             
           </div>
