@@ -1,9 +1,9 @@
 import apiClient from '../client';
 
-export const productService = {
+export const packageService = {
   // Get all products
-  getAllProducts: () => apiClient.get('/'),
+  getAllPackages: () => apiClient.get('/'),
   
   // Get a single product by ID
-  getProductById: (id) => apiClient.get(`/${id}`)
+  getPackageById: (id) => apiClient.get(`/${id}`)
 };

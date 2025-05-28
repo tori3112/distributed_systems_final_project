@@ -1,4 +1,4 @@
-import { useResource } from './hooks/useResource';
+import { useResource } from './useResource';
 
 export function useAllProducts() {
   return useResource('/', {
