@@ -11,7 +11,7 @@ on:
       branch:
         description: 'Branch to deploy'
         required: true
-        default: 'production'  # Change this to your default deployment branch
+        default: 'production'
 
 jobs:
   build_and_deploy:
@@ -23,7 +23,7 @@ jobs:
         with:
           # For automatic triggers, use the branch that triggered the workflow
           # For manual triggers, use the branch specified in the input
-          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.branch || github.ref_name }}
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref_name }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
