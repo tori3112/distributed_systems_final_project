@@ -63,7 +63,7 @@ public class Ticket {
         this.price = price;
     }
 
-    public void setImage(String image) {
+    public void setImage( String image) {
         this.image = image;
     }
 
