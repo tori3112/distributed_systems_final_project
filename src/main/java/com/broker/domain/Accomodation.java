@@ -1,18 +1,27 @@
 package com.broker.domain;
 
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class Accomodation {
-    protected int id;
-    protected String address;
-    protected String imageSrc;
-    protected String imageAlt;
-    protected float price;
-    protected String Location;
-    protected int reviewCount;
-    protected float rating;
-    protected ArrayList<String> offer;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private Date dateIn;
+    private Date dateOut;
+    private String address;
+    private String imageSrc;
+    private String imageAlt;
+    private float price;
+    private String Location;
+    private int reviewCount;
+    private float rating;
+    @ElementCollection
+    private List<String> offer;
 
     @Override
     public boolean equals(Object o) {
@@ -26,11 +35,11 @@ public class Accomodation {
         return Objects.hash(id, address, imageSrc, imageAlt, price, Location, reviewCount, rating, offer);
     }
 
-    public ArrayList<String> getOffer() {
+    public List<String> getOffer() {
         return offer;
     }
 
-    public void setOffer(ArrayList<String> offer) {
+    public void setOffer(List<String> offer) {
         this.offer = offer;
     }
 
@@ -90,11 +99,23 @@ public class Accomodation {
         this.address = address;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Date getDateIn() {
+        return dateIn;
+    }
+
+    public void setDateIn(Date dateIn) {
+        this.dateIn = dateIn;
+    }
+
+    public Date getDateOut() {
+        return dateOut;
+    }
+
+    public void setDateOut(Date dateOut) {
+        this.dateOut = dateOut;
     }
 }

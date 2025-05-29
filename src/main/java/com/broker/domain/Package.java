@@ -1,37 +1,44 @@
 package com.broker.domain;
 
+import javax.persistence.*;
 import java.util.Objects;
 
-public class Package {
-    protected String id;
-    protected String artistId;
-    protected String accomodId;
-    protected String name;
-    protected int stock;
-    protected float price;
 
-    public String getId() {
+@Entity
+@Table(name= "dbo.concertPackages")
+public class Package {
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Integer id;
+    private String name;
+    private Integer ticket;
+    private Integer accommodation;
+    private int availability;
+    private float price;
+
+    public Integer getId() {
+
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getArtistId() {
-        return artistId;
+    public Integer getTicket() {
+        return ticket;
     }
 
-    public void setArtistId(String artistId) {
-        this.artistId = artistId;
+    public void setTicket(Integer ticket) {
+        this.ticket = ticket;
     }
 
-    public String getAccomodId() {
-        return accomodId;
+    public Integer getAccommodation() {
+        return accommodation;
     }
 
-    public void setAccomodId(String accomodId) {
-        this.accomodId = accomodId;
+    public void setAccommodation(Integer accomodation) {
+        this.accommodation = accomodation;
     }
 
     public String getName() {
@@ -42,12 +49,12 @@ public class Package {
         this.name = name;
     }
 
-    public int getStock() {
-        return stock;
+    public int getAvailability() {
+        return availability;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setAvailability(int stock) {
+        this.availability = stock;
     }
 
     public float getPrice() {
@@ -62,11 +69,11 @@ public class Package {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Package aPackage = (Package) o;
-        return stock == aPackage.stock && Float.compare(price, aPackage.price) == 0 && Objects.equals(id, aPackage.id) && Objects.equals(artistId, aPackage.artistId) && Objects.equals(accomodId, aPackage.accomodId) && Objects.equals(name, aPackage.name);
+        return availability == aPackage.availability && Float.compare(price, aPackage.price) == 0 && Objects.equals(id, aPackage.id) && Objects.equals(ticket, aPackage.ticket) && Objects.equals(accommodation, aPackage.accommodation) && Objects.equals(name, aPackage.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, artistId, accomodId, name, stock, price);
+        return Objects.hash(id, ticket, accommodation, name, availability, price);
     }
 }

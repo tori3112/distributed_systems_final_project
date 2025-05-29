@@ -1,23 +1,25 @@
 package com.broker.domain;
 
+import javax.persistence.*;
 import java.sql.Blob;
-import java.util.Objects;
 
+import java.util.Date;
+import java.util.Objects;
+@Entity
 public class Ticket {
-    protected int id;
-    protected String title;
-    protected String artist;
-    protected String date;
-    protected String venue;
-    protected Blob image;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String title;
+    private String artist;
+    private Date date;
+    private String venue;
+    @Lob
+    private byte[] image;
     // needs more fields for the price and the type of ticket
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -36,11 +38,11 @@ public class Ticket {
         this.artist = artist;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -52,11 +54,11 @@ public class Ticket {
         this.venue = venue;
     }
 
-    public Blob getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(Blob image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 

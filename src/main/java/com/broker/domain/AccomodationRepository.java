@@ -1,42 +1,41 @@
 package com.broker.domain;
 
-import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.annotation.PostConstruct;
-import java.util.*;
+import org.springframework.stereotype.Repository;
 
-@Component
-public class AccomodationRepository {
 
-    private static final Map<Integer, Accomodation> accom = new HashMap<>();
+@Repository
+public interface AccomodationRepository extends JpaRepository<Accomodation,Integer> {
 
-    @PostConstruct
-    public void initData(){
-         Accomodation a = new Accomodation();
-         a.setId(2);
-         a.setAddress("Vinohradska 123");
-         a.setImageSrc("http://localhost/imagerc.jpg");
-         a.setImageAlt("an image");
-         a.setPrice(35.0f);
-         a.setLocation("Prague,Czechia");
-         a.setReviewCount(34);
-         a.setRating(3.3f);
-         a.setOffer(new ArrayList<String>(){
-             {add("Lock on bedroom door");
-                 add("Wifi");
-                 add("Luggage dropoff allowed");}
-         });
-         accom.put(a.getId(),a);
-    }
-
-    public Collection<Accomodation> getAllAccom(){
-            return accom.values();
-    }
-    public Optional<Accomodation> findAccom(int id){
-        Accomodation a = accom.get(id);
-        return Optional.ofNullable(a);
-    }
+//    private static final Map<Integer, Accomodation> accom = new HashMap<>();
+//
+//    @PostConstruct
+//    public void initData(){
+//         Accomodation a = new Accomodation();
+//         a.setId(2);
+//         a.setAddress("Vinohradska 123");
+//         a.setImageSrc("http://localhost/imagerc.jpg");
+//         a.setImageAlt("an image");
+//         a.setPrice(35.0f);
+//         a.setLocation("Prague,Czechia");
+//         a.setReviewCount(34);
+//         a.setRating(3.3f);
+//         a.setOffer(new ArrayList<String>(){
+//             {add("Lock on bedroom door");
+//                 add("Wifi");
+//                 add("Luggage dropoff allowed");}
+//         });
+//         accom.put(a.getId(),a);
+//    }
+//
+//    public Collection<Accomodation> getAllAccom(){
+//            return accom.values();
+//    }
+//    public Optional<Accomodation> findAccom(int id){
+//        Accomodation a = accom.get(id);
+//        return Optional.ofNullable(a);
+//    }
 }
 
 

@@ -29,7 +29,7 @@ public class BrokerRestController{
     }
     @GetMapping("/")
     CollectionModel<EntityModel<Package>> getPackages() throws Exception {
-        Collection<Package> packages = packagerepo.getAllPackages();
+        Collection<Package> packages = packagerepo.findAll();
 
         List<EntityModel<Package>> packageEntityModels = new ArrayList<>();
         for (Package m : packages) {
@@ -41,14 +41,14 @@ public class BrokerRestController{
     }
 
     @GetMapping("/{id}")
-    public EntityModel<Package> getPackageById(@PathVariable String id) throws Exception {
-        Package  pack = packagerepo.findPackage(id).orElseThrow(()->new Exception("Package with id "+id+" not found"));
+    public EntityModel<Package> getPackageById(@PathVariable Integer id) throws Exception {
+        Package  pack = packagerepo.findById(id).orElseThrow(()->new Exception("Package with id "+id+" not found"));
 
         return packageToEntityModel(id, pack);
     }
     @GetMapping("/tickets")
     CollectionModel<EntityModel<Ticket>> getTickets() throws Exception {
-        Collection<Ticket> tickets = ticketRepo.getAllTickets();
+        Collection<Ticket> tickets = ticketRepo.findAll();
 
         List<EntityModel<Ticket>> ticketEntityModels = new ArrayList<>();
         for (Ticket m : tickets) {
@@ -61,14 +61,14 @@ public class BrokerRestController{
 
     @GetMapping("/tickets/{id}")
     public EntityModel<Ticket> getTicketById(@PathVariable int id) throws Exception {
-        Ticket  pack = ticketRepo.findTicket(id).orElseThrow(()->new Exception("Ticket with id "+id+" not found"));
+        Ticket  pack = ticketRepo.findById(id).orElseThrow(()->new Exception("Ticket with id "+id+" not found"));
 
         return ticketToEntityModel(id, pack);
     }
 
     @GetMapping("/accoms")
     CollectionModel<EntityModel<Accomodation>> getAccoms() throws Exception {
-        Collection<Accomodation> accoms = accomodationRepo.getAllAccom();
+        Collection<Accomodation> accoms = accomodationRepo.findAll();
 
         List<EntityModel<Accomodation>> accomEntityModels = new ArrayList<>();
         for (Accomodation m : accoms) {
@@ -81,15 +81,18 @@ public class BrokerRestController{
 
     @GetMapping("/accoms/{id}")
     public EntityModel<Accomodation> getAccomById(@PathVariable int id) throws Exception {
-        Accomodation a = accomodationRepo.findAccom(id).orElseThrow(()->new Exception("Accomodation with id "+id+" not found"));
+        Accomodation a = accomodationRepo.findById(id).orElseThrow(()->new Exception("Accomodation with id "+id+" not found"));
 
         return accomToEntityModel(id, a);
     }
 
-    private EntityModel<Package> packageToEntityModel(String id, Package pack ) throws Exception {
+    private EntityModel<Package> packageToEntityModel(Integer id, Package pack ) throws Exception {
         return EntityModel.of(pack,
                 linkTo(methodOn(BrokerRestController.class).getPackageById(id)).withSelfRel(),
-                linkTo(methodOn(BrokerRestController.class).getPackages()).withRel("/"));
+                linkTo(methodOn(BrokerRestController.class).getAccomById(pack.getAccommodation())).withRel("/accoms"),
+                linkTo(methodOn(BrokerRestController.class).getTicketById(pack.getTicket())).withRel("/tickets"),
+                linkTo(methodOn(BrokerRestController.class).getPackages()).withRel("/packs"));
+
     }
     private EntityModel<Accomodation> accomToEntityModel(int id, Accomodation accom ) throws Exception {
         return EntityModel.of(accom,

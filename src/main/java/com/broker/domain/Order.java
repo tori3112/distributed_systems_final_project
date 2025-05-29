@@ -1,27 +1,32 @@
 package com.broker.domain;
-
+import javax.persistence.*;
 import java.util.Objects;
-
+import java.util.Date;
+@Entity
+@Table(name= "dbo.orders")
 public class Order {
-    protected int id;
-    protected String packageId;
-    protected String address;
-    protected boolean payment;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private Integer package_id;
+    private String address;
+    private boolean paid;
+    private Date order_time;
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getPackageId() {
-        return packageId;
+    public Integer getPackage_id() {
+        return package_id;
     }
 
-    public void setPackageId(String packageId) {
-        this.packageId = packageId;
+    public void setPackage_id(Integer package_id) {
+        this.package_id = package_id;
     }
 
     public String getAddress() {
@@ -32,23 +37,30 @@ public class Order {
         this.address = address;
     }
 
-    public boolean isPayment() {
-        return payment;
+    public boolean isPaid() {
+        return paid;
     }
 
-    public void setPayment(boolean payment) {
-        this.payment = payment;
+    public void setPaid(boolean payment) {
+        this.paid = payment;
+    }
+    public Date getOrder_time() {
+        return order_time;
+    }
+
+    public void setOrder_time(Date order_time) {
+        this.order_time = order_time;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return id == order.id && payment == order.payment && Objects.equals(packageId, order.packageId) && Objects.equals(address, order.address);
+        return paid == order.paid && Objects.equals(id, order.id) && Objects.equals(package_id, order.package_id) && Objects.equals(address, order.address) && Objects.equals(order_time, order.order_time);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, packageId, address, payment);
+        return Objects.hash(id, package_id, address, paid, order_time);
     }
 }
