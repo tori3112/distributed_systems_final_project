@@ -6,3 +6,37 @@ The authentication flow in the web application starts when a user clicks `Log In
 
 ## REST Communication
 
+The implementation for the REST communication with the web application involves three main layers:
+
+- API client layer that configures and manages the HTTP requests
+- service layer that defines specific API endpoints for each object
+- hook layer that provides hooks for components to consume API data
+
+Specifically, the API client (`apiClient.js`) provides configured axios instance which ensures a consistent base URL, headers and timeout settings. Aside from that, for each object (package, accommodation, ticket) there is a service file definying the corresponding service files and a hook file with React hooks for components.
+
+```mermaid
+sequenceDiagram
+    participant Component
+    participant objectHook
+    participant useResource
+    participant apiClient
+    
+    Component->>+objectHook: Call hook
+    objectHook->>+useResource: Request data
+    useResource->>+apiClient: Make API request
+    
+    alt Success Path
+        apiClient-->>-useResource: Raw response
+        Note over useResource: Transform response
+        useResource-->>-objectHook: Transformed data
+        objectHook-->>-Component: {data, loading: false}
+        
+        Note over Component: Render data
+    else Error Path
+        apiClient-->>useResource: Error response
+        useResource-->>objectHook: Error state
+        objectHook-->>Component: {error, loading: false}
+        
+        Note over Component: Render error state
+    end
+```
