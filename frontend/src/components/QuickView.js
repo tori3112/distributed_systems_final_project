@@ -9,10 +9,6 @@ function classNames(...classes) {
 }
 
 export default function QuickView({ product, onClose }) {
-  // Initialize state with default values
-  const [selectedColor, setSelectedColor] = useState(product?.colors ? product.colors[0] : null);
-  const [selectedSize, setSelectedSize] = useState(product?.sizes ? product.sizes[0] : null);
-
   // If product is not available, return null
   if (!product) return null;
 
@@ -66,7 +62,7 @@ export default function QuickView({ product, onClose }) {
                           ))}
                         </div>
                         <p className="sr-only">{product.rating} out of 5 stars</p>
-                        <a href="#" className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                        <a className="ml-3 text-sm font-medium text-indigo-600">
                           {product.reviewCount} reviews
                         </a>
                       </div>
@@ -98,7 +94,6 @@ export default function QuickView({ product, onClose }) {
                     </div>
 
                       <ul
-                        role="list"
                         className={classNames(
                             product.offer ? 'text-gray-700' : 'text-gray-600',
                             'mt-8 space-y-3 text-sm/6 sm:mt-10',

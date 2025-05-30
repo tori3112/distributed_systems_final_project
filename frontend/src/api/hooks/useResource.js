@@ -46,7 +46,7 @@ export function useResource(endpoint, options = {}) {
     return () => {
       isMounted = false;
     };
-  }, [endpoint, ...dependencies]);
+  }, [endpoint, errorHandler, transformResponse, ...dependencies]);
 
   return { data, loading, error };
 }
