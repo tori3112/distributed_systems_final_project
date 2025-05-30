@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import apiClient from '../client';
 
 export function useResource(endpoint, options = {}) {
@@ -6,11 +6,18 @@ export function useResource(endpoint, options = {}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // Allow for optional dependency array to trigger refetching
-  const { dependencies = [], transformResponse, errorHandler } = options;
+  // Store dependencies in a ref to avoid the spread warning
+  const optionRef = useRef(options);
+
+  // Update the ref when change
+  useEffect(() => {
+    optionRef.current = options;
+  }, [options]);
 
   useEffect(() => {
     let isMounted = true;
+
+    const { transformResponse, errorHandler } = optionRef.current;
     
     async function fetchResource() {
       try {
@@ -46,7 +53,7 @@ export function useResource(endpoint, options = {}) {
     return () => {
       isMounted = false;
     };
-  }, [endpoint, ...dependencies]);
+  }, [endpoint, options]);
 
   return { data, loading, error };
 }

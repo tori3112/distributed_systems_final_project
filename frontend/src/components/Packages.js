@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Concerts from './Concerts';
 import Accommodations from './Accommodation';
-import { Description } from '@headlessui/react';
 
 export default function Packages() {
   const [activeTab, setActiveTab] = useState('tab1-group4');
@@ -9,8 +8,7 @@ export default function Packages() {
   const tabsRef = useRef({});
 
   // Function to handle tab click
-  const handleTabClick = (e, tabId) => {
-    e.preventDefault();
+  const handleTabClick = (tabId) => {
     setActiveTab(tabId);
   };
 
@@ -52,30 +50,46 @@ export default function Packages() {
               style={{ width: '0px', transform: 'translateX(0px) scaleX(0)' }}
             ></div>
 
-            <a 
-              href="#" 
+            <button
+              type="button" 
               ref={el => tabsRef.current['tab1-group4'] = el}
               className={`tab-link text-sm ${activeTab === 'tab1-group4' ? 'active text-stone-800' : 'text-stone-500'} inline-block py-2 px-4 hover:text-stone-800 transition-colors duration-300 mr-1`}
-              onClick={(e) => handleTabClick(e, 'tab1-group4')}
+              onClick={() => handleTabClick('tab1-group4')}
+              role="tab"
+              aria-selected={activeTab === 'tab1-group4'}
+              aria-controls='tab1-group4'
             >
               Concerts
-            </a>
-            <a 
-              href="#" 
+            </button>
+            <button
+              type="button"
               ref={el => tabsRef.current['tab2-group4'] = el}
               className={`tab-link text-sm ${activeTab === 'tab2-group4' ? 'active text-stone-800' : 'text-stone-500'} inline-block py-2 px-4 hover:text-stone-800 transition-colors duration-300 mr-1`}
-              onClick={(e) => handleTabClick(e, 'tab2-group4')}
+              onClick={() => handleTabClick('tab2-group4')}
+              role="tab"
+              aria-selected={activeTab === 'tab2-group4'}
+              aria-controls='tab2-group4'
             >
               Accommodation
-            </a>
+            </button>
             
           </div>
           
           <div className="mt-4 tab-content-container">
-            <div id="tab1-group4" className={`tab-content text-stone-500 text-sm ${activeTab === 'tab1-group4' ? 'block' : 'hidden'}`}>
+            <div 
+              id="tab1-group4" 
+              className={`tab-content text-stone-500 text-sm ${activeTab === 'tab1-group4' ? 'block' : 'hidden'}`}
+              role="tabpanel"
+              aria-labelledby='tab1-group4'
+              >
               <Concerts />
             </div>
-            <div id="tab2-group4" className={`tab-content text-stone-500 text-sm ${activeTab === 'tab2-group4' ? 'block' : 'hidden'}`}>
+            <div 
+              id="tab2-group4" 
+              className={`tab-content text-stone-500 text-sm ${activeTab === 'tab2-group4' ? 'block' : 'hidden'}`}
+              role="tabpanel"
+              aria-labelledby='tab2-group4'
+              >
               <Accommodations />
             </div>
             

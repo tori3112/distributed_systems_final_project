@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react';
+import React from 'react';
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { StarIcon, CheckIcon } from '@heroicons/react/20/solid';
@@ -9,10 +9,6 @@ function classNames(...classes) {
 }
 
 export default function QuickView({ product, onClose }) {
-  // Initialize state with default values
-  const [selectedColor, setSelectedColor] = useState(product?.colors ? product.colors[0] : null);
-  const [selectedSize, setSelectedSize] = useState(product?.sizes ? product.sizes[0] : null);
-
   // If product is not available, return null
   if (!product) return null;
 
@@ -66,9 +62,9 @@ export default function QuickView({ product, onClose }) {
                           ))}
                         </div>
                         <p className="sr-only">{product.rating} out of 5 stars</p>
-                        <a href="#" className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                        <span className="ml-3 text-sm font-medium text-fuchsia-600">
                           {product.reviewCount} reviews
-                        </a>
+                        </span>
                       </div>
                     </div>
                   </section>
@@ -98,7 +94,6 @@ export default function QuickView({ product, onClose }) {
                     </div>
 
                       <ul
-                        role="list"
                         className={classNames(
                             product.offer ? 'text-gray-700' : 'text-gray-600',
                             'mt-8 space-y-3 text-sm/6 sm:mt-10',

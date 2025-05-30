@@ -5,25 +5,25 @@ const people = [
     name: 'Belgin Avyat',
     role: 'Co-Founder / CEO',
     imageUrl:
-    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    'https://media.licdn.com/dms/image/v2/D4E35AQGCaR94kiYl2A/profile-framedphoto-shrink_200_200/B4EZU.qvM1GwAY-/0/1740513145961?e=1749204000&v=beta&t=UonTMrINOkyJm3mepdU7PPVl-BUpBeN3gWv5ijhDpZQ',
     },
     {
     name: 'Nadia Putri',
     role: 'Co-Founder / CEO',
     imageUrl:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        'https://media.licdn.com/dms/image/v2/D4E35AQFVTWX-UJBFZw/profile-framedphoto-shrink_200_200/B4EZVdwldsHcAY-/0/1741034772718?e=1749204000&v=beta&t=fNEryH96AgcGE6itpnk0swWa0ZmhmeZep8pRwQUOz5U',
     },
     {
     name: 'Li Yixuan',
     role: 'Co-Founder / CEO',
     imageUrl:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        'https://i.postimg.cc/hjNhKQW6/377135225-274043032213971-258347705126224874-n.jpg',
     },
     {
     name: 'Wiktoria Radecka',
     role: 'Co-Founder / CEO',
     imageUrl:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        'https://media.licdn.com/dms/image/v2/D5603AQGi8Gh6eccF0w/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1692114408241?e=1753920000&v=beta&t=XknoHdjH6mGcJl-FKOmH08Lj_60ePKjzCho8RHTgIrw',
     }
   ]
 
@@ -40,7 +40,7 @@ const Tubby = () => {
                 best results for our clients.
             </p>
             </div>
-            <ul role="list" className="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2">
+            <ul className="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2">
             {people.map((person) => (
                 <li key={person.name}>
                 <div className="flex items-center gap-x-6">
