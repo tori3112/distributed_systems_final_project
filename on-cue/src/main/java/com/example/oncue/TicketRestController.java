@@ -46,13 +46,30 @@ public class TicketRestController {
                 linkTo(methodOn(TicketRestController.class).getTickets()).withSelfRel());
     }
 
-    @GetMapping("/tickets/in-stock/{title}")
+    @GetMapping("/tickets/in-stock/title/{title}")
     CollectionModel<EntityModel<Ticket>> getTicketsByTitle(@PathVariable String title) {
         List<Ticket> tickets = ticketRepository.findByTitle(title);
 
         List<EntityModel<Ticket>> ticketCollectionModel = new ArrayList<>();
         if (tickets.isEmpty()){
             throw new OutOfStockException(title);
+        }
+
+        for (Ticket t : tickets) {
+            EntityModel<Ticket> tick = ticketToEntityModel(t.getId(), t);
+            ticketCollectionModel.add(tick);
+        }
+        return CollectionModel.of(ticketCollectionModel,
+                linkTo(methodOn(TicketRestController.class).getTickets()).withSelfRel());
+    }
+
+    @GetMapping("/tickets/in-stock/location/{location}")
+    CollectionModel<EntityModel<Ticket>> getTicketsByLocation(@PathVariable String location) {
+        List<Ticket> tickets = ticketRepository.findByLocation(location);
+
+        List<EntityModel<Ticket>> ticketCollectionModel = new ArrayList<>();
+        if (tickets.isEmpty()){
+            throw new OutOfStockException(location);
         }
 
         for (Ticket t : tickets) {

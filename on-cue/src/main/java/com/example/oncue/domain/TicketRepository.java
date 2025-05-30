@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Integer> {
     public List<Ticket> findByTitle(String title);
+    public List<Ticket> findByLocation(String location);
     List<Ticket> findByTicketType(String ticketType);
 
 }

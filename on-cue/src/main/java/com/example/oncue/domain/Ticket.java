@@ -24,21 +24,11 @@ public class Ticket {
     private String venue;
     private String location;
 
-    public void setPrice(float price) {
-        this.price = price;
-    }
+
 
     private float price;
     //change this to appropriate data type later
     private String image;
-
-    public String getType() {
-        return ticketType;
-    }
-
-    public void setType(String type) {
-        this.ticketType = type;
-    }
 
     @Column(name = "ticket_type")
     private String ticketType;
@@ -66,6 +56,12 @@ public class Ticket {
     public String getImage() {
         return image;
     }
+
+    public String getType() {return ticketType;}
+
+    public void setType(String type) {this.ticketType = type;}
+
+    public void setPrice(float price) {this.price = price;}
 
     public void setId(Integer id) {
         this.id = id;
