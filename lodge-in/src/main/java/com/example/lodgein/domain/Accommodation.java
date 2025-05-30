@@ -1,15 +1,17 @@
 package com.example.lodgein.domain;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Entity
+@Table(name="Accommodation")
 public class Accommodation {
 
-    protected Integer id;
+    //protected Integer id;
     protected String address;
-    // TODO: change to LocalDateTime when using Database
     protected LocalDateTime dateIn;
     protected LocalDateTime dateOut;
     protected String imageSrc;
@@ -19,15 +21,19 @@ public class Accommodation {
     protected String location;
     protected Integer reviewCount;
     protected float rating;
+    @Convert(converter = OfferConverter.class)
     protected List<String> offer = new ArrayList<>();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    public Integer getId() {
+    /*public Integer getId() {
         return id;
-    }
+    }*/
 
-    public void setId(Integer id) {
+    /*public void setId(Integer id) {
         this.id = id;
-    }
+    }*/
 
     public String getAddress() {
         return address;
@@ -105,4 +111,11 @@ public class Accommodation {
         return offer;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
 }

@@ -33,14 +33,14 @@ public class AccommodationsRestController {
 
     @GetMapping("/accomms/{id}")
     EntityModel<Accommodation> getAccommodationById(@PathVariable Integer id) {
-        Accommodation accommodation = accommodationRepository.findAccommodationById(id).orElseThrow(() -> new AccommNotFoundException(id));
+        Accommodation accommodation = accommodationRepository.findById(id).orElseThrow(() -> new AccommNotFoundException(id));
 //        return ticket.map(EntityModel::of).orElse(null);
         return accommToEntityModel(id, accommodation);
     }
 
     @GetMapping("/accomms")
     CollectionModel<EntityModel<Accommodation>> getAccommodations() {
-        Collection<Accommodation> accommodations = accommodationRepository.findAllAccommodations();
+        Collection<Accommodation> accommodations = accommodationRepository.findAll();
 
         List<EntityModel<Accommodation>> accommEntityModels = new ArrayList<>();
         for (Accommodation a : accommodations) {
@@ -55,19 +55,24 @@ public class AccommodationsRestController {
     CollectionModel<EntityModel<Accommodation>> getAccommodationsByLocation(@PathVariable String location,
                                                                             @PathVariable String requestedIn,
                                                                             @PathVariable String requestedOut) {
-        List<Accommodation> accommodations = accommodationRepository.findAccommodationsByLocation(location);
+        List<Accommodation> byLocation = accommodationRepository.findByLocation(location);
+
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
         LocalDateTime dateIn = LocalDateTime.parse(requestedIn, formatter);
         LocalDateTime dateOut = LocalDateTime.parse(requestedOut, formatter);
 
+        List<Accommodation> byAvailability = accommodationRepository.findAvailable(dateIn, dateOut);
+
+
         List<EntityModel<Accommodation>> accommCollectionModel = new ArrayList<>();
-        if (accommodations.isEmpty()){
+        if (byLocation.isEmpty() ||  byAvailability.isEmpty()){
             throw new NoAccommException(location);
         }
+        List<Accommodation> accommodations = new ArrayList<>(byAvailability);
+        accommodations.retainAll(byLocation);
 
-        accommodations.removeIf(a -> !accommodationRepository.isAvailable(a, dateIn, dateOut));
-
+        // accommodations.removeIf(a -> !accommodationRepository.isAvailable(a, dateIn, dateOut));
         for (Accommodation a : accommodations) {
             EntityModel<Accommodation> accom = accommToEntityModel(a.getId(), a, requestedIn, requestedOut);
             accommCollectionModel.add(accom);
