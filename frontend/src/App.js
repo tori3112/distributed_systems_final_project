@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './components/Home';
 import Packages from './components/Packages';
 import TubbyUs from './components/Tubby';
@@ -23,10 +23,10 @@ const navigation = [
 const TubbyLogo = () => {
   return (
     <div className="flex lg:flex-1">
-      <a href='/' className='-m-1.5 p-1.5'>
+      <Link to='/' className='-m-1.5 p-1.5'>
         <span className="sr-only">TubbyPackages</span>
         <Logo className="h-8 w-auto fill-fuchsia-700" />
-      </a>
+      </Link>
     </div>
   )
 }
@@ -41,9 +41,9 @@ export default function App() {
               <TubbyLogo />
               <div className="hidden lg:flex lg:gap-x-12">
                 {navigation.map((item) => (
-                  <a key={item.name} href={item.href} className="text-sm/6 font-semibold text-gray-900">
+                  <Link key={item.name} href={item.href} className="text-sm/6 font-semibold text-gray-900">
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
               </div>
               <div className="hidden lg:flex lg:flex-1 lg:justify-end">
