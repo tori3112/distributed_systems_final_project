@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react';
+import React from 'react';
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { StarIcon, CheckIcon } from '@heroicons/react/20/solid';
@@ -62,9 +62,9 @@ export default function QuickView({ product, onClose }) {
                           ))}
                         </div>
                         <p className="sr-only">{product.rating} out of 5 stars</p>
-                        <a className="ml-3 text-sm font-medium text-indigo-600">
+                        <span className="ml-3 text-sm font-medium text-fuchsia-600">
                           {product.reviewCount} reviews
-                        </a>
+                        </span>
                       </div>
                     </div>
                   </section>
