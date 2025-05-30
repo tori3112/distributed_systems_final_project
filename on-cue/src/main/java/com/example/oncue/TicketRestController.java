@@ -26,7 +26,7 @@ public class TicketRestController {
 
     @GetMapping("/tickets/{id}")
     EntityModel<Ticket> getTicketById(@PathVariable Integer id) {
-        Ticket ticket = ticketRepository.findTicketById(id).orElseThrow(() -> new TicketNotFoundException(id));
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new TicketNotFoundException(id));
 //        return ticket.map(EntityModel::of).orElse(null);
         System.out.println("Fetched ticket: " + ticket);
 
@@ -35,7 +35,7 @@ public class TicketRestController {
 
     @GetMapping("/tickets")
     CollectionModel<EntityModel<Ticket>> getTickets() {
-        Collection<Ticket> tickets = ticketRepository.findAllTickets();
+        Collection<Ticket> tickets = ticketRepository.findAll();
 
         List<EntityModel<Ticket>> ticketEntityModels = new ArrayList<>();
         for (Ticket t : tickets) {
@@ -48,7 +48,7 @@ public class TicketRestController {
 
     @GetMapping("/tickets/in-stock/{title}")
     CollectionModel<EntityModel<Ticket>> getTicketsByTitle(@PathVariable String title) {
-        List<Ticket> tickets = ticketRepository.findTicketsByTitle(title);
+        List<Ticket> tickets = ticketRepository.findByTitle(title);
 
         List<EntityModel<Ticket>> ticketCollectionModel = new ArrayList<>();
         if (tickets.isEmpty()){

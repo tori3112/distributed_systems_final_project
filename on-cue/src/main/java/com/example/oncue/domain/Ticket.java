@@ -1,22 +1,47 @@
 package com.example.oncue.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
 import java.util.Objects;
 import java.util.Optional;
 import java.time.LocalDateTime;
+import jakarta.persistence.*;
+
+@Entity
+
+@Table(name= "Ticket")
 
 
 public class Ticket {
-
-    protected Integer id;
-    protected String title;
-    protected String artist;
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Integer id;
+    private String title;
+    private String artist;
     // TODO: change to LocalDateTime when using Database
-    protected String date;
-    protected String venue;
-    protected String location;
-    protected Integer price;
+    private LocalDateTime date;
+    private String venue;
+    private String location;
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    private float price;
     //change this to appropriate data type later
-    protected String image;
+    private String image;
+
+    public String getType() {
+        return ticketType;
+    }
+
+    public void setType(String type) {
+        this.ticketType = type;
+    }
+
+    @Column(name = "ticket_type")
+    private String ticketType;
 
     public Integer getId() {
         return id;
@@ -34,7 +59,7 @@ public class Ticket {
         return location;
     }
 
-    public Integer getPrice() {
+    public float getPrice() {
         return price;
     }
 
@@ -75,11 +100,11 @@ public class Ticket {
         this.artist = artist;
     }
 
-    public String getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 }
