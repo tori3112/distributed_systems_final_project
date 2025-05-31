@@ -3,23 +3,50 @@ package com.broker.domain;
 import javax.persistence.*;
 import java.sql.Blob;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 @Entity
+@Table(name="Ticket")
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
     private String artist;
-    private Date date;
+    private LocalDateTime date;
     private String venue;
-    @Lob
-    private byte[] image;
+    private String image;
+    private float price;
+    private String ticket_type;
+    private Integer stock;
     // needs more fields for the price and the type of ticket
 
     public int getId() {
         return id;
+    }
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public String getTicket_type() {
+        return ticket_type;
+    }
+
+    public void setTicket_type(String ticket_type) {
+        this.ticket_type = ticket_type;
     }
 
     public String getTitle() {
@@ -38,13 +65,9 @@ public class Ticket {
         this.artist = artist;
     }
 
-    public Date getDate() {
-        return date;
-    }
+    public LocalDateTime getDate() {return date;}
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+    public void setDate(LocalDateTime date) {this.date = date;}
 
     public String getVenue() {
         return venue;
@@ -54,13 +77,13 @@ public class Ticket {
         this.venue = venue;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
+    public Integer getStock() {return stock;}
+
+    public void setStock(Integer stock) {this.stock = stock;}
 
     @Override
     public boolean equals(Object o) {

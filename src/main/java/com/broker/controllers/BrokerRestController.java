@@ -2,11 +2,15 @@ package com.broker.controllers;
 import com.broker.domain.*;
 import com.broker.domain.Package;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,6 +24,8 @@ public class BrokerRestController{
     private final PackageRepository packagerepo;
     private final AccomodationRepository accomodationRepo;
     private final TicketRepository ticketRepo;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     public BrokerRestController(PackageRepository packagerepo, AccomodationRepository accomodationRepo, TicketRepository ticketRepo) {
@@ -48,6 +54,7 @@ public class BrokerRestController{
     }
     @GetMapping("/tickets")
     CollectionModel<EntityModel<Ticket>> getTickets() throws Exception {
+
         Collection<Ticket> tickets = ticketRepo.findAll();
 
         List<EntityModel<Ticket>> ticketEntityModels = new ArrayList<>();
@@ -57,10 +64,16 @@ public class BrokerRestController{
         }
         return CollectionModel.of(ticketEntityModels,
                 linkTo(methodOn(BrokerRestController.class).getTickets()).withSelfRel());
+//        String url = "http://localhost:8082/tickets";
+//        ResponseEntity<CollectionModel<EntityModel<Ticket>>> response = restTemplate.exchange(url, HttpMethod.GET,null,
+//                new ParameterizedTypeReference<CollectionModel<EntityModel<Ticket>>>() {} );
+//
+//        return response.getBody();
     }
 
     @GetMapping("/tickets/{id}")
     public EntityModel<Ticket> getTicketById(@PathVariable int id) throws Exception {
+
         Ticket  pack = ticketRepo.findById(id).orElseThrow(()->new Exception("Ticket with id "+id+" not found"));
 
         return ticketToEntityModel(id, pack);
@@ -68,6 +81,7 @@ public class BrokerRestController{
 
     @GetMapping("/accoms")
     CollectionModel<EntityModel<Accomodation>> getAccoms() throws Exception {
+
         Collection<Accomodation> accoms = accomodationRepo.findAll();
 
         List<EntityModel<Accomodation>> accomEntityModels = new ArrayList<>();
@@ -81,6 +95,7 @@ public class BrokerRestController{
 
     @GetMapping("/accoms/{id}")
     public EntityModel<Accomodation> getAccomById(@PathVariable int id) throws Exception {
+
         Accomodation a = accomodationRepo.findById(id).orElseThrow(()->new Exception("Accomodation with id "+id+" not found"));
 
         return accomToEntityModel(id, a);
