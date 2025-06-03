@@ -7,10 +7,12 @@ public class DbSyncScheduler {
     @Autowired
     private DbSyncService dbSyncService;
 
-    @Scheduled(fixedRate = 60000) //TODO: change this tomorrow, i have no braincells to do so now
+
     public void autoSyncTickets() {
         dbSyncService.syncTicketsFromSupplier();
+        System.out.println("Syncd tickets from supplier");
         dbSyncService.syncAccomFromSupplier();
+        System.out.println("Syncd accoms from supplier");
     }
 
 

@@ -10,7 +10,7 @@ import java.util.Objects;
 @Table(name="Ticket")
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
     private String artist;
@@ -18,7 +18,8 @@ public class Ticket {
     private String venue;
     private String image;
     private float price;
-    private String ticket_type;
+    @Column(name = "ticket_type")
+    private String ticketType;
     private Integer stock;
     // needs more fields for the price and the type of ticket
 
@@ -41,13 +42,9 @@ public class Ticket {
         this.price = price;
     }
 
-    public String getTicket_type() {
-        return ticket_type;
-    }
+    public String getTicketType() {return ticketType;}
 
-    public void setTicket_type(String ticket_type) {
-        this.ticket_type = ticket_type;
-    }
+    public void setTicketType(String ticketType) {this.ticketType = ticketType;}
 
     public String getTitle() {
         return title;

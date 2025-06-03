@@ -1,7 +1,8 @@
 package com.broker.service;
 
-import com.broker.domain.Accomodation;
-import com.broker.domain.AccomodationRepository;
+import com.broker.domain.Accommodation;
+import com.broker.domain.AccommodationRepository;
+
 import com.broker.domain.Ticket;
 import com.broker.domain.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +11,13 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class DbSyncService {
@@ -25,10 +26,11 @@ public class DbSyncService {
     @Autowired
     private TicketRepository ticketRepository;
     @Autowired
-    private AccomodationRepository accomodationRepository;
+    private AccommodationRepository accomodationRepository;
     private static LocalDateTime lastSyncTickets;
     private static LocalDateTime lastSyncAccom;
 
+    @Scheduled(fixedRate = 600000)
     public void syncTicketsFromSupplier(){
         String url = "http://localhost:8082/tickets";
         ResponseEntity<CollectionModel<EntityModel<Ticket>>> response = restTemplate.exchange(url, HttpMethod.GET,null,
@@ -52,25 +54,27 @@ public class DbSyncService {
                 ticketRepository.save(ticket);
             }
         }
+        System.out.println("Synced from ticket supplier");
     }
-
+    @Scheduled(fixedRate = 600000)
     public void syncAccomFromSupplier(){
-        String url = "http://localhost:8082/tickets"; // TODO: this needs to change
-        ResponseEntity<CollectionModel<EntityModel<Accomodation>>> response = restTemplate.exchange(url, HttpMethod.GET,null,
-                new ParameterizedTypeReference<CollectionModel<EntityModel<Accomodation>>>() {} );
+        String url = "http://tubbybuddy.westeurope.cloudapp.azure.com:8080/accomms";
+        ResponseEntity<CollectionModel<EntityModel<Accommodation>>> response = restTemplate.exchange(url, HttpMethod.GET,null,
+                new ParameterizedTypeReference<CollectionModel<EntityModel<Accommodation>>>() {} );
 
         var collection = response.getBody();
-        List<Accomodation> accoms =  collection.getContent().stream()
+        List<Accommodation> accoms =  collection.getContent().stream()
                 .map(EntityModel::getContent)
                 .toList();
         //get the tickets -> if new then insert into repo
         // if not new then the only probable characteristic that changed is the stock info so update that
 
-        for(Accomodation accom: accoms){
-            Optional<Accomodation> a = accomodationRepository.findById(accom.getId());
+        for(Accommodation accom: accoms){
+            Optional<Accommodation> a = accomodationRepository.findById(accom.getId());
             if(a.isPresent()){
-                Accomodation existing = a.get();
-                // TODO: here we need to logic for availability
+                Accommodation existing = a.get();
+                existing.setDateIn(accom.getDateIn());
+                existing.setDateOut(accom.getDateOut());
                 accomodationRepository.save(existing);
             }
             else{
@@ -78,9 +82,10 @@ public class DbSyncService {
             }
         }
 
-
+        System.out.println("Synced from accom supplier");
 
     }
 
-
+//TODO: what if the supplier is down? does the rest client block? Have a look into that as well!
+    // you basically get the whole http response so you can have a look at the http response code and from there deduct if there is a problem or not i think?
 }
