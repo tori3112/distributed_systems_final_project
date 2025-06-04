@@ -40,7 +40,8 @@
 			<artifactId>mssql-jdbc</artifactId>
 			<version>12.10.0.jre11</version> <!-- or a version matching your Java version -->
 		</dependency>
-<!--		<dependency>-->
+
+		<!--		<dependency>-->
 <!--			<groupId>com.h2database</groupId>-->
 <!--			<artifactId>h2</artifactId>-->
 <!--			<scope>runtime</scope>-->
