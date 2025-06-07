@@ -12,6 +12,7 @@ public class Accommodation {
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String address;
+    @Column(name= "[dateIn]")
     private LocalDateTime dateIn;
     private LocalDateTime dateOut;
     private String imageSrc;

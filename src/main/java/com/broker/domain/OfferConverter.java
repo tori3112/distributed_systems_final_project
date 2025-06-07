@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import javax.persistence.AttributeConverter;
 import java.util.ArrayList;
 import java.util.List;
-import org.json.JSONArray;
+
 
 public class OfferConverter implements AttributeConverter<List<String>, String> {
     private final ObjectMapper objectMapper = new ObjectMapper();

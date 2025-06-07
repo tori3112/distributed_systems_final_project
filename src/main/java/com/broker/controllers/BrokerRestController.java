@@ -1,7 +1,9 @@
 package com.broker.controllers;
 import com.broker.domain.*;
 import com.broker.domain.Package;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -61,19 +64,44 @@ public class BrokerRestController{
         }
         return CollectionModel.of(ticketEntityModels,
                 linkTo(methodOn(BrokerRestController.class).getTickets()).withSelfRel());
-//        String url = "http://localhost:8082/tickets";
-//        ResponseEntity<CollectionModel<EntityModel<Ticket>>> response = restTemplate.exchange(url, HttpMethod.GET,null,
-//                new ParameterizedTypeReference<CollectionModel<EntityModel<Ticket>>>() {} );
-//
-//        return response.getBody();
     }
 
-    @GetMapping("/tickets/{id}")
+    @GetMapping("/tickets/i/{id}")
     public EntityModel<Ticket> getTicketById(@PathVariable int id) throws Exception {
 
         Ticket  pack = ticketRepo.findById(id).orElseThrow(()->new Exception("Ticket with id "+id+" not found"));
 
         return ticketToEntityModel(id, pack);
+    }
+
+    @GetMapping("/tickets/{title}")
+    public CollectionModel<EntityModel<Ticket>> getTicketByTitle(@PathVariable String title) throws Exception {
+        Collection<Ticket> tickets = ticketRepo.findByTitle(title);
+
+        List<EntityModel<Ticket>> ticketEntityModels = new ArrayList<>();
+        for (Ticket m : tickets) {
+            EntityModel<Ticket> em = ticketToEntityModel(m.getId(), m);
+            ticketEntityModels.add(em);
+        }
+        return CollectionModel.of(ticketEntityModels,
+                linkTo(methodOn(BrokerRestController.class).getTickets()).withSelfRel());
+
+    }
+
+    @GetMapping("/tickets/{date}/accoms")
+    CollectionModel<EntityModel<Accommodation>> getAccomsByDate(@PathVariable @DateTimeFormat(iso= DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) throws Exception {
+
+        LocalDateTime start = date.toLocalDate().atStartOfDay();
+        LocalDateTime end = date.toLocalDate().plusDays(1).atStartOfDay().minusNanos(1);
+        Collection<Accommodation> accoms = accomodationRepo.findByDateInBetween(start, end);
+
+        List<EntityModel<Accommodation>> accomEntityModels = new ArrayList<>();
+        for (Accommodation m : accoms) {
+            EntityModel<Accommodation> em = accomToEntityModel(m.getId(), m);
+            accomEntityModels.add(em);
+        }
+        return CollectionModel.of(accomEntityModels,
+                linkTo(methodOn(BrokerRestController.class).getAccoms()).withSelfRel());
     }
 
     @GetMapping("/accoms")
@@ -115,7 +143,9 @@ public class BrokerRestController{
     private EntityModel<Ticket> ticketToEntityModel(int id, Ticket ticket ) throws Exception {
         return EntityModel.of(ticket,
                 linkTo(methodOn(BrokerRestController.class).getTicketById(id)).withSelfRel(),
+                linkTo(methodOn(BrokerRestController.class).getAccomsByDate(ticket.getDate())).withRel("/accoms"),
                 linkTo(methodOn(BrokerRestController.class).getTickets()).withRel("/"));
+
     }
 
 }
