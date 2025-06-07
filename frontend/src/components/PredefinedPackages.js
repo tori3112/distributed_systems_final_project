@@ -4,7 +4,7 @@ import { useCart } from '../context/CartContext';
 
 function PredefinedPackages() {
   const { data: products, loading, error } = useAllProducts();
-  const { cartItems, addToCart } = useCart();
+  const { cartItems, addToCart } = useCart(); 
   
   if (loading) return (
     <div className="relative isolate px-6 py-24 sm:py-32 lg:px-8">
