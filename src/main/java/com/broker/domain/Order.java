@@ -12,6 +12,24 @@ public class Order {
     private String address;
     private boolean paid;
     private Date order_time;
+    private int accom_id;
+    private int ticket_id;
+
+    public int getAccom_id() {
+        return accom_id;
+    }
+
+    public void setAccom_id(int accom_id) {
+        this.accom_id = accom_id;
+    }
+
+    public int getTicket_id() {
+        return ticket_id;
+    }
+
+    public void setTicket_id(int ticket_id) {
+        this.ticket_id = ticket_id;
+    }
 
     public int getId() {
         return id;

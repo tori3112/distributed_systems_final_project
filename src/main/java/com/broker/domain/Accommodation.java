@@ -24,6 +24,7 @@ public class Accommodation {
     @Convert(converter = OfferConverter.class)
     private List<String> offer = new ArrayList<>();
 
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

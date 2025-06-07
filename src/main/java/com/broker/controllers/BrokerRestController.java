@@ -6,9 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
@@ -24,14 +28,16 @@ public class BrokerRestController{
     private final PackageRepository packagerepo;
     private final AccommodationRepository accomodationRepo;
     private final TicketRepository ticketRepo;
+    private final OrderRepository orderRepo;
     @Autowired
     private RestTemplate restTemplate;
 
     @Autowired
-    public BrokerRestController(PackageRepository packagerepo, AccommodationRepository accomodationRepo, TicketRepository ticketRepo) {
+    public BrokerRestController(PackageRepository packagerepo, AccommodationRepository accomodationRepo, TicketRepository ticketRepo, OrderRepository orderRepo) {
         this.packagerepo = packagerepo;
         this.accomodationRepo = accomodationRepo;
         this.ticketRepo = ticketRepo;
+        this.orderRepo = orderRepo;
     }
     @GetMapping("/")
     CollectionModel<EntityModel<Package>> getPackages() throws Exception {
@@ -125,6 +131,60 @@ public class BrokerRestController{
 
         return accomToEntityModel(id, a);
     }
+
+    @PostMapping("/get/package")
+    public ResponseEntity<Order> getPackage(@RequestBody Order order){
+        if(order != null){
+            if (callPreparePhase(order)){
+                //TODO: here there should be a log of the orer by the broker -> use transaction log
+                if (callCommitPhase(order)) { // all parties committed succesfully
+                    orderRepo.save(order);
+                    return new ResponseEntity<>(order, HttpStatus.OK);
+                }
+
+                callRollback(order);
+                return new ResponseEntity<>(null, HttpStatus.OK);
+            }
+
+            callRollback(order);
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    private void callRollback(Order order) {
+        callServiceRollbackPhase("ticket", order);
+        callServiceRollbackPhase("accom", order);
+    }
+
+    private void callServiceRollbackPhase(String url, Order order) {
+        restTemplate.postForEntity(url, order, Void.class);
+    }
+
+    private boolean callCommitPhase(Order order) {
+        boolean isTicketSuccess = callServices("tix", order);
+        boolean isAccomSuccess = callServices("accom", order);
+
+        return isTicketSuccess && isAccomSuccess;
+    }
+
+    private boolean callPreparePhase(Order order) {
+        try {
+            boolean isTicketSuccess = callServices("tix", order);
+            boolean isAccomSuccess = callServices("accom", order);
+
+            return isTicketSuccess && isAccomSuccess;
+        } catch (Exception e) {
+
+            return false;
+        }
+    }
+
+    private boolean callServices(String url, Order order) {
+        ResponseEntity<String> response = restTemplate.postForEntity(url, order, String.class);
+        return response.getStatusCode().is2xxSuccessful();
+    }
+
 
     private EntityModel<Package> packageToEntityModel(Integer id, Package pack ) throws Exception {
         return EntityModel.of(pack,
