@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './components/Home';
 import Packages from './components/Packages';
 import TubbyUs from './components/Tubby';
@@ -15,18 +15,18 @@ import CartDisplay from './components/CartDisplay';
 
 const navigation = [
   { name: 'Packages', href: '/packages' },
-  { name: 'Tubby Us', href: '/tubby' },
-  { name: 'PredefinedPackages', href: '/predefinedpackages'},
-  { name: 'Cart', href: '/cart'}
+  { name: 'Predefined Packages', href: '/predefinedpackages'},
+  { name: 'Cart', href: '/cart'},
+  { name: 'Tubby Us', href: '/tubby' }
 ];
 
 const TubbyLogo = () => {
   return (
     <div className="flex lg:flex-1">
-      <a href='/' className='-m-1.5 p-1.5'>
+      <Link to='/' className='-m-1.5 p-1.5'>
         <span className="sr-only">TubbyPackages</span>
         <Logo className="h-8 w-auto fill-fuchsia-700" />
-      </a>
+      </Link>
     </div>
   )
 }
@@ -41,9 +41,9 @@ export default function App() {
               <TubbyLogo />
               <div className="hidden lg:flex lg:gap-x-12">
                 {navigation.map((item) => (
-                  <a key={item.name} href={item.href} className="text-sm/6 font-semibold text-gray-900">
+                  <Link key={item.name} to={item.href} className="text-sm/6 font-semibold text-gray-900">
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
               </div>
               <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -54,11 +54,11 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/packages" element={<Packages />} />
+            <Route path="/predefinedpackages" element={<PredefinedPackages />} />
+            <Route path="/cart" element={<CartDisplay />} />
             <Route path="/tubby" element={<TubbyUs />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/predefinedpackages" element={<PredefinedPackages />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/cart" element={<CartDisplay />} />
           </Routes>
         </div>
       </Router>

@@ -91,7 +91,7 @@ export default function Packages() {
               style={{ width: '0px', transform: 'translateX(0px) scaleX(0)' }}
             ></div>
             <button
-              type="button"
+              type="button" 
               ref={el => tabsRef.current['tab1-group4'] = el}
               className={`tab-link text-sm ${activeTab === 'tab1-group4' ? 'active text-stone-800' : 'text-stone-500'} inline-block py-2 px-4 hover:text-stone-800 transition-colors duration-300 mr-1`}
               onClick={() => handleTabClick('tab1-group4')}
