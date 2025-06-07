@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAllProducts } from '../api/hooks/useAccommodations';
 import QuickView from './QuickView';
 
-export default function Accommodations({ availableAccommodations, selectedConcert }) {
+export default function Accommodations({ availableAccommodations, selectedConcert, onSelectAccommodation, isCreatingPackage }) {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   
@@ -27,10 +27,7 @@ export default function Accommodations({ availableAccommodations, selectedConcer
     console.warn("availableAccommodations is not an array:", availableAccommodations);
     accoms = [];
   }
-    
-  // Check if we're in package creation mode
-  const isCreatingPackage = selectedConcert !== null;
-  
+      
   const handleQuickView = (product) => {
     console.log('QuickView clicked for product:', product);
     setSelectedProduct(product);
@@ -44,9 +41,13 @@ export default function Accommodations({ availableAccommodations, selectedConcer
   
   // Handle selecting an accommodation for a package
   const handleSelectForPackage = (accommodation) => {
-    console.log("Selected accommodation for package:", accommodation);
-    // You can add more logic here if needed
-    handleQuickView(accommodation);
+    if (onSelectAccommodation) {
+      onSelectAccommodation(accommodation);
+    } else {
+      console.error("onSelectAccommodation function is not provided");
+      // Fallback: just show the QuickView
+      handleQuickView(accommodation);
+    }
   };
   
   if (loading && availableAccommodations === null) return (

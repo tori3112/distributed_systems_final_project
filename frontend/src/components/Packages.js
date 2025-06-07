@@ -56,6 +56,51 @@ export default function Packages() {
       setAvailableAccommodations([]);
     }
   };
+
+  const handleAccommodationSelect = async (accommodation) => {
+    try {
+      // Create the package object
+      const newPackage = {
+        ticket: selectedConcert.id,
+        accommodation: accommodation.id,
+        paid: true,
+        date: Date.now()
+      };
+      
+      console.log("Creating package:", newPackage);
+      
+      // Make the API call to create the package
+      const response = await fetch(`${process.env.REACT_APP_REST_URL}/get/package`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify(newPackage)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('Package created:', data);
+      
+      // Show success message
+      alert('Package created successfully!');
+      
+      // Reset the package creation process
+      setSelectedConcert(null);
+      setIsCreatingPackage(false);
+      setAvailableAccommodations(null);
+      setActiveTab('tab1-group4'); // Switch back to concerts tab
+      
+    } catch (error) {
+      console.error('Error creating package:', error);
+      alert('Failed to create package. Please try again.');
+    }
+  };
   
   // Update the indicator position when active tab changes
   useEffect(() => {
@@ -131,6 +176,8 @@ export default function Packages() {
               <Accommodations 
                 availableAccommodations={availableAccommodations}
                 selectedConcert={selectedConcert}
+                onSelectAccommodation={handleAccommodationSelect}
+                isCreatingPackage={isCreatingPackage}
               />
             </div>
           </div>
