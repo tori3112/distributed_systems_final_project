@@ -41,6 +41,11 @@ sequenceDiagram
     end
 ```
 
+## Cross-Origin Resource Sharing (CORS)
+CORS is configured on the REST server to allow requests from Azure App Service domain. Furthermore, REST server also sends headers such as origin, methods, allowed headers and credentials in its responses. Aside from that we also enabled HTTPS onthe REST server and updated API client layer (`apiClient.js`) to use HTTPS URLs.
+
+Enabling HTTPS is crucial as modern browsers implement a security feature called *mixed content blocking* that prevents a secure page from loading resources over an insecure connection.
+
 ## ER diagrams of data resources
 
 For tickets and accommodation data resources, we follow HATEOS pattern commonly used in REST APIs, where each resource includes links to related resource.

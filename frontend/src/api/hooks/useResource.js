@@ -53,7 +53,7 @@ export function useResource(endpoint, options = {}) {
     return () => {
       isMounted = false;
     };
-  }, [endpoint, options]);
+  }, [endpoint]);
 
   return { data, loading, error };
 }
