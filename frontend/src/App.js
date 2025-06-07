@@ -15,9 +15,9 @@ import CartDisplay from './components/CartDisplay';
 
 const navigation = [
   { name: 'Packages', href: '/packages' },
-  { name: 'Tubby Us', href: '/tubby' },
-  { name: 'PredefinedPackages', href: '/predefinedpackages'},
-  { name: 'Cart', href: '/cart'}
+  { name: 'Predefined Packages', href: '/predefinedpackages'},
+  { name: 'Cart', href: '/cart'},
+  { name: 'Tubby Us', href: '/tubby' }
 ];
 
 const TubbyLogo = () => {
@@ -54,11 +54,11 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/packages" element={<Packages />} />
+            <Route path="/predefinedpackages" element={<PredefinedPackages />} />
+            <Route path="/cart" element={<CartDisplay />} />
             <Route path="/tubby" element={<TubbyUs />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/predefinedpackages" element={<PredefinedPackages />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/cart" element={<CartDisplay />} />
           </Routes>
         </div>
       </Router>
