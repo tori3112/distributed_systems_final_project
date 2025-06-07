@@ -1,8 +1,12 @@
 import React from 'react';
 import { useAllProducts } from '../api/hooks/useTickets';
 
-function Concerts() {
+function Concerts({ onSelectConcert }) {
   const { data: tickets, loading, error} = useAllProducts();
+
+  const handleGetTicket = (concert) => {
+    onSelectConcert(concert);
+  }
 
   if (loading) return (
     <div className="relative isolate px-6 py-24 sm:py-32 lg:px-8">
@@ -45,12 +49,14 @@ function Concerts() {
                   {concert.date}<br />
                   {concert.venue}
                   </p>
-                  <a href={concert.link} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-fuchsia-700 rounded-lg hover:bg-fuchsia-800 focus:ring-4 focus:outline-none focus:ring-fuchsia-300">
-                  Read More
+                  <button
+                    onClick={() => handleGetTicket(concert)}
+                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-fuchsia-700 rounded-lg hover:bg-fuchsia-800 focus:ring-4 focus:outline-none focus:ring-fuchsia-300">
+                  Get Ticket
                   <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                   </svg>
-                  </a>
+                  </button>
               </div>
               </div>
           ))}
