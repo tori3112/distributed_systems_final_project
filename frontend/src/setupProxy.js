@@ -1,23 +1,24 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function(app) {
-  // Proxy for packages endpoint (root path)
+  // Create a more specific path for packages to avoid root path conflicts
   app.use(
-    '/api-root',
+    '/api/packages',
     createProxyMiddleware({
       target: 'https://tubbybuddy.westus.cloudapp.azure.com:8443',
-      pathRewrite: {'^/api-root': '/'},
+      pathRewrite: {'^/api/packages': '/'},
       changeOrigin: true,
       secure: false,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest'
-      }
+      },
+      logLevel: 'debug'
     })
   );
   
-  // Proxy for other API endpoints
+  // Keep your existing proxies for tickets and accommodations
   app.use(
     ['/tickets', '/accoms'],
     createProxyMiddleware({
