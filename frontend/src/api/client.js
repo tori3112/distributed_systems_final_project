@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: `https://${process.env.REACT_APP_REST_URL}:8443/` ,
+  baseURL: `https://${process.env.REACT_APP_REST_URL}/` ,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -16,7 +16,7 @@ export default apiClient;
 // Also export a specialized function for the packages endpoint
 export const fetchPackages = async () => {
   try {
-    const response = await axios.get('https://tubbybuddy.westus.cloudapp.azure.com:8443/', {
+    const response = await axios.get('https://tubbybuddy.westus.cloudapp.azure.com/', {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

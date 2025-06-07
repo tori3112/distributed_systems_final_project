@@ -5,7 +5,7 @@ module.exports = function(app) {
   app.use(
     '/api/packages',
     createProxyMiddleware({
-      target: 'https://tubbybuddy.westus.cloudapp.azure.com:8443',
+      target: 'https://tubbybuddy.westus.cloudapp.azure.com',
       pathRewrite: {'^/api/packages': '/'},
       changeOrigin: true,
       secure: false,
