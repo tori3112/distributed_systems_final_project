@@ -36,7 +36,6 @@ public class Accommodation {
 //        this.preparationStatus = accommPreparationStatus;
 //    }
 //
-//    //TODO: reminder to put this in DB
 //    protected String preparationStatus;
 
     public boolean isAvailability() {
