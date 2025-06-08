@@ -10,4 +10,5 @@ public interface AccommOrderRepository extends JpaRepository<AccommOrder, Intege
 
     @Query("SELECT COUNT(a) FROM AccommOrder a WHERE a.preparationStatus = 'PREPARING' AND a.accommId = :accommId")
     public Integer countActivePrepares(@Param("accommId")Integer accommId);
+    public AccommOrder findByAccommId(Integer accommId);
 }

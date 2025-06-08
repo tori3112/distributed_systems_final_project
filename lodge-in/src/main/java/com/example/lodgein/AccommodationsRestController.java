@@ -131,6 +131,8 @@ public class AccommodationsRestController {
 
     @PostMapping("/commit_accomm")
     public ResponseEntity<String> commitAccom(@RequestBody Order order){
+        AccommOrder accOrder = orderRepository.findByAccommId(order.getAccom_id());
+
         Optional<Accommodation> acc = accommodationRepository.findById(order.getAccom_id());
 
 
@@ -140,10 +142,10 @@ public class AccommodationsRestController {
 
         Accommodation accomm = acc.get();
 
-        if (accomm.getPreparationStatus().equalsIgnoreCase(AccommPreparationStatus.PREPARING.name())){
-            accomm.setPreparationStatus(AccommPreparationStatus.COMMITTED.name());
+        if (accOrder != null && accOrder.getPreparationStatus().equalsIgnoreCase(AccommPreparationStatus.PREPARING.name())){
             accomm.setAvailability(false);
-            accommodationRepository.save(accomm);
+            accOrder.setPreparationStatus(AccommPreparationStatus.COMMIT.name());
+            orderRepository.save(accOrder);
 
             return ResponseEntity.ok("Accommodation committed successfully.");
         }
@@ -152,20 +154,25 @@ public class AccommodationsRestController {
 
     @PostMapping("/rollback_accomm")
     public ResponseEntity<String> rollbackAccom(@RequestBody Order order){
+        AccommOrder accOrder = orderRepository.findByAccommId(order.getAccom_id());
+
         Optional<Accommodation> acc = accommodationRepository.findById(order.getAccom_id());
 
 
         if(acc.isEmpty() ){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Order cannot committed");
+            throw new AccommNotFoundException(order.getAccom_id());
         }
 
         Accommodation accomm = acc.get();
 
-        accomm.setPreparationStatus(AccommPreparationStatus.COMMITTED.name());
-        accomm.setAvailability(true);
-        accommodationRepository.save(accomm);
+        if (accOrder != null){
+            accomm.setAvailability(true);
+            accOrder.setPreparationStatus(AccommPreparationStatus.ROLLBACK.name());
+            orderRepository.save(accOrder);
 
-        return ResponseEntity.ok("Accommodation committed successfully.");
+            return ResponseEntity.ok("Accommodation rolled back successfully.");
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during rollback");
     }
 
 }
