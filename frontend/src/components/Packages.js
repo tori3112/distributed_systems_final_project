@@ -29,6 +29,7 @@ export default function Packages() {
       const encodedDate = encodeURIComponent(formattedDate);
 
       const apiUrl = `${process.env.REACT_APP_REST_URL}/tickets/${encodedDate}/accoms`;
+      console.log('About to fetch ', apiUrl);
 
       const response = await fetch(apiUrl);
     
