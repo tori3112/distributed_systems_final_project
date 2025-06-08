@@ -45,10 +45,20 @@ export default function Packages() {
       const data = await response.json();
 
       let accommodations = [];
-      if (Array.isArray(data)) {
-        accommodations = data;
-      } else if (data && data._embedded && Array.isArray(data._embedded.accomList)) {
-        accommodations = data._embedded.accomList;
+      if (data && data._links && data._links.self) {
+        console.log("Following self link to get available accommodations");
+        const followUp = await fetch(data._links.self.href);
+
+        if (followUp.ok) {
+          const followUpData = await followUp.json();
+          console.log("Follow up response: ", JSON.stringify(followUpData, null, 2));
+
+          if (Array.isArray(followUpData)) {
+            accommodations = followUpData;
+          } else if (followUpData && followUpData._embedded && Array.isArray(followUpData._embedded)) {
+            accommodations = followUpData._embedded.accommodationList;
+          }
+        }
       }
       
       setAvailableAccommodations(accommodations);
