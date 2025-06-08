@@ -15,8 +15,6 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -105,7 +103,7 @@ public class AccommodationsRestController {
         try{
             Optional<Accommodation> acc = accommodationRepository.findById(transactiondata.getAccom_id());
 
-            if(acc == null ){
+            if(acc.isEmpty() ){
                 throw new AccommNotFoundException(transactiondata.getAccom_id());
             }
             else if(!acc.get().isAvailability()){
@@ -113,7 +111,7 @@ public class AccommodationsRestController {
             }
             Accommodation accomm = acc.get();
 
-            accomm.setAccommPreparationStatus(AccommPreparationStatus.PREPARING.name());
+            accomm.setPreparationStatus(AccommPreparationStatus.PREPARING.name());
             accommodationRepository.save(accomm);
 
             return ResponseEntity.ok("Order prepared successfully.");
@@ -121,6 +119,27 @@ public class AccommodationsRestController {
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during order preparation.");
         }
+    }
+
+    @PostMapping("/commit_accomm")
+    public ResponseEntity<String> commitAccom(@RequestBody TransactionData transactiondata){
+        Optional<Accommodation> acc = accommodationRepository.findById(transactiondata.getAccom_id());
+
+
+        if(acc.isEmpty() ){
+            throw new AccommNotFoundException(transactiondata.getAccom_id());
+        }
+
+        Accommodation accomm = acc.get();
+
+        if (accomm.getPreparationStatus().equalsIgnoreCase(AccommPreparationStatus.PREPARING.name())){
+            accomm.setPreparationStatus(AccommPreparationStatus.COMMITTED.name());
+            accomm.setAvailability(false);
+            accommodationRepository.save(accomm);
+
+            return ResponseEntity.ok("Accommodation committed successfully.");
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Order cannot committed");
     }
 
 
