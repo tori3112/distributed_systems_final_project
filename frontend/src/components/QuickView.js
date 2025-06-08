@@ -18,11 +18,18 @@ export default function QuickView({
 
     // Create a package
     const newPackage = {
-        name: `${selectedConcert.title}+${product.address}`,
-        ticket: selectedConcert.id,
-        accommodation: product.id,
-        price: (selectedConcert.price || 0) + (product.price || 0)
-      };
+      // Package for API call
+      name: `Custom Package (${product.location}, ${selectedConcert.date})`,
+      ticketID: selectedConcert.id,
+      accommodationID: product.id,
+
+      // Cart Display Information
+      ticket: selectedConcert.title,
+      accommodation: product.address,
+      
+      // Calculate total cost
+      price: (selectedConcert.price || 0) + (product.price || 0)
+    };
       
     console.log("Creating package:", newPackage);
 

@@ -25,8 +25,8 @@ function CartDisplay() {
           <li key={item.id} className="py-4 flex justify-between items-center">
             <div>
               <h3 className="text-lg font-medium">{item.name}</h3>
-              <p>Concert: {item.artistId}</p>
-              <p>Accommodation: {item.accomodId}</p>
+              <p>Concert: {item.ticket}</p>
+              <p>Accommodation: {item.accommodation}</p>
               <p className="font-bold">€{item.price}</p>
             </div>
             <button
