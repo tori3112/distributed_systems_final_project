@@ -27,17 +27,17 @@ public class Accommodation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
     protected boolean availability;
-
-    public String getPreparationStatus() {
-        return preparationStatus;
-    }
-
-    public void setPreparationStatus(String accommPreparationStatus) {
-        this.preparationStatus = accommPreparationStatus;
-    }
-
-    //TODO: reminder to put this in DB
-    protected String preparationStatus;
+//
+//    public String getPreparationStatus() {
+//        return preparationStatus;
+//    }
+//
+//    public void setPreparationStatus(String accommPreparationStatus) {
+//        this.preparationStatus = accommPreparationStatus;
+//    }
+//
+//    //TODO: reminder to put this in DB
+//    protected String preparationStatus;
 
     public boolean isAvailability() {
         return availability;

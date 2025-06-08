@@ -1,9 +1,6 @@
 package com.example.lodgein;
 
-import com.example.lodgein.domain.AccommPreparationStatus;
-import com.example.lodgein.domain.Accommodation;
-import com.example.lodgein.domain.AccommodationRepository;
-import com.example.lodgein.domain.TransactionData;
+import com.example.lodgein.domain.*;
 import com.example.lodgein.exceptions.AccommNotFoundException;
 import com.example.lodgein.exceptions.NoAccommException;
 import com.example.lodgein.exceptions.BookedAccommException;
@@ -26,10 +23,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 public class AccommodationsRestController {
     private final AccommodationRepository accommodationRepository;
+    private final AccommOrderRepository orderRepository;
 
     @Autowired
-    AccommodationsRestController(AccommodationRepository accommodationRepository) {
+    AccommodationsRestController(AccommodationRepository accommodationRepository, AccommOrderRepository orderRepository) {
         this.accommodationRepository = accommodationRepository;
+        this.orderRepository = orderRepository;
+
     }
 
     @GetMapping("/accomms/{id}")
@@ -99,20 +99,24 @@ public class AccommodationsRestController {
     //For two-phase commit
 
     @PostMapping("/prepare_accomm")
-    public ResponseEntity<String> prepareAccom(@RequestBody TransactionData transactiondata){
+    public ResponseEntity<String> prepareAccom(@RequestBody Order order){
         try{
-            Optional<Accommodation> acc = accommodationRepository.findById(transactiondata.getAccom_id());
+            AccommOrder accOrder = new AccommOrder();
+            accOrder.setAccommId(order.getAccom_id());
+            accOrder.setOrderId(order.getId());
+
+            Optional<Accommodation> acc = accommodationRepository.findById(order.getAccom_id());
 
             if(acc.isEmpty() ){
-                throw new AccommNotFoundException(transactiondata.getAccom_id());
+                throw new AccommNotFoundException(order.getAccom_id());
             }
             else if(!acc.get().isAvailability()){
                 throw new BookedAccommException();
             }
-            Accommodation accomm = acc.get();
+            //Accommodation accomm = acc.get();
 
-            accomm.setPreparationStatus(AccommPreparationStatus.PREPARING.name());
-            accommodationRepository.save(accomm);
+            accOrder.setPreparationStatus(AccommPreparationStatus.PREPARING.name());
+            orderRepository.save(accOrder);
 
             return ResponseEntity.ok("Order prepared successfully.");
         }
@@ -122,12 +126,12 @@ public class AccommodationsRestController {
     }
 
     @PostMapping("/commit_accomm")
-    public ResponseEntity<String> commitAccom(@RequestBody TransactionData transactiondata){
-        Optional<Accommodation> acc = accommodationRepository.findById(transactiondata.getAccom_id());
+    public ResponseEntity<String> commitAccom(@RequestBody Order order){
+        Optional<Accommodation> acc = accommodationRepository.findById(order.getAccom_id());
 
 
         if(acc.isEmpty() ){
-            throw new AccommNotFoundException(transactiondata.getAccom_id());
+            throw new AccommNotFoundException(order.getAccom_id());
         }
 
         Accommodation accomm = acc.get();
@@ -143,8 +147,8 @@ public class AccommodationsRestController {
     }
 
     @PostMapping("/rollback_accomm")
-    public ResponseEntity<String> rollbackAccom(@RequestBody TransactionData transactiondata){
-        Optional<Accommodation> acc = accommodationRepository.findById(transactiondata.getAccom_id());
+    public ResponseEntity<String> rollbackAccom(@RequestBody Order order){
+        Optional<Accommodation> acc = accommodationRepository.findById(order.getAccom_id());
 
 
         if(acc.isEmpty() ){

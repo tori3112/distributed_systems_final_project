@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class TransactionData {
+public class Order {
 
     private Integer id;
     private Integer package_id;
