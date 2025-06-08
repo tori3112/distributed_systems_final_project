@@ -6,6 +6,14 @@ export default function Accommodations({ availableAccommodations, selectedConcer
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   
+  // Debugging purposes
+  console.log('Accommodations component received: ',{
+    availableAccommodationsLength: availableAccommodations ? availableAccommodations.length : 'undefined',
+    isArray: Array.isArray(availableAccommodations),
+    selectedConcert: selectedConcert ? selectedConcert.id : 'none',
+    isCreatingPackage
+  });
+
   // Use the existing hook to fetch all accommodations
   const { data: allAccoms, loading, error } = useAllProducts();
   let accoms = [];
@@ -14,14 +22,6 @@ export default function Accommodations({ availableAccommodations, selectedConcer
   if (Array.isArray(availableAccommodations)) {
     accoms = availableAccommodations;
   } 
-  // If availableAccommodations is not provided or not an array, fall back to allAccoms
-  else if (availableAccommodations === null || availableAccommodations === undefined) {
-    if (Array.isArray(allAccoms)) {
-      accoms = allAccoms;
-    } else if (allAccoms && allAccoms._embedded && Array.isArray(allAccoms._embedded.accomList)) {
-      accoms = allAccoms._embedded.accomList;
-    }
-  }
   // If availableAccommodations is provided but is not an array (e.g., error object), use empty array
   else {
     console.warn("availableAccommodations is not an array:", availableAccommodations);

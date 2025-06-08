@@ -51,7 +51,7 @@ export default function Packages() {
 
         if (followUp.ok) {
           const followUpData = await followUp.json();
-          console.log("Follow up response: ", JSON.stringify(followUpData, null, 2));
+          // console.log("Follow up response: ", JSON.stringify(followUpData, null, 2));
 
           if (Array.isArray(followUpData)) {
             accommodations = followUpData;
@@ -61,7 +61,16 @@ export default function Packages() {
         }
       }
       
+      console.log('Setting availableAccommodations to: ', accommodations);
+      console.log('Accommodations length is ', accommodations.length);
       setAvailableAccommodations(accommodations);
+
+      // Final debuggind checks
+      console.log('Rendering Accommodations with: ', {
+        availableAccommodationsLength: availableAccommodations.length,
+        isArray: Array.isArray(availableAccommodations),
+        isCreatingPackage
+      });
     } catch (error) {
       console.error('Error fetching available accommodations:', error);
       setAvailableAccommodations([]);
