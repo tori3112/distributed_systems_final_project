@@ -1,5 +1,5 @@
 import React, { useContext} from "react";
-import { CartContext } from './../context/CartContext';
+import { useCart } from '../context/CartContext';
 
 export default function QuickView({ 
   product, 
@@ -8,7 +8,7 @@ export default function QuickView({
   selectedConcert
 }) {
 
-  const { addToCart } = useContext(CartContext);
+  const { addToCart } = useCart();
 
   const handleAddToCart = () => {
     if (!selectedConcert || !product) {
@@ -27,7 +27,7 @@ export default function QuickView({
     console.log("Creating package:", newPackage);
 
     addToCart(newPackage);
-     onClose();
+    onClose();
     
     // Show confirmation to user
     alert("Package added to cart successfully!");
