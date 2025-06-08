@@ -142,5 +142,22 @@ public class AccommodationsRestController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Order cannot committed");
     }
 
+    @PostMapping("/rollback_accomm")
+    public ResponseEntity<String> rollbackAccom(@RequestBody TransactionData transactiondata){
+        Optional<Accommodation> acc = accommodationRepository.findById(transactiondata.getAccom_id());
+
+
+        if(acc.isEmpty() ){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Order cannot committed");
+        }
+
+        Accommodation accomm = acc.get();
+
+        accomm.setPreparationStatus(AccommPreparationStatus.COMMITTED.name());
+        accomm.setAvailability(true);
+        accommodationRepository.save(accomm);
+
+        return ResponseEntity.ok("Accommodation committed successfully.");
+    }
 
 }
