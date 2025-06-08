@@ -105,6 +105,10 @@ public class AccommodationsRestController {
             accOrder.setAccommId(order.getAccom_id());
             accOrder.setOrderId(order.getId());
 
+            if(orderRepository.countActivePrepares(order.getAccom_id())>0){
+                throw new BookedAccommException();
+            }
+
             Optional<Accommodation> acc = accommodationRepository.findById(order.getAccom_id());
 
             if(acc.isEmpty() ){
