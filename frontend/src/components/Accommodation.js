@@ -7,17 +7,17 @@ export default function Accommodations({ availableAccommodations, selectedConcer
   const [displayedAccommodations, setDisplayedAccommodations] = useState([]);
   
   // Debugging purposes
-  console.log('Accommodations component received: ',{
-    availableAccommodationsLength: availableAccommodations ? availableAccommodations.length : 'undefined',
-    isArray: Array.isArray(availableAccommodations),
-    selectedConcert: selectedConcert ? selectedConcert.id : 'none',
-    isCreatingPackage
-  });
+  // console.log('Accommodations component received: ',{
+  //   availableAccommodationsLength: availableAccommodations ? availableAccommodations.length : 'undefined',
+  //   isArray: Array.isArray(availableAccommodations),
+  //   selectedConcert: selectedConcert ? selectedConcert.id : 'none',
+  //   isCreatingPackage
+  // });
 
   // Determine which accommodations to display
   useEffect(() => {
     if (isCreatingPackage && Array.isArray(availableAccommodations)) {
-      console.log('Using availableAccommodations for package creation: ', availableAccommodations);
+      // console.log('Using availableAccommodations for package creation: ', availableAccommodations);
       setDisplayedAccommodations(availableAccommodations);
     } else {
       console.log('No valid accommodations available');
@@ -34,18 +34,6 @@ export default function Accommodations({ availableAccommodations, selectedConcer
   const closeModal = () => {
     setIsQuickViewOpen(false);
     setSelectedProduct(null);
-  };
-  
-  // Handle selecting an accommodation for a package
-  const handleSelectForPackage = (accommodation) => {
-    if (onSelectAccommodation) {
-      console.log('Selecting accommodation for package: ', accommodation.id);
-      onSelectAccommodation(accommodation);
-    } else {
-      console.error("onSelectAccommodation function is not provided");
-      // Fallback: just show the QuickView
-      handleQuickView(accommodation);
-    }
   };
   
   if ((!isCreatingPackage) || (isCreatingPackage && availableAccommodations === null)) return (
@@ -90,7 +78,7 @@ export default function Accommodations({ availableAccommodations, selectedConcer
         <div className="mb-6 p-4 bg-fuchsia-50 rounded-lg border border-fuchsia-200">
           <h3 className="text-lg font-semibold text-fuchsia-800">Select Accommodation for Your Package</h3>
           <p className="text-fuchsia-600">
-            You're creating a package for <strong>{selectedConcert.name}</strong> on {new Date(selectedConcert.date).toLocaleDateString()}.
+            You're creating a package for <strong>{selectedConcert.title}</strong> on {new Date(selectedConcert.date).toLocaleDateString()}.
             Please select an accommodation below.
           </p>
           <div className="mt-2 text-sm text-gray-600">
@@ -123,18 +111,16 @@ export default function Accommodations({ availableAccommodations, selectedConcer
                 <p className="mt-1 text-sm text-gray-500">{product.location}</p>
                 {/* Show date information if creating a package */}
                 {isCreatingPackage && product.dateIn && product.dateOut && (
-                  <p className="mt-1 text-xs text-green-600">
+                  <p className="mt-1 text-xs text-fuchsia-600">
                     Available: {new Date(product.dateIn).toLocaleDateString()} - {new Date(product.dateOut).toLocaleDateString()}
                   </p>
                 )}
               </div>
               <p className="text-sm font-medium text-gray-900">€{product.price || "Price not available"}</p>
             </div>
-            
-            {/* Show different button based on mode */}
             <button
-              onClick={() => isCreatingPackage ? handleSelectForPackage(product) : handleQuickView(product)}
-              className={`mt-2 w-full ${isCreatingPackage ? 'bg-green-600 hover:bg-green-800' : 'bg-fuchsia-600 hover:bg-fuchsia-800'} text-white p-2 rounded-md transition`}
+              onClick={() => handleQuickView(product)}
+              className={`mt-2 w-full bg-fuchsia-600 hover:bg-fuchsia-800 text-white p-2 rounded-md transition`}
             >
               {isCreatingPackage ? 'Select for Package' : 'Quick View'}
             </button>
@@ -148,7 +134,6 @@ export default function Accommodations({ availableAccommodations, selectedConcer
           onClose={closeModal} 
           isCreatingPackage={isCreatingPackage}
           selectedConcert={selectedConcert}
-          onSelectForPackage={isCreatingPackage ? () => handleSelectForPackage(selectedProduct) : null}
         />
       )}
     </div>

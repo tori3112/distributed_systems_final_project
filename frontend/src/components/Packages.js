@@ -32,7 +32,7 @@ export default function Packages() {
       const encodedDate = encodeURIComponent(formattedDate);
 
       const apiUrl = `${process.env.REACT_APP_REST_URL}/tickets/${encodedDate}/accoms`;
-      console.log('About to fetch ', apiUrl);
+      // console.log('About to fetch ', apiUrl);
 
       const response = await fetch(apiUrl);
     
@@ -46,55 +46,20 @@ export default function Packages() {
       }
 
       const data = await response.json();
-      console.log('API response data: ', data);
+      // console.log('API response data: ', data);
 
       let accommodations = [];
-      if (data && data._links && data._links.self && data._links.self.href) {
-        console.log("Following self link: ", data._links.self.href);
-
-        try {
-          const followUp = await fetch(data._links.self.href);
-
-          if (!followUp.ok) {
-            throw new Error(`Self link request failed: ${followUp.status}`);
-          }
-
-          const accommodationData = await followUp.json();
-          console.log('Self link response: ', accommodationData);
-
-          if (Array.isArray(accommodationData)) {
-            console.log('accommodationData is an Array');
-            accommodations = accommodationData;
-          } else if (accommodationData && accommodationData._embedded	&& accommodationData._embedded.accommodationList) {
-            accommodations = accommodationData._embedded.accommodationList;
-          } else {
-            console.log('Could not accommodation array in the response: ', accommodationData);
-
-            for (const key in accommodationData) {
-              if (accommodationData[key] &&
-                typeof accommodationData[key] == 'object' &&
-                accommodationData[key]._embedded
-              ) {
-                for (const embeddedKey in accommodationData[key]._embedded) {
-                  console.log(`Found array in _embedded.${embeddedKey}`);
-                  accommodations = accommodationData[key]._embedded[embeddedKey];
-                  break;
-                }
-              }
-            }
-          }
-          
-        } catch (linkError) {
-        console.error('Error following accommodations link: ', linkError);
-        }
+      if (data && data._embedded	&& data._embedded.accommodationList) {
+        accommodations = data._embedded.accommodationList;
+      } else {
+        console.log('Could not accommodation array in the response: ', data);
+      } 
       
-        console.log('Setting availableAccommodations to: ', accommodations);
-        console.log('Accommodations length is ', accommodations.length);
-        setAvailableAccommodations(accommodations);
-      }
+      // console.log('Setting availableAccommodations to: ', accommodations);
+      // console.log('Accommodations length is ', accommodations.length);
+      setAvailableAccommodations(accommodations);
     } catch (error) {
-      console.error('Error fetching available accommodations: ', error);
-      setAvailableAccommodations([]);
+      console.log('Error when getting available accommodation: ', error);
     }
   };
 
