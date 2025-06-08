@@ -88,13 +88,6 @@ export default function Packages() {
         console.log('Setting availableAccommodations to: ', accommodations);
         console.log('Accommodations length is ', accommodations.length);
         setAvailableAccommodations(accommodations);
-
-        // Final debuggind checks
-        console.log('Rendering Accommodations with: ', {
-          availableAccommodationsLength: availableAccommodations.length,
-          isArray: Array.isArray(availableAccommodations),
-          isCreatingPackage
-        });
       }
     } catch (error) {
       console.error('Error fetching available accommodations: ', error);
