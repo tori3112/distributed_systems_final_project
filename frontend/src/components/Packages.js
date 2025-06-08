@@ -43,36 +43,61 @@ export default function Packages() {
       }
 
       const data = await response.json();
+      console.log('API response data: ', data);
 
       let accommodations = [];
-      if (data && data._links && data._links.self) {
-        console.log("Following self link to get available accommodations");
-        const followUp = await fetch(data._links.self.href);
+      if (data && data._links && data._links.self && data._links.self.href) {
+        console.log("Following self link: ", data._links.self.href);
 
-        if (followUp.ok) {
-          const followUpData = await followUp.json();
-          // console.log("Follow up response: ", JSON.stringify(followUpData, null, 2));
+        try {
+          const followUp = await fetch(data._links.self.href);
 
-          if (Array.isArray(followUpData)) {
-            accommodations = followUpData;
-          } else if (followUpData && followUpData._embedded && Array.isArray(followUpData._embedded)) {
-            accommodations = followUpData._embedded.accommodationList;
+          if (!followUp.ok) {
+            throw new Error(`Self link request failed: ${followUp.status}`);
           }
-        }
-      }
-      
-      console.log('Setting availableAccommodations to: ', accommodations);
-      console.log('Accommodations length is ', accommodations.length);
-      setAvailableAccommodations(accommodations);
 
-      // Final debuggind checks
-      console.log('Rendering Accommodations with: ', {
-        availableAccommodationsLength: availableAccommodations.length,
-        isArray: Array.isArray(availableAccommodations),
-        isCreatingPackage
-      });
+          const accommodationData = await followUp.json();
+          console.log('Self link response: ', accommodationData);
+
+          if (Array.isArray(accommodationData)) {
+            console.log('accommodationData is an Array');
+            accommodations = accommodationData;
+          } else if (accommodationData && accommodationData._embedded	&& accommodationData._embedded.accommodationList) {
+            accommodations = accommodationData._embedded.accommodationList;
+          } else {
+            console.log('Could not accommodation array in the response: ', accommodationData);
+
+            for (const key in accommodationData) {
+              if (accommodationData[key] &&
+                typeof accommodationData[key] == 'object' &&
+                accommodationData[key]._embedded
+              ) {
+                for (const embeddedKey in accommodationData[key]._embedded) {
+                  console.log(`Found array in _embedded.${embeddedKey}`);
+                  accommodations = accommodationData[key]._embedded[embeddedKey];
+                  break;
+                }
+              }
+            }
+          }
+          
+        } catch (linkError) {
+        console.error('Error following accommodations link: ', linkError);
+        }
+      
+        console.log('Setting availableAccommodations to: ', accommodations);
+        console.log('Accommodations length is ', accommodations.length);
+        setAvailableAccommodations(accommodations);
+
+        // Final debuggind checks
+        console.log('Rendering Accommodations with: ', {
+          availableAccommodationsLength: availableAccommodations.length,
+          isArray: Array.isArray(availableAccommodations),
+          isCreatingPackage
+        });
+      }
     } catch (error) {
-      console.error('Error fetching available accommodations:', error);
+      console.error('Error fetching available accommodations: ', error);
       setAvailableAccommodations([]);
     }
   };
