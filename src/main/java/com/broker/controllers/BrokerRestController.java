@@ -29,15 +29,17 @@ public class BrokerRestController{
     private final AccommodationRepository accomodationRepo;
     private final TicketRepository ticketRepo;
     private final OrderRepository orderRepo;
+    private final TransactionLogRepository transactionLogRepository;
     @Autowired
     private RestTemplate restTemplate;
 
     @Autowired
-    public BrokerRestController(PackageRepository packagerepo, AccommodationRepository accomodationRepo, TicketRepository ticketRepo, OrderRepository orderRepo) {
+    public BrokerRestController(PackageRepository packagerepo, AccommodationRepository accomodationRepo, TicketRepository ticketRepo, OrderRepository orderRepo, TransactionLogRepository transactionLogRepository) {
         this.packagerepo = packagerepo;
         this.accomodationRepo = accomodationRepo;
         this.ticketRepo = ticketRepo;
         this.orderRepo = orderRepo;
+        this.transactionLogRepository = transactionLogRepository;
     }
     @GetMapping("/")
     CollectionModel<EntityModel<Package>> getPackages() throws Exception {
@@ -135,17 +137,28 @@ public class BrokerRestController{
     @PostMapping("/get/package")
     public ResponseEntity<Order> getPackage(@RequestBody Order order){
         if(order != null){
+            TransactionLog t = new TransactionLog();
+            t.setTransactionId(order.getId());
+            t.setLastUpdated(LocalDateTime.now());
             if (callPreparePhase(order)){
-                //TODO: here there should be a log of the orer by the broker -> use transaction log
+                 t.setStatus("PREPARED");
+                 transactionLogRepository.save(t);
+
                 if (callCommitPhase(order)) { // all parties committed succesfully
                     orderRepo.save(order);
+                    TransactionLog t1 = transactionLogRepository.findById(t.getTransactionId()).get();
+                    t1.setStatus("COMMITTED");
+                    transactionLogRepository.save(t1);
                     return new ResponseEntity<>(order, HttpStatus.OK);
                 }
-
                 callRollback(order);
+                TransactionLog t1 = transactionLogRepository.findById(t.getTransactionId()).get();
+                t1.setStatus("ABORTED");
+                transactionLogRepository.save(t1);
                 return new ResponseEntity<>(null, HttpStatus.OK);
             }
-
+            t.setStatus("ABORTED");
+            transactionLogRepository.save(t);
             callRollback(order);
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
@@ -196,8 +209,7 @@ public class BrokerRestController{
     }
     private EntityModel<Accommodation> accomToEntityModel(int id, Accommodation accom ) throws Exception {
         return EntityModel.of(accom,
-                linkTo(methodOn(BrokerRestController.class).getAccomById(id)).withSelfRel(),
-                linkTo(methodOn(BrokerRestController.class).getAccoms()).withRel("/"));
+                linkTo(methodOn(BrokerRestController.class).getAccomById(id)).withSelfRel());
     }
 
     private EntityModel<Ticket> ticketToEntityModel(int id, Ticket ticket ) throws Exception {

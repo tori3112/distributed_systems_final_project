@@ -9,7 +9,7 @@ import java.util.Objects;
 public class TransactionLog {
     @Id
     private int transactionId;
-    private enum status{PREPARED,COMMITTED,ABORTED};
+    private String status;
     private LocalDateTime lastUpdated;
 
     public int getTransactionId() {
@@ -39,6 +39,8 @@ public class TransactionLog {
     public void setLastUpdated(LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
+    public String getStatus() {return status;}
+    public void setStatus(String status) {this.status = status;}
 }
 
 
