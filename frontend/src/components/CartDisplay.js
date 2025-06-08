@@ -13,6 +13,8 @@ function CartDisplay() {
     );
   }
 
+  console.log("cart items: ", cartItems);
+
   const totalPrice = cartItems.reduce((total, item) => total + item.price, 0);
 
   return (

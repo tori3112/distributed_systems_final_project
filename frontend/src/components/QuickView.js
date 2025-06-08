@@ -18,10 +18,10 @@ export default function QuickView({
 
     // Create a package
     const newPackage = {
+        name: `${selectedConcert.title}+${product.address}`,
         ticket: selectedConcert.id,
         accommodation: product.id,
-        paid: true,
-        date: Date.now()
+        price: (selectedConcert.price || 0) + (product.price || 0)
       };
       
     console.log("Creating package:", newPackage);
