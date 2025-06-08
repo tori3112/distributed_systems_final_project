@@ -11,6 +11,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -51,18 +52,16 @@ public class AccommodationsRestController {
                 linkTo(methodOn(AccommodationsRestController.class).getAccommodations()).withSelfRel());
     }
 
-    @GetMapping("/accomms/available/{location}/{requestedIn}/{requestedOut}")
-    CollectionModel<EntityModel<Accommodation>> getAccommodationsByLocation(@PathVariable String location,
-                                                                            @PathVariable String requestedIn,
-                                                                            @PathVariable String requestedOut) {
+    @GetMapping("/accomms/available/{location}")
+    CollectionModel<EntityModel<Accommodation>> getAccommodationsByLocation(@PathVariable String location) {
         List<Accommodation> byLocation = accommodationRepository.findByLocation(location);
 
+//
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
+//        LocalDateTime dateIn = LocalDateTime.parse(requestedIn, formatter);
+//        LocalDateTime dateOut = LocalDateTime.parse(requestedOut, formatter);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
-        LocalDateTime dateIn = LocalDateTime.parse(requestedIn, formatter);
-        LocalDateTime dateOut = LocalDateTime.parse(requestedOut, formatter);
-
-        List<Accommodation> byAvailability = accommodationRepository.findAvailable(dateIn, dateOut);
+        List<Accommodation> byAvailability = accommodationRepository.findAvailable();
 
 
         List<EntityModel<Accommodation>> accommCollectionModel = new ArrayList<>();
@@ -74,7 +73,7 @@ public class AccommodationsRestController {
 
         // accommodations.removeIf(a -> !accommodationRepository.isAvailable(a, dateIn, dateOut));
         for (Accommodation a : accommodations) {
-            EntityModel<Accommodation> accom = accommToEntityModel(a.getId(), a, requestedIn, requestedOut);
+            EntityModel<Accommodation> accom = accommToEntityModel(a.getId(), a);
             accommCollectionModel.add(accom);
         }
 
@@ -83,7 +82,7 @@ public class AccommodationsRestController {
         }
 
         return CollectionModel.of(accommCollectionModel,
-                linkTo(methodOn(AccommodationsRestController.class).getAccommodationsByLocation(location, requestedIn, requestedOut)).withSelfRel());
+                linkTo(methodOn(AccommodationsRestController.class).getAccommodationsByLocation(location)).withSelfRel());
     }
 
 
@@ -91,22 +90,16 @@ public class AccommodationsRestController {
     private EntityModel<Accommodation> accommToEntityModel(Integer id, Accommodation accomm) {
         return EntityModel.of(accomm,
                 linkTo(methodOn(AccommodationsRestController.class).getAccommodationById(id)).withSelfRel(),
-                linkTo(methodOn(AccommodationsRestController.class).getAccommodations()).withRel("/accomms"));
+                linkTo(methodOn(AccommodationsRestController.class).getAccommodations()).withRel("/accomms"),
+                linkTo(methodOn(AccommodationsRestController.class)
+                        .getAccommodationsByLocation(accomm.getLocation()))
+                        .withRel("search-by-location"));
     }
 
-    private EntityModel<Accommodation> accommToEntityModel(Integer id,
-                                                           Accommodation accomm,
-                                                           String requestedIn,
-                                                           String requestedOut) {
-        // Reuse the core entity model method
-        EntityModel<Accommodation> model = accommToEntityModel(id, accomm);
+    //For two-phase commit
 
-        // Add the extra link with dates
-        model.add(linkTo(methodOn(AccommodationsRestController.class)
-                .getAccommodationsByLocation(accomm.getLocation(), requestedIn, requestedOut))
-                .withRel("search-by-location"));
+//    @PostMapping("/prepare_accom")
+//    public ResponseEntitiy<String> prepareAccom(@RequestBody )
 
-        return model;
-    }
 
 }

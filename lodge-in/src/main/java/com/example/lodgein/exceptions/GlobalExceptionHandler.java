@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccommNotFoundException.class)
-    public ResponseEntity<String> ticketNotFoundExceptionHandler(AccommNotFoundException ex) {
+    public ResponseEntity<String> accommNotFoundExceptionHandler(AccommNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(NoAccommException.class)
-    public ResponseEntity<String> outOfStockExceptionHandler(NoAccommException ex) {
-        return new ResponseEntity<>("An error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<String> notAvailableExceptionHandler(NoAccommException ex) {
+        return new ResponseEntity<>("An error occurred: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 }

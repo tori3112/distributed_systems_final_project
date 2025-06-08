@@ -25,7 +25,16 @@ public class Accommodation {
     protected List<String> offer = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    protected Integer id;
+    protected boolean availability;
+
+    public boolean isAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(boolean booked) {
+        this.availability = booked;
+    }
 
     /*public Integer getId() {
         return id;
