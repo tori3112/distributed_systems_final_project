@@ -1,24 +1,26 @@
 package com.example.lodgein;
 
+import com.example.lodgein.domain.AccommPreparationStatus;
 import com.example.lodgein.domain.Accommodation;
 import com.example.lodgein.domain.AccommodationRepository;
+import com.example.lodgein.domain.TransactionData;
 import com.example.lodgein.exceptions.AccommNotFoundException;
 import com.example.lodgein.exceptions.NoAccommException;
 import com.example.lodgein.exceptions.BookedAccommException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -98,8 +100,28 @@ public class AccommodationsRestController {
 
     //For two-phase commit
 
-//    @PostMapping("/prepare_accom")
-//    public ResponseEntitiy<String> prepareAccom(@RequestBody )
+    @PostMapping("/prepare_accomm")
+    public ResponseEntity<String> prepareAccom(@RequestBody TransactionData transactiondata){
+        try{
+            Optional<Accommodation> acc = accommodationRepository.findById(transactiondata.getAccom_id());
+
+            if(acc == null ){
+                throw new AccommNotFoundException(transactiondata.getAccom_id());
+            }
+            else if(!acc.get().isAvailability()){
+                throw new BookedAccommException();
+            }
+            Accommodation accomm = acc.get();
+
+            accomm.setAccommPreparationStatus(AccommPreparationStatus.PREPARING.name());
+            accommodationRepository.save(accomm);
+
+            return ResponseEntity.ok("Order prepared successfully.");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during order preparation.");
+        }
+    }
 
 
 }

@@ -14,7 +14,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NoAccommException.class)
-    public ResponseEntity<String> notAvailableExceptionHandler(NoAccommException ex) {
+    public ResponseEntity<String> noAvailableExceptionHandler(NoAccommException ex) {
+        return new ResponseEntity<>("An error occurred: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BookedAccommException.class)
+    public ResponseEntity<String> bookedExceptionHandler(NoAccommException ex) {
         return new ResponseEntity<>("An error occurred: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

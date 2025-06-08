@@ -28,6 +28,17 @@ public class Accommodation {
     protected Integer id;
     protected boolean availability;
 
+    public String getAccommPreparationStatus() {
+        return accommPreparationStatus;
+    }
+
+    public void setAccommPreparationStatus(String accommPreparationStatus) {
+        this.accommPreparationStatus = accommPreparationStatus;
+    }
+
+    //TODO: reminder to put this in DB
+    protected String accommPreparationStatus;
+
     public boolean isAvailability() {
         return availability;
     }

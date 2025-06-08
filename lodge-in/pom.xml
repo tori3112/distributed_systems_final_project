@@ -58,6 +58,11 @@
             <artifactId>mssql-jdbc</artifactId>
             <version>12.10.0.jre11</version> <!-- or a version matching your Java version -->
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
