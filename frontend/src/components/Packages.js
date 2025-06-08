@@ -13,16 +13,11 @@ export default function Packages() {
   const [availableAccommodations, setAvailableAccommodations] = useState(null);
   const [isCreatingPackage, setIsCreatingPackage] = useState(false);
 
-  const { cartItems, addToCart} = useCart();
+  const { addToCart} = useCart();
   
   // Function to handle tab click
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
-  };
-
-  // Function to add package to cart
-  const handleAddToCart = (pkg) => {
-    addToCart(pkg);
   };
   
   // Add this function to handle concert selection
