@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Concerts from './Concerts';
 import Accommodations from './Accommodation';
+import { useCart } from '../context/CartContext';
 
 export default function Packages() {
   const [activeTab, setActiveTab] = useState('tab1-group4');
@@ -11,10 +12,17 @@ export default function Packages() {
   const [selectedConcert, setSelectedConcert] = useState(null);
   const [availableAccommodations, setAvailableAccommodations] = useState(null);
   const [isCreatingPackage, setIsCreatingPackage] = useState(false);
+
+  const { cartItems, addToCart} = useCart();
   
   // Function to handle tab click
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
+  };
+
+  // Function to add package to cart
+  const handleAddToCart = (pkg) => {
+    addToCart(pkg);
   };
   
   // Add this function to handle concert selection
@@ -106,33 +114,35 @@ export default function Packages() {
       };
       
       console.log("Creating package:", newPackage);
+
+      addToCart(newPackage);
       
-      // Make the API call to create the package
-      const response = await fetch(`${process.env.REACT_APP_REST_URL}/get/package`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: JSON.stringify(newPackage)
-      });
+      // // Make the API call to create the package
+      // const response = await fetch(`${process.env.REACT_APP_REST_URL}/get/package`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Accept': 'application/json',
+      //     'X-Requested-With': 'XMLHttpRequest'
+      //   },
+      //   body: JSON.stringify(newPackage)
+      // });
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      // if (!response.ok) {
+      //   throw new Error(`HTTP error! status: ${response.status}`);
+      // }
       
-      const data = await response.json();
-      console.log('Package created:', data);
+      // const data = await response.json();
+      // console.log('Package created:', data);
       
-      // Show success message
-      alert('Package created successfully!');
+      // // Show success message
+      // alert('Package created successfully!');
       
-      // Reset the package creation process
-      setSelectedConcert(null);
-      setIsCreatingPackage(false);
-      setAvailableAccommodations(null);
-      setActiveTab('tab1-group4'); // Switch back to concerts tab
+      // // Reset the package creation process
+      // setSelectedConcert(null);
+      // setIsCreatingPackage(false);
+      // setAvailableAccommodations(null);
+      // setActiveTab('tab1-group4'); // Switch back to concerts tab
       
     } catch (error) {
       console.error('Error creating package:', error);
