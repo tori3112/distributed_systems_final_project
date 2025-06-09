@@ -1,12 +1,10 @@
 /home/b/distributed_systems_final_project/src/main/java/com/broker/domain/OfferConverter.java
 /home/b/distributed_systems_final_project/src/main/java/com/broker/controllers/BrokerRestController.java
-/home/b/distributed_systems_final_project/src/main/java/com/broker/service/DbSyncScheduler.java
 /home/b/distributed_systems_final_project/src/main/java/com/broker/domain/RecoveryManager.java
 /home/b/distributed_systems_final_project/src/main/java/com/broker/domain/OrderRepository.java
-/home/b/distributed_systems_final_project/src/main/java/com/broker/domain/TransactionLogRepository.java
 /home/b/distributed_systems_final_project/src/main/java/com/broker/domain/Package.java
-/home/b/distributed_systems_final_project/src/main/java/com/broker/domain/TransactionLog.java
 /home/b/distributed_systems_final_project/src/main/java/com/broker/service/DbSyncService.java
+/home/b/distributed_systems_final_project/src/main/java/com/broker/service/TwopcService.java
 /home/b/distributed_systems_final_project/src/main/java/com/broker/domain/Accommodation.java
 /home/b/distributed_systems_final_project/src/main/java/com/broker/domain/PackageRepository.java
 /home/b/distributed_systems_final_project/src/main/java/com/broker/domain/Ticket.java

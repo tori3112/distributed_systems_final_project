@@ -11,8 +11,8 @@ public class TwopcService {
     private RestTemplate restTemplate;
 
     public void callRollback(Order order) {
-        callServiceRollbackPhase("http://localhost:8080/rollback_order", order);
-        callServiceRollbackPhase("http://localhost:8081/rollback_order", order);
+        callServiceRollbackPhase("https://tubbybuddy.japaneast.cloudapp.azure.com:8443/rollback_ticket", order);
+        callServiceRollbackPhase("https://tubbybuddy.westeurope.cloudapp.azure.com:8443/rollback_accomm", order);
     }
 
     public void callServiceRollbackPhase(String url, Order order) {
@@ -20,16 +20,16 @@ public class TwopcService {
     }
 
     public boolean callCommitPhase(Order order) {
-        boolean isTicketSuccess = callServices("http://localhost:8080/commit_order", order);
-        boolean isAccomSuccess = callServices("http://localhost:8081/commit_order", order);
+        boolean isTicketSuccess = callServices("https://tubbybuddy.japaneast.cloudapp.azure.com:8443/commit_ticket", order);
+        boolean isAccomSuccess = callServices("https://tubbybuddy.westeurope.cloudapp.azure.com:8443/commit_accomm", order);
 
         return isTicketSuccess && isAccomSuccess;
     }
 
     public boolean callPreparePhase(Order order) {
         try {
-            boolean isTicketSuccess = callServices("http://localhost:8080/prepare_order", order);
-            boolean isAccomSuccess = callServices("http://localhost:8081/prepare_order", order);
+            boolean isTicketSuccess = callServices("https://tubbybuddy.japaneast.cloudapp.azure.com:8443/prepare_ticket", order);
+            boolean isAccomSuccess = callServices("https://tubbybuddy.westeurope.cloudapp.azure.com:8443/prepare_accomm", order);
 
             return isTicketSuccess && isAccomSuccess;
         } catch (Exception e) {

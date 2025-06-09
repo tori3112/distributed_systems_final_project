@@ -40,7 +40,7 @@ public class DbSyncService {
     @Scheduled(fixedRate = 600000)
     public void syncTicketsFromSupplier(){
         //TODO: this needs to be an actual endpoint
-        String url = "http://localhost:8082/tickets";
+        String url = "https://tubbybuddy.japaneast.cloudapp.azure.com:8443/tickets";
         ResponseEntity<CollectionModel<EntityModel<Ticket>>> response = restTemplate.exchange(url, HttpMethod.GET,null,
                 new ParameterizedTypeReference<CollectionModel<EntityModel<Ticket>>>() {} );
 
@@ -67,7 +67,7 @@ public class DbSyncService {
     }
     @Scheduled(fixedRate = 600000)
     public void syncAccomFromSupplier(){
-        String url = "http://tubbybuddy.westeurope.cloudapp.azure.com:8080/accomms";
+        String url = "https://tubbybuddy.westeurope.cloudapp.azure.com:8443/accomms";
         ResponseEntity<CollectionModel<EntityModel<Accommodation>>> response = restTemplate.exchange(url, HttpMethod.GET,null,
                 new ParameterizedTypeReference<CollectionModel<EntityModel<Accommodation>>>() {} );
 

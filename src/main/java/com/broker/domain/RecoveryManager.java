@@ -16,26 +16,36 @@ public class RecoveryManager {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
+    private TransactionRepository transactionRepository;
+    @Autowired
     private TwopcService twopcService;
 
 
     @EventListener(ApplicationReadyEvent.class)
     public void recoverTransactions(){
         // find the prepared but no committed transactions
-        List<Order> tx = orderRepository.findByStatus("PREPARED");
-        for(Order t: tx){
-            if(twopcService.callCommitPhase(t)){
+        List<Transaction> tx = transactionRepository.findByStatus("PREPARED");
+        for(Transaction t: tx){
+            Order o = new Order();
+            o.setId(t.getId());
+            o.setAccom_id(t.getAccom_id());
+            o.setTicket_id(t.getTicket_id());
+            o.setPackage_id(t.getPackage_id());
+            o.setAddress(t.getAddress());
+            o.setOrder_time(t.getOrder_time());
+            o.setPaid(t.isPaid());
+            if(twopcService.callCommitPhase(o)){
                 t.setStatus("COMMITTED");
                 t.setLastUpdated(LocalDateTime.now());
-                orderRepository.save(t);
+                transactionRepository.save(t);
                 System.out.println("Pending transaction "+t.getId()+" is complete");
 
             }
             else{
-                twopcService.callRollback(t);
+                twopcService.callRollback(o);
                 t.setStatus("ABORTED");
                 t.setLastUpdated(LocalDateTime.now());
-                orderRepository.save(t);
+                transactionRepository.save(t);
                 System.out.println("Pending transaction "+t.getId()+" could not be completed");
             }
         }
