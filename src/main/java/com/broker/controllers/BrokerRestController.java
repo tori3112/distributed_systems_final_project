@@ -141,12 +141,12 @@ public class BrokerRestController{
                  order.setLastUpdated(LocalDateTime.now());
                  orderRepo.save(order);
                 System.out.println("Order prepared");
-                try {
-                    System.out.println("Sleeping now");
-                    Thread.sleep(60000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+//                try {
+//                    System.out.println("Sleeping now");
+//                    Thread.sleep(60000);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
                 if (twopcService.callCommitPhase(order)) { // all parties committed succesfully
                     order.setStatus("COMMITTED");
                     order.setLastUpdated(LocalDateTime.now());
