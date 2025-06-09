@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 
 export default function Checkout() {
-    const { cartItems, getCartTotal } = useCart();
+    const { cartItems } = useCart();
 
     const [formData, setFormData] = useState({
         firstName: '',
@@ -38,6 +38,7 @@ export default function Checkout() {
         e.preventDefault();
 
         if (!validateForm()) {
+            console.error('Validate Error: ', valErrors);
             return;
         }
 

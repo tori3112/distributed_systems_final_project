@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Concerts from './Concerts';
 import Accommodations from './Accommodation';
-import { useCart } from '../context/CartContext';
 
 export default function Packages() {
   const [activeTab, setActiveTab] = useState('tab1-group4');
@@ -12,8 +11,6 @@ export default function Packages() {
   const [selectedConcert, setSelectedConcert] = useState(null);
   const [availableAccommodations, setAvailableAccommodations] = useState(null);
   const [isCreatingPackage, setIsCreatingPackage] = useState(false);
-
-  const { addToCart} = useCart();
   
   // Function to handle tab click
   const handleTabClick = (tabId) => {
