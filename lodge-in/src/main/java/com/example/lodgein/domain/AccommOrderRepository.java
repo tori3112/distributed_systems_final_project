@@ -10,6 +10,10 @@ public interface AccommOrderRepository extends JpaRepository<AccommOrder, Intege
 
     @Query("SELECT COUNT(a) FROM AccommOrder a WHERE a.preparationStatus = 'PREPARING' AND a.accommId = :accommId")
     public Integer countActivePrepares(@Param("accommId")Integer accommId);
-    @Query("SELECT a FROM AccommOrder a WHERE a.preparationStatus = 'PREPARING' AND a.accommId = :accommId")
-    public AccommOrder findByAccommId(Integer accommId);
+    @Query("SELECT a FROM AccommOrder a WHERE a.preparationStatus = 'PREPARING'  AND a.accommId = :accommId")
+    public AccommOrder findByAccommIdPrepare(Integer accommId);
+    @Query("SELECT a FROM AccommOrder a WHERE a.preparationStatus = 'COMMIT'  AND a.accommId = :accommId")
+    public AccommOrder findByAccommIdCommit(Integer accommId);
+
+    Optional<AccommOrder> findByOrderId(Integer orderId);
 }

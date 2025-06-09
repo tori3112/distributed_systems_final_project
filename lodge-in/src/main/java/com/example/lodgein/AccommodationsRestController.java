@@ -115,6 +115,13 @@ public class AccommodationsRestController {
             accOrder.setOrderId(order.getId());
 
             log.info("got here");
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                String json = mapper.writeValueAsString(order);
+                log.info("Received Order JSON: {}", json);
+            } catch (Exception e) {
+                log.error("Failed to serialize Order object", e);
+            }
 
             if(accommOrderRepository.countActivePrepares(order.getAccom_id())>0){
                 throw new BookedAccommException();
@@ -125,6 +132,7 @@ public class AccommodationsRestController {
             log.info("now I here");
 
             if(acc.isEmpty() ){
+
                 throw new AccommNotFoundException(order.getAccom_id());
             }
             Accommodation accomm = acc.get();
@@ -140,7 +148,7 @@ public class AccommodationsRestController {
 
             accOrder.setPreparationStatus(AccommPreparationStatus.PREPARING.name());
             //TODO: Debug, remove later
-            ObjectMapper mapper = new ObjectMapper();
+            //ObjectMapper mapper = new ObjectMapper();
             try {
                 String json = mapper.writeValueAsString(accOrder);
                 log.info("Received Order JSON: {}", json);
@@ -159,16 +167,17 @@ public class AccommodationsRestController {
 
     @PostMapping("/commit_accomm")
     public ResponseEntity<String> commitAccom(@RequestBody Order order){
-        AccommOrder accOrder = accommOrderRepository.findByAccommId(order.getAccom_id());
+        Optional<AccommOrder> a = accommOrderRepository.findByOrderId(order.getId());
 
         Optional<Accommodation> acc = accommodationRepository.findById(order.getAccom_id());
 
 
-        if(acc.isEmpty() ){
+        if(acc.isEmpty() && a.isEmpty()){
             throw new AccommNotFoundException(order.getAccom_id());
         }
 
         Accommodation accomm = acc.get();
+        AccommOrder accOrder = a.get();
 
         if (accOrder != null && accOrder.getPreparationStatus().equalsIgnoreCase(AccommPreparationStatus.PREPARING.name())){
             accomm.setAvailability(false);
@@ -191,21 +200,31 @@ public class AccommodationsRestController {
 
     @PostMapping("/rollback_accomm")
     public ResponseEntity<String> rollbackAccom(@RequestBody Order order){
-        AccommOrder accOrder = accommOrderRepository.findByAccommId(order.getAccom_id());
+        Optional<AccommOrder> a = accommOrderRepository.findByOrderId(order.getId());
 
         Optional<Accommodation> acc = accommodationRepository.findById(order.getAccom_id());
 
 
-        if(acc.isEmpty() ){
+        if(acc.isEmpty() && a.isEmpty()){
             throw new AccommNotFoundException(order.getAccom_id());
         }
 
+        AccommOrder accOrder = a.get();
         Accommodation accomm = acc.get();
 
         if (accOrder != null){
             accomm.setAvailability(true);
             accOrder.setPreparationStatus(AccommPreparationStatus.ROLLBACK.name());
+            //TODO: Debug, remove later
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                String json = mapper.writeValueAsString(accOrder);
+                log.info("Received Order JSON: {}", json);
+            } catch (Exception e) {
+                log.error("Failed to serialize Order object", e);
+            }
             accommOrderRepository.save(accOrder);
+            accommodationRepository.save(accomm);
 
             return ResponseEntity.ok("Accommodation rolled back successfully.");
         }

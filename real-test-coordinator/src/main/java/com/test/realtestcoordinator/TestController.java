@@ -18,17 +18,17 @@ public class TestController {
     private boolean callPhase() {
         //init dummy data
         Order order = new Order();
-        order.setId(1);
-        order.setAddress("Melrose Avenue");
+        order.setId(3);
+        order.setAddress("Olala");
         order.setAccom_id(2);
         order.setPaid(false);
-        order.setPackage_id(1);
-        order.setTicket_id(3);
+        order.setPackage_id(3);
+        order.setTicket_id(2);
         try {
 
             log.info("success , bar low");
 
-            boolean isAccommSuccess = callServices("http://localhost:8080/commit_accomm", order);
+            boolean isAccommSuccess = callServices("http://localhost:8080/rollback_accomm", order);
             return isAccommSuccess;
         } catch (Exception e) {
             return false;
