@@ -30,17 +30,15 @@ public class BrokerRestController{
     private final AccommodationRepository accomodationRepo;
     private final TicketRepository ticketRepo;
     private final OrderRepository orderRepo;
-    private final TransactionLogRepository transactionLogRepository;
     @Autowired
     private TwopcService twopcService;
 
     @Autowired
-    public BrokerRestController(PackageRepository packagerepo, AccommodationRepository accomodationRepo, TicketRepository ticketRepo, OrderRepository orderRepo, TransactionLogRepository transactionLogRepository) {
+    public BrokerRestController(PackageRepository packagerepo, AccommodationRepository accomodationRepo, TicketRepository ticketRepo, OrderRepository orderRepo) {
         this.packagerepo = packagerepo;
         this.accomodationRepo = accomodationRepo;
         this.ticketRepo = ticketRepo;
         this.orderRepo = orderRepo;
-        this.transactionLogRepository = transactionLogRepository;
     }
     @GetMapping("/")
     CollectionModel<EntityModel<Package>> getPackages() throws Exception {
@@ -137,29 +135,35 @@ public class BrokerRestController{
     @PostMapping("/get/package")
     public ResponseEntity<Order> getPackage(@RequestBody Order order){
         if(order != null){
-            TransactionLog t = new TransactionLog();
-            t.setTransactionId(order.getId());
-            t.setLastUpdated(LocalDateTime.now());
+            order.setLastUpdated(LocalDateTime.now());
             if (twopcService.callPreparePhase(order)){
-                 t.setStatus("PREPARED");
-                 transactionLogRepository.save(t);
-
+                 order.setStatus("PREPARED");
+                 order.setLastUpdated(LocalDateTime.now());
+                 orderRepo.save(order);
+                System.out.println("Order prepared");
+                try {
+                    System.out.println("Sleeping now");
+                    Thread.sleep(60000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 if (twopcService.callCommitPhase(order)) { // all parties committed succesfully
+                    order.setStatus("COMMITTED");
+                    order.setLastUpdated(LocalDateTime.now());
                     orderRepo.save(order);
-                    TransactionLog t1 = transactionLogRepository.findById(t.getTransactionId()).get();
-                    t1.setStatus("COMMITTED");
-                    transactionLogRepository.save(t1);
+                    System.out.println("Order committed");
                     return new ResponseEntity<>(order, HttpStatus.OK);
                 }
                 twopcService.callRollback(order);
-                TransactionLog t1 = transactionLogRepository.findById(t.getTransactionId()).get();
-                t1.setStatus("ABORTED");
-                transactionLogRepository.save(t1);
+                order.setStatus("ABORTED");
+                order.setLastUpdated(LocalDateTime.now());
+                orderRepo.save(order);
                 return new ResponseEntity<>(null, HttpStatus.OK);
             }
-            t.setStatus("ABORTED");
-            transactionLogRepository.save(t);
             twopcService.callRollback(order);
+            order.setStatus("ABORTED");
+            order.setLastUpdated(LocalDateTime.now());
+            orderRepo.save(order);
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -1,5 +1,6 @@
 package com.broker.domain;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Date;
 @Entity
@@ -14,6 +15,8 @@ public class Order {
     private Date order_time;
     private int accom_id;
     private int ticket_id;
+    private String status;
+    private LocalDateTime lastUpdated;
 
     public int getAccom_id() {
         return accom_id;
@@ -68,6 +71,22 @@ public class Order {
 
     public void setOrder_time(Date order_time) {
         this.order_time = order_time;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(LocalDateTime lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     @Override

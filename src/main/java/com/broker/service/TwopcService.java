@@ -11,8 +11,8 @@ public class TwopcService {
     private RestTemplate restTemplate;
 
     public void callRollback(Order order) {
-        callServiceRollbackPhase("ticket", order);
-        callServiceRollbackPhase("accom", order);
+        callServiceRollbackPhase("http://localhost:8080/rollback_order", order);
+        callServiceRollbackPhase("http://localhost:8081/rollback_order", order);
     }
 
     public void callServiceRollbackPhase(String url, Order order) {
@@ -20,16 +20,16 @@ public class TwopcService {
     }
 
     public boolean callCommitPhase(Order order) {
-        boolean isTicketSuccess = callServices("tix", order);
-        boolean isAccomSuccess = callServices("accom", order);
+        boolean isTicketSuccess = callServices("http://localhost:8080/commit_order", order);
+        boolean isAccomSuccess = callServices("http://localhost:8081/commit_order", order);
 
         return isTicketSuccess && isAccomSuccess;
     }
 
     public boolean callPreparePhase(Order order) {
         try {
-            boolean isTicketSuccess = callServices("tix", order);
-            boolean isAccomSuccess = callServices("accom", order);
+            boolean isTicketSuccess = callServices("http://localhost:8080/prepare_order", order);
+            boolean isAccomSuccess = callServices("http://localhost:8081/prepare_order", order);
 
             return isTicketSuccess && isAccomSuccess;
         } catch (Exception e) {
