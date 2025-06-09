@@ -27,6 +27,7 @@ public class Ticket {
 
 
     private float price;
+    private int stock;
     //change this to appropriate data type later
     private String image;
 
@@ -40,6 +41,8 @@ public class Ticket {
     public String getTitle() {
         return title;
     }
+
+    public int getStock() {return stock;}
 
     public String getVenue() {
         return venue;
@@ -79,6 +82,7 @@ public class Ticket {
         this.location = location;
     }
 
+    public void setStock(int stock) {this.stock = stock;}
 
     public void setPrice(Integer price) {
         this.price = price;
