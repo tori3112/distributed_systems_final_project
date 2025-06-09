@@ -1,8 +1,10 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
+import { useNavigate } from 'react-router-dom';
 
 function CartDisplay() {
   const { cartItems, removeFromCart, clearCart } = useCart();
+  const navigate = useNavigate();
 
   if (cartItems.length === 0) {
     return (
@@ -16,6 +18,10 @@ function CartDisplay() {
   console.log("cart items: ", cartItems);
 
   const totalPrice = cartItems.reduce((total, item) => total + item.price, 0);
+
+  const handleCheckout = () => {
+    navigate('/checkout');
+  }
 
   return (
     <div className="relative isolate px-6 py-24 sm:py-32 lg:px-8 bg-white">
@@ -51,6 +57,7 @@ function CartDisplay() {
             Clear Cart
           </button>
           <button
+            onClick={handleCheckout}
             className="bg-green-500 text-white p-2 rounded-md hover:bg-green-700 transition"
           >
             Checkout

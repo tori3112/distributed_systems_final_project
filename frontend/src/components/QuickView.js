@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 import { useCart } from '../context/CartContext';
 
 export default function QuickView({ 
@@ -9,6 +9,7 @@ export default function QuickView({
 }) {
 
   const { addToCart } = useCart();
+  const packageID = useId();
 
   const handleAddToCart = () => {
     if (!selectedConcert || !product) {
@@ -19,6 +20,7 @@ export default function QuickView({
     // Create a package
     const newPackage = {
       // Package for API call
+      id: packageID,
       name: `Custom Package (${product.location}, ${selectedConcert.date})`,
       ticketID: selectedConcert.id,
       accommodationID: product.id,
@@ -60,8 +62,7 @@ export default function QuickView({
             className="w-full h-64 object-cover rounded-md"
           />
           
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
+          <div className="mt-4 gap-4">
               <h4 className="font-semibold text-gray-800">Location</h4>
               <p>{product.location || "Location not specified"}</p>
               
@@ -74,9 +75,12 @@ export default function QuickView({
                   <p>{new Date(product.dateIn).toLocaleDateString()} - {new Date(product.dateOut).toLocaleDateString()}</p>
                 </>
               )}
-            </div>
+
+              <h4 className="font-semibold text-gray-800 mt-3">Price</h4>
+              <p>€{product.price || "Price not available"}</p>
+              
             
-            <div>
+            {/* <div>
               <h4 className="font-semibold text-gray-800">Price</h4>
               <p className="text-xl font-bold text-gray-900">€{product.price || "Price not available"}</p>
               
@@ -93,7 +97,7 @@ export default function QuickView({
                   </div>
                 </>
               )}
-            </div>
+            </div> */}
           </div>
           
           <div className="mt-6 flex justify-end space-x-3">
