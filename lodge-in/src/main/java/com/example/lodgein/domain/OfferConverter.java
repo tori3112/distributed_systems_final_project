@@ -15,7 +15,14 @@ public class OfferConverter implements AttributeConverter<List<String>, String> 
 
     @Override
     public String convertToDatabaseColumn(List<String> strings) {
-        return "";
+        if (strings == null || strings.isEmpty()) {
+            return "[]";
+        }
+        try {
+            return objectMapper.writeValueAsString(strings);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Could not convert list to JSON", e);
+        }
     }
 
     @Override

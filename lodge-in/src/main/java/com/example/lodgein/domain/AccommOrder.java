@@ -20,5 +20,6 @@ public class AccommOrder {
     protected Integer accommId;
     protected Integer orderId;
     protected String preparationStatus;
-    protected LocalDateTime timestamp;
+//    @Column(name = "timestamp", insertable = false, updatable = false)
+//    protected LocalDateTime timestamp;
 }

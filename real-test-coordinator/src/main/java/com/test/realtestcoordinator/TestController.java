@@ -27,8 +27,8 @@ public class TestController {
         try {
 
             log.info("success , bar low");
-            boolean isAccommSuccess = callServices("http://localhost:8080/prepare_accomm", order);
 
+            boolean isAccommSuccess = callServices("http://localhost:8080/commit_accomm", order);
             return isAccommSuccess;
         } catch (Exception e) {
             return false;
@@ -38,6 +38,7 @@ public class TestController {
 
     private boolean callServices(String url, Order order) {
         ResponseEntity<String> response = restTemplate.postForEntity(url, order, String.class);
+        log.info("Response from {}: status={}, body={}", url, response.getStatusCode(), response.getBody());
         return response.getStatusCode().is2xxSuccessful();
     }
 }
