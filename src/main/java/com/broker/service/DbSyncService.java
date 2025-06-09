@@ -30,8 +30,16 @@ public class DbSyncService {
     private static LocalDateTime lastSyncTickets;
     private static LocalDateTime lastSyncAccom;
 
+    public static LocalDateTime getLastSyncTickets() {
+        return lastSyncTickets;
+    }
+
+    public static LocalDateTime getLastSyncAccom() {
+        return lastSyncAccom;
+    }
     @Scheduled(fixedRate = 600000)
     public void syncTicketsFromSupplier(){
+        //TODO: this needs to be an actual endpoint
         String url = "http://localhost:8082/tickets";
         ResponseEntity<CollectionModel<EntityModel<Ticket>>> response = restTemplate.exchange(url, HttpMethod.GET,null,
                 new ParameterizedTypeReference<CollectionModel<EntityModel<Ticket>>>() {} );
@@ -54,6 +62,7 @@ public class DbSyncService {
                 ticketRepository.save(ticket);
             }
         }
+        lastSyncTickets = LocalDateTime.now();
         System.out.println("Synced from ticket supplier");
     }
     @Scheduled(fixedRate = 600000)
@@ -73,17 +82,15 @@ public class DbSyncService {
             Optional<Accommodation> a = accomodationRepository.findById(accom.getId());
             if(a.isPresent()){
                 Accommodation existing = a.get();
-                existing.setDateIn(accom.getDateIn());
-                existing.setDateOut(accom.getDateOut());
+                existing.setAvailability(accom.isAvailability());
                 accomodationRepository.save(existing);
             }
             else{
                 accomodationRepository.save(accom);
             }
         }
-
+        lastSyncAccom = LocalDateTime.now();
         System.out.println("Synced from accom supplier");
-
     }
 
 //TODO: what if the supplier is down? does the rest client block? Have a look into that as well!

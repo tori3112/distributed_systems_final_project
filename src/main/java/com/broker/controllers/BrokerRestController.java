@@ -1,6 +1,7 @@
 package com.broker.controllers;
 import com.broker.domain.*;
 import com.broker.domain.Package;
+import com.broker.service.TwopcService;
 import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,7 +32,7 @@ public class BrokerRestController{
     private final OrderRepository orderRepo;
     private final TransactionLogRepository transactionLogRepository;
     @Autowired
-    private RestTemplate restTemplate;
+    private TwopcService twopcService;
 
     @Autowired
     public BrokerRestController(PackageRepository packagerepo, AccommodationRepository accomodationRepo, TicketRepository ticketRepo, OrderRepository orderRepo, TransactionLogRepository transactionLogRepository) {
@@ -108,23 +109,22 @@ public class BrokerRestController{
             EntityModel<Accommodation> em = accomToEntityModel(m.getId(), m);
             accomEntityModels.add(em);
         }
-        return CollectionModel.of(accomEntityModels,
-                linkTo(methodOn(BrokerRestController.class).getAccoms()).withSelfRel());
+        return CollectionModel.of(accomEntityModels);
     }
 
-    @GetMapping("/accoms")
-    CollectionModel<EntityModel<Accommodation>> getAccoms() throws Exception {
-
-        Collection<Accommodation> accoms = accomodationRepo.findAll();
-
-        List<EntityModel<Accommodation>> accomEntityModels = new ArrayList<>();
-        for (Accommodation m : accoms) {
-            EntityModel<Accommodation> em = accomToEntityModel(m.getId(), m);
-            accomEntityModels.add(em);
-        }
-        return CollectionModel.of(accomEntityModels,
-                linkTo(methodOn(BrokerRestController.class).getAccoms()).withSelfRel());
-    }
+//    @GetMapping("/accoms")
+//    CollectionModel<EntityModel<Accommodation>> getAccoms() throws Exception {
+//
+//        Collection<Accommodation> accoms = accomodationRepo.findAll();
+//
+//        List<EntityModel<Accommodation>> accomEntityModels = new ArrayList<>();
+//        for (Accommodation m : accoms) {
+//            EntityModel<Accommodation> em = accomToEntityModel(m.getId(), m);
+//            accomEntityModels.add(em);
+//        }
+//        return CollectionModel.of(accomEntityModels,
+//                linkTo(methodOn(BrokerRestController.class).getAccoms()).withSelfRel());
+//    }
 
     @GetMapping("/accoms/{id}")
     public EntityModel<Accommodation> getAccomById(@PathVariable int id) throws Exception {
@@ -140,18 +140,18 @@ public class BrokerRestController{
             TransactionLog t = new TransactionLog();
             t.setTransactionId(order.getId());
             t.setLastUpdated(LocalDateTime.now());
-            if (callPreparePhase(order)){
+            if (twopcService.callPreparePhase(order)){
                  t.setStatus("PREPARED");
                  transactionLogRepository.save(t);
 
-                if (callCommitPhase(order)) { // all parties committed succesfully
+                if (twopcService.callCommitPhase(order)) { // all parties committed succesfully
                     orderRepo.save(order);
                     TransactionLog t1 = transactionLogRepository.findById(t.getTransactionId()).get();
                     t1.setStatus("COMMITTED");
                     transactionLogRepository.save(t1);
                     return new ResponseEntity<>(order, HttpStatus.OK);
                 }
-                callRollback(order);
+                twopcService.callRollback(order);
                 TransactionLog t1 = transactionLogRepository.findById(t.getTransactionId()).get();
                 t1.setStatus("ABORTED");
                 transactionLogRepository.save(t1);
@@ -159,45 +159,11 @@ public class BrokerRestController{
             }
             t.setStatus("ABORTED");
             transactionLogRepository.save(t);
-            callRollback(order);
+            twopcService.callRollback(order);
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
-    private void callRollback(Order order) {
-        callServiceRollbackPhase("ticket", order);
-        callServiceRollbackPhase("accom", order);
-    }
-
-    private void callServiceRollbackPhase(String url, Order order) {
-        restTemplate.postForEntity(url, order, Void.class);
-    }
-
-    private boolean callCommitPhase(Order order) {
-        boolean isTicketSuccess = callServices("tix", order);
-        boolean isAccomSuccess = callServices("accom", order);
-
-        return isTicketSuccess && isAccomSuccess;
-    }
-
-    private boolean callPreparePhase(Order order) {
-        try {
-            boolean isTicketSuccess = callServices("tix", order);
-            boolean isAccomSuccess = callServices("accom", order);
-
-            return isTicketSuccess && isAccomSuccess;
-        } catch (Exception e) {
-
-            return false;
-        }
-    }
-
-    private boolean callServices(String url, Order order) {
-        ResponseEntity<String> response = restTemplate.postForEntity(url, order, String.class);
-        return response.getStatusCode().is2xxSuccessful();
-    }
-
 
     private EntityModel<Package> packageToEntityModel(Integer id, Package pack ) throws Exception {
         return EntityModel.of(pack,

@@ -23,7 +23,7 @@ public class Accommodation {
     private float rating;
     @Convert(converter = OfferConverter.class)
     private List<String> offer = new ArrayList<>();
-
+    private boolean availability;
 
     @Override
     public boolean equals(Object o) {
@@ -114,4 +114,7 @@ public class Accommodation {
     public LocalDateTime getDateOut() {return dateOut;}
 
     public void setDateOut(LocalDateTime dateOut) {this.dateOut = dateOut;}
+    public boolean isAvailability() {return availability;}
+
+    public void setAvailability(boolean availability) {this.availability = availability;}
 }

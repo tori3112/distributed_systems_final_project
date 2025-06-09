@@ -8,7 +8,7 @@ import java.util.Objects;
 @Entity
 public class TransactionLog {
     @Id
-    private int transactionId;
+    private int transactionId;// same as order Id
     private String status;
     private LocalDateTime lastUpdated;
 
