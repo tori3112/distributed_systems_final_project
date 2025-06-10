@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
+import axios from 'axios';
+import moment from 'moment-timezone';
 
 export default function Checkout() {
     const { cartItems } = useCart();
@@ -12,6 +14,8 @@ export default function Checkout() {
 
     // State for form validation
     const [valErrors, setValErrors] = useState({});
+
+    // const orderID = useId();
 
     // Validate form
     const validateForm = () => {
@@ -34,34 +38,97 @@ export default function Checkout() {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!validateForm()) {
             console.error('Validate Error: ', valErrors);
             return;
         }
 
         console.log('Form submitted with data:', formData);
-        console.log('Cart items to order:', cartItems);
+        console.log('Cart items:', cartItems);
 
-        // Make the API call to create the package
-        const response = fetch(`${process.env.REACT_APP_REST_URL}/get/package`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-          },
-          body: JSON.stringify(cartItems)
-        });
-        
-        if (!response.ok) {
-          throw new  Error(`HTTP error! status: ${response.status}`);
+        const timestamp = moment().format('YYYY-MM-DDTHH:mm:ss.SSSSSSS');
+
+        for (const item of cartItems) {
+            // Create an order
+            const newOrder = {
+                id: 13,
+                package_id: Math.floor(Math.random()) || null,
+                address: formData.email,
+                paid: true,
+                order_time: timestamp,
+                accom_id: 4,
+                ticket_id: item.ticketID || null,
+                amount: 1
+            }
+
+            // console.log("Order: ", newOrder);
+            // console.log("Order JSON: ", JSON.stringify(newOrder));
+            console.log('ID: ', typeof newOrder.id);
+            console.log('packageID: ', typeof newOrder.package_id);
+            console.log('address: ', typeof newOrder.address);
+            console.log('paid: ', typeof newOrder.paid);
+            console.log('order_time: ', typeof newOrder.order_time);
+            console.log('accom_id: ', typeof newOrder.accom_id);
+            console.log('ticket_id: ', typeof newOrder.ticket_id);
+            console.log('amount: ', typeof newOrder.amount);
+
+
+            try {
+                await axios.post(`${process.env.REACT_APP_REST_URL}/get/package`, newOrder, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    console.log('RESPONSE: ', response);
+                });
+                alert('Posted new order!')
+            } catch (error) {
+                console.error('Error posting new order: ', error);
+
+                if (error.code === 'ERR_NETWORK') {
+                    <div className="certificate-error">
+                        <h4>Certificate Security Issue</h4>
+                        <p>Your browser is blocking the connection because the server uses an untrusted security certificate.</p>
+                        <p>Options to resolve this:</p>
+                        <ol>
+                        <li>
+                            <strong>Accept the certificate:</strong> Open <a 
+                            href="https://tubbybuddy.westus.cloudapp.azure.com:8444" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            >
+                            this link
+                            </a> in a new tab, click "Advanced" and then "Proceed to site"
+                        </li>
+                        <li>
+                            <strong>Contact support:</strong> Ask the site administrator to install a valid security certificate
+                        </li>
+                        </ol>
+                    </div>
+                }
+            }
+
+            // // Make the API call to create the package
+            // const response = fetch(`${process.env.REACT_APP_REST_URL}/get/package`, {
+            // method: 'POST',
+            // headers: {
+            //     'Content-Type': 'application/json',
+            //     'Accept': 'application/json',
+            //     'X-Requested-With': 'XMLHttpRequest'
+            // },
+            // body: JSON.stringify(newOrder)
+            // });
+            
+            // if (!response.ok) {
+            // throw new  Error(`HTTP error! status: ${response.status}`);
+            // }
+            
+            // const data = response.json();
+            // console.log('Response from POST: ', data);
         }
-        
-        const data = response.json();
-        console.log('Package created:', data);
     };
 
   
@@ -155,12 +222,13 @@ export default function Checkout() {
                     </div>
                 
                     <div className="mt-8">
-                    <button
-                    type="submit"
-                    className="w-full bg-fuchsia-600 text-white py-3 px-4 rounded-md hover:bg-fuchsia-700 transition"
-                    >
-                    Place Order
-                    </button>
+                        <button
+                        type="submit"
+                        className="w-full bg-fuchsia-600 text-white py-3 px-4 rounded-md hover:bg-fuchsia-700 transition"
+                        // onClick={handleSubmit}
+                        >
+                        Place Order
+                        </button>
                     </div>
                 </form>
             </div>

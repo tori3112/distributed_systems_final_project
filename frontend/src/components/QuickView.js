@@ -110,7 +110,7 @@ export default function QuickView({
             
             <button
               onClick={() => handleAddToCart()}
-              className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md hover:bg-green-700"
+              className="px-4 py-2 bg-fuchsia-600 text-white text-sm font-medium rounded-md hover:bg-fuchsia-700"
             >
               Add Package to Cart
             </button>  

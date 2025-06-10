@@ -1,4 +1,3 @@
-// client.js - Small modification to your existing file
 import axios from 'axios';
 
 const apiClient = axios.create({

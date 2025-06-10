@@ -29,7 +29,7 @@ const people = [
 
 const Tubby = () => {
     return (
-        <div className="bg-white py-24 sm:py-32">
+        <div className="relative isolate px-6 pt-24 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-20 px-6 lg:px-8 xl:grid-cols-3">
             <div className="max-w-xl">
             <h2 className="text-3xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-4xl">
@@ -47,7 +47,7 @@ const Tubby = () => {
                     <img alt="" src={person.imageUrl} className="size-16 rounded-full" />
                     <div>
                     <h3 className="text-base/7 font-semibold tracking-tight text-gray-900">{person.name}</h3>
-                    <p className="text-sm/6 font-semibold text-indigo-600">{person.role}</p>
+                    <p className="text-sm/6 font-semibold text-fuchsia-600">{person.role}</p>
                     </div>
                 </div>
                 </li>

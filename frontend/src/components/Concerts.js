@@ -38,7 +38,7 @@ function Concerts({ onSelectConcert }) {
           {tickets.map((concert, index) => (
               <div key={index} className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm">
               <a href={concert.link}>
-                  <img className="rounded-t-lg" src={concert.image} alt={`${concert.title} at ${concert.venue}`} />
+                  <img className="rounded-t-lg w-full object-cover" src={concert.image} alt={`${concert.title} at ${concert.venue}`} />
               </a>
               <div className="p-5">
                   <a href={concert.link}>
@@ -49,6 +49,7 @@ function Concerts({ onSelectConcert }) {
                   {concert.date}<br />
                   {concert.venue}
                   </p>
+                  <p className='mb-2 font-normal text-gray-700'>Ticket Type: {concert.ticketType}</p>
                   <button
                     onClick={() => handleGetTicket(concert)}
                     className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-fuchsia-700 rounded-lg hover:bg-fuchsia-800 focus:ring-4 focus:outline-none focus:ring-fuchsia-300">

@@ -105,9 +105,10 @@ export default function Packages() {
               Concerts
             </button>
             <button
+              disabled={selectedConcert === null}
               type="button"
               ref={el => tabsRef.current['tab2-group4'] = el}
-              className={`tab-link text-sm ${activeTab === 'tab2-group4' ? 'active text-stone-800' : 'text-stone-500'} inline-block py-2 px-4 hover:text-stone-800 transition-colors duration-300 mr-1`}
+              className={`tab-link text-sm ${activeTab === 'tab2-group4' ? 'active text-stone-800' : 'text-stone-500'} inline-block py-2 px-4 ${selectedConcert === null ? 'hover:text-stone-800' : 'hover:text-stone-500'} transition-colors duration-300 mr-1`}
               onClick={() => handleTabClick('tab2-group4')}
               role="tab"
               aria-selected={activeTab === 'tab2-group4'}

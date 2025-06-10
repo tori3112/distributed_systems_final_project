@@ -36,7 +36,7 @@ export default function App() {
   return (
     <CartProvider>
         <Router>
-          <div className="bg-white">
+          <div className="bg-white relative">
           <header className="absolute inset-x-0 top-0 z-50">
             <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">
               <TubbyLogo />
@@ -52,16 +52,18 @@ export default function App() {
               </div>
             </nav>
           </header>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/packages" element={<Packages />} />
-            <Route path="/predefinedpackages" element={<PredefinedPackages />} />
-            <Route path="/cart" element={<CartDisplay />} />
-            <Route path="/tubby" element={<TubbyUs />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/checkout" element={<Checkout />} />
-          </Routes>
+          <div className='min-h-dvh p-24'>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/packages" element={<Packages />} />
+              <Route path="/predefinedpackages" element={<PredefinedPackages />} />
+              <Route path="/cart" element={<CartDisplay />} />
+              <Route path="/tubby" element={<TubbyUs />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/checkout" element={<Checkout />} />
+            </Routes>
+          </div>
         </div>
       </Router>
     </CartProvider>
