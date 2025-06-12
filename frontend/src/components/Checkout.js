@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
 import { useCart } from '../context/CartContext';
 import axios from 'axios';
 import moment from 'moment-timezone';
@@ -13,7 +12,6 @@ function generateId() {
 
 export default function Checkout() {
     const { cartItems, totalPrice } = useCart();
-    const { isAuthenticated } = useAuth0();
 
     const [formData, setFormData] = useState({
             firstName: '',
