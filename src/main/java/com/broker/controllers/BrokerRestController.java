@@ -9,6 +9,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -146,10 +147,14 @@ public class BrokerRestController{
             t.setPackage_id(order.getPackage_id());
             t.setPaid(order.isPaid());
             t.setTicket_id(order.getTicket_id());
+            t.setStatus("RECEIVED");
+            t.setLastUpdated(LocalDateTime.now());
+            transactionRepository.save(t);
             if (twopcService.callPreparePhase(order)){
-                 t.setStatus("PREPARED");
-                 t.setLastUpdated(LocalDateTime.now());
-                 transactionRepository.save(t);
+                Transaction t3 = transactionRepository.findByOrderId(order.getId()).get();
+                 t3.setStatus("PREPARED");
+                 t3.setLastUpdated(LocalDateTime.now());
+                 transactionRepository.save(t3);
                 System.out.println("Order prepared");
 //                try {
 //                    System.out.println("Sleeping now");
@@ -158,7 +163,7 @@ public class BrokerRestController{
 //                    throw new RuntimeException(e);
 //                }
                 if (twopcService.callCommitPhase(order)) { // all parties committed succesfully
-                    Transaction t2 = transactionRepository.findByOrderId(order.getId());
+                    Transaction t2 = transactionRepository.findByOrderId(order.getId()).get();
                     t2.setStatus("COMMITTED");
                     t2.setLastUpdated(LocalDateTime.now());
                     transactionRepository.save(t2);
@@ -166,13 +171,13 @@ public class BrokerRestController{
                     return new ResponseEntity<>(order, HttpStatus.OK);
                 }
                 twopcService.callRollback(order);
-                Transaction t3 = transactionRepository.findByOrderId(order.getId());
-                t3.setStatus("ABORTED");
-                t3.setLastUpdated(LocalDateTime.now());
-                transactionRepository.save(t3);
+                Transaction t5 = transactionRepository.findByOrderId(order.getId()).get();
+                t5.setStatus("ABORTED");
+                t5.setLastUpdated(LocalDateTime.now());
+                transactionRepository.save(t5);
                 return new ResponseEntity<>(null, HttpStatus.OK);
             }
-            Transaction t4 = transactionRepository.findByOrderId(order.getId());
+            Transaction t4 = transactionRepository.findByOrderId(order.getId()).get();
             t4.setStatus("ABORTED");
             t4.setLastUpdated(LocalDateTime.now());
             transactionRepository.save(t4);
@@ -180,6 +185,12 @@ public class BrokerRestController{
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PreAuthorize("hasRole('manager')")
+    @GetMapping("/orders")
+    List<Transaction> getOrders() throws Exception {
+        return transactionRepository.findAll();
     }
 
     private EntityModel<Package> packageToEntityModel(Integer id, Package pack ) throws Exception {
