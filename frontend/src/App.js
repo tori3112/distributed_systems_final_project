@@ -13,12 +13,15 @@ import PredefinedPackages from './components/PredefinedPackages';
 
 import { CartProvider } from './context/CartContext';
 import CartDisplay from './components/CartDisplay';
+import TransactionList from './components/TransactionList';
+
+import { useAuth0 } from "@auth0/auth0-react";
 
 const navigation = [
   { name: 'Packages', href: '/packages' },
   { name: 'Predefined Packages', href: '/predefinedpackages'},
   { name: 'Cart', href: '/cart'},
-  { name: 'Tubby Us', href: '/tubby' }
+  { name: 'Tubby Us', href: '/tubby' },
 ];
 
 const TubbyLogo = () => {
@@ -33,6 +36,8 @@ const TubbyLogo = () => {
 }
 
 export default function App() {
+    const { isAuthenticated } = useAuth0();
+
   return (
     <CartProvider>
         <Router>
@@ -46,6 +51,11 @@ export default function App() {
                     {item.name}
                   </Link>
                 ))}
+                { isAuthenticated && (
+                  <Link key='Transactions' to='/transactions' className="text-sm/6 font-semibold text-gray-900">
+                    Transactions
+                  </Link>
+                )}
               </div>
               <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                 <AuthButtons />
@@ -62,6 +72,9 @@ export default function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/checkout" element={<Checkout />} />
+              {isAuthenticated && (
+                <Route path="/transactions" element={<TransactionList />} />
+              )}
             </Routes>
           </div>
         </div>

@@ -1,5 +1,12 @@
-import React, { useId } from "react";
+import React from "react";
 import { useCart } from '../context/CartContext';
+import  { v4 as uuidv4 } from 'uuid';
+
+function generateId() {
+    const uuid = uuidv4();
+    const uuidInteger = parseInt(uuid.replace(/-/g, '').substring(0, 8), 16) % 1000000000;
+    return uuidInteger;
+}
 
 export default function QuickView({ 
   product, 
@@ -9,7 +16,7 @@ export default function QuickView({
 }) {
 
   const { addToCart } = useCart();
-  const packageID = useId();
+  const packageID = generateId();
 
   const handleAddToCart = () => {
     if (!selectedConcert || !product) {
@@ -30,7 +37,8 @@ export default function QuickView({
       accommodation: product.address,
       
       // Calculate total cost
-      price: (selectedConcert.price || 0) + (product.price || 0)
+      price: (selectedConcert.price || 0) + (product.price || 0),
+      quantity: 1
     };
       
     console.log("Creating package:", newPackage);

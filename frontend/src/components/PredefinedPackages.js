@@ -43,7 +43,7 @@ function PredefinedPackages() {
       <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">Available Packages</h5>
       <div className="relative overflow-x-auto">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+          <thead className="text-xs font-bold text-gray-700 uppercase bg-gray-50">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Package Name
@@ -78,7 +78,7 @@ function PredefinedPackages() {
                   {pkg.accommodation}
                 </td>
                 <td className="px-6 py-4">
-                  {pkg.stock}
+                  {pkg.availability}
                 </td>
                 <td className="px-6 py-4">
                   €{pkg.price}

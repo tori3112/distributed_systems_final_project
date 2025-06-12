@@ -4,6 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
+  const [amount, setAmount] = useState(1);
   const [cartItems, setCartItems] = useState([]);
   const { isAuthenticated, user } = useAuth0();
   
@@ -76,13 +77,39 @@ export const CartProvider = ({ children }) => {
     setCartItems([]);
   };
 
+  const totalPrice = () => {
+    return cartItems.reduce((total, item) => {
+      const quantity = amount;
+      return total + (item.price * quantity);
+    }, 0);
+  };
+
+  function increment() {
+    setAmount(function (prevAmount) {
+      return (prevAmount+=1);
+    });
+  }
+
+  function decrement() {
+    setAmount(function (prevAmount) {
+      if (prevAmount > 1) {
+        return (prevAmount-=1);
+      } else {
+        return (prevAmount = 1);
+      }
+    });
+  }
+
   return (
     <CartContext.Provider value={{ 
       cartItems, 
       addToCart, 
       removeFromCart, 
       clearCart,
-      isUserCart: isAuthenticated
+      isUserCart: isAuthenticated,
+      totalPrice,
+      increment,
+      decrement
     }}>
       {children}
     </CartContext.Provider>
