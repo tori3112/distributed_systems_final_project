@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 
 @Entity
 
-@Table(name= "Ticket")
+@Table(name= "ticket")
 
 
 public class Ticket {
