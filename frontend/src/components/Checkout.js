@@ -62,7 +62,7 @@ export default function Checkout() {
         };
 
         checkUserRole();
-    }, [isLoading, isAuthenticated, user, loginWithRedirect]);
+    }, [isLoading, isAuthenticated, user, navigate]);
 
     // Validate form
     const validateForm = () => {
