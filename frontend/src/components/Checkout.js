@@ -118,10 +118,6 @@ export default function Checkout() {
         }
     };
 
-    if (isLoading || isCheckingRole) {
-        return <div className="loading">Loading checkout...</div>;
-    }
-
     if (!isAuthenticated) {
         loginWithRedirect({
             appState: {returnTo: window.location.pathname}
