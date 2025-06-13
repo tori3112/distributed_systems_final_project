@@ -36,5 +36,8 @@
     "httpSettings": {
       "requireHttps": true
     }
-  }
+  },
+  "domain": "dev-p2vtral0e46oyv68.us.auth0.com",
+  "clientId": "INK53clientCredential2JUAEvHiZNa3zt41oNwOzt1QH8O",
+  "audience": "{yourApiIdentifier}"
 }

@@ -5,13 +5,13 @@ const people = [
     name: 'Belgin Avyat',
     role: 'Co-Founder / CEO',
     imageUrl:
-        'https://media.licdn.com/dms/image/v2/D4E03AQG5iXf5whdeaw/profile-displayphoto-shrink_200_200/B4EZdG5ciFH0AY-/0/1749241154679?e=1754524800&v=beta&t=l9cvPtnSqS1pfZCT-RnI0pmhNIGBmj-1FgMH-Ejj6sE',
+        'https://media.licdn.com/dms/image/v2/D4E03AQHxG77eOxSNlA/profile-displayphoto-shrink_100_100/B4EZdfsRJQHcAU-/0/1749657130633?e=1755129600&v=beta&t=HGQV8Ns70x3q1O1CWknARTfycckKqcdWAFwzPoca3c8',
     },
     {
     name: 'Nadia Putri',
     role: 'Co-Founder / CEO',
     imageUrl:
-        'https://media.licdn.com/dms/image/v2/D4E35AQFVTWX-UJBFZw/profile-framedphoto-shrink_200_200/B4EZVdwldsHcAY-/0/1741034772718?e=1749888000&v=beta&t=OyCUa1wFbygDczC7GO-5mohNiUN9bVikp3aDEJLMIA8',
+        'https://media.licdn.com/dms/image/v2/D4E35AQHw2ic0jTLv7Q/profile-framedphoto-shrink_100_100/B4EZdKeoRHH0Ao-/0/1749301232985?e=1750424400&v=beta&t=9em4T8Fw6RfCsXrMfoIkXyqznYvhOvwm33fGI6cMXJA',
     },
     {
     name: 'Li Yixuan',
