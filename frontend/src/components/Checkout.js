@@ -52,11 +52,7 @@ export default function Checkout() {
 
                     if (!hasManagerRole) {
                         alert('You need manager permissions.');
-                        setTimeout(() => {
-                            loginWithRedirect({
-                                appState: {returnTo: window.location.pathname }
-                            });
-                        }, 2000);
+                        navigate('/login', { state: { returnTo: window.location.pathname } });
                     }
                 } catch (error) {
                     console.log('Error checking user role: ', error);
