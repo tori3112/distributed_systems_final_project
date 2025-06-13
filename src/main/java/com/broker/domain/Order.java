@@ -4,9 +4,10 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Date;
 @Entity
-@Table(name= "dbo.orders")
+@Table(name= "orders")
 public class Order {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer package_id;
     private String address;

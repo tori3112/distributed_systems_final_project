@@ -6,10 +6,10 @@ import java.util.Objects;
 import java.util.*;
 
 @Entity
-@Table(name="Accommodation")
+@Table(name="accommodation")
 public class Accommodation {
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String address;
     @Column(name= "[dateIn]")

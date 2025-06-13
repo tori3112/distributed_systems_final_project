@@ -5,7 +5,7 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name= "dbo.concertPackages")
+@Table(name= "concertPackages")
 public class Package {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

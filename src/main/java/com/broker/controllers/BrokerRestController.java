@@ -187,7 +187,7 @@ public class BrokerRestController{
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PreAuthorize("hasRole('manager')")
+    //@PreAuthorize("hasRole('manager')")
     @GetMapping("/orders")
     List<Transaction> getOrders() throws Exception {
         return transactionRepository.findAll();

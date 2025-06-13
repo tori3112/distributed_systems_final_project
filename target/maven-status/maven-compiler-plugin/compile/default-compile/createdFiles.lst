@@ -6,7 +6,6 @@ com/broker/service/DbSyncService$1.class
 com/broker/service/DbSyncService.class
 com/broker/SecurityConfig.class
 com/broker/domain/OrderRepository.class
-com/broker/BrokerApplication$1.class
 com/broker/service/DbSyncService$2.class
 com/broker/domain/OfferConverter$1.class
 com/broker/service/TwopcService.class

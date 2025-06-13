@@ -10,12 +10,13 @@ import java.util.Objects;
 @Table(name="Ticket")
 public class Ticket {
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
     private String artist;
     private LocalDateTime date;
     private String venue;
+    private String location;
     private String image;
     private float price;
     @Column(name = "ticket_type")
@@ -82,6 +83,9 @@ public class Ticket {
 
     public void setStock(Integer stock) {this.stock = stock;}
 
+    public String getLocation() {return location;}
+
+    public void setLocation(String location) {this.location = location;}
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
