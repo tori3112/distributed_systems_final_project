@@ -47,7 +47,8 @@ export default function Checkout() {
         const checkUserRole = async () => {
             if (!isLoading && isAuthenticated && user) {
                 try {
-                    const roles = user['https://manageTubby/roles'] || [];
+                    const roles = user['https://dev-p2vtral0e46oyv68.us.auth0.com/roles'] || [];
+                    console.log('Roles: ', roles);
                     const hasManagerRole = roles.includes('Manager');
 
                     if (!hasManagerRole) {
@@ -124,6 +125,7 @@ export default function Checkout() {
 
             try {
                 const token = await getAccessTokenSilently();
+                console.log("token!! ", token);
 
                 await axios.post(`${process.env.REACT_APP_REST_URL}/get/package`, newOrder, {
                     headers: {
