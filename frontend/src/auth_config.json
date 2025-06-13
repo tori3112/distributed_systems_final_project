@@ -1,5 +1,40 @@
 {
-  "domain": "dev-p2vtral0e46oyv68.us.auth0.com",
-  "clientId": "INK532JUAEvHiZNa3zt41oNwOzt1QH8O",
-  "audience": "{yourApiIdentifier}"
+  "platform": {
+    "enabled": true
+  },
+  "globalValidation": {
+    "requireAuthentication": true,
+    "unauthenticatedClientAction": "RedirectToLoginPage",
+    "redirectToProvider": "auth0",
+    "excludedPaths": ["/"]
+  },
+  "identityProviders": {
+    "openIdConnectProviders": {
+      "auth0": {
+        "enabled": true,
+        "registration": {
+          "clientId": "INK53clientCredential2JUAEvHiZNa3zt41oNwOzt1QH8O",
+          "clientCredential": {
+            "secretSettingName": "AUTH0_CLIENT_SECRET"
+          },
+          "openIdConnectConfiguration": {
+            "wellKnownOpenIdConfiguration": "https://dev-p2vtral0e46oyv68.us.auth0.com/.well-known/openid-configuration"
+          }
+        },
+        "login": {
+          "nameClaimType": "name",
+          "scope": ["openid", "profile", "email"]
+        }
+      }
+    },
+    "login": {
+      "tokenStore": {
+        "enabled": true
+      },
+      "preserveUrlFragmentsForLogins": true
+    },
+    "httpSettings": {
+      "requireHttps": true
+    }
+  }
 }
