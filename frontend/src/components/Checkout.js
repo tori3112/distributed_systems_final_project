@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import axios from 'axios';
 import moment from 'moment-timezone';
 import  { v4 as uuidv4 } from 'uuid';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useNavigate } from 'react-router-dom';
 
 function generateId() {
     const uuid = uuidv4();
@@ -15,12 +14,9 @@ function generateId() {
 export default function Checkout() {
     const { isAuthenticated, 
     isLoading, 
-    user, 
     loginWithRedirect, 
     getAccessTokenSilently
     } = useAuth0();
-    const [isCheckingRole, setIsCheckingRole] = useState(true);
-    const navigate = useNavigate();
 
     const { cartItems, totalPrice } = useCart();
 
@@ -30,40 +26,8 @@ export default function Checkout() {
             email: '',
         });
 
-    // if (isAuthenticated) {
-    //     setFormData({
-    //         ...formData,
-    //         ['firstName']
-    //     })
-    // }
-
     // State for form validation
     const [valErrors, setValErrors] = useState({});
-
-    // const orderID = useId();
-
-    // Check for required role
-    useEffect(() => {
-        const checkUserRole = async () => {
-            if (!isLoading && isAuthenticated && user) {
-                try {
-                    const roles = user['https://dev-p2vtral0e46oyv68.us.auth0.com/roles'] || [];
-                    console.log('Roles: ', roles);
-                    const hasManagerRole = roles.includes('Manager');
-
-                    if (!hasManagerRole) {
-                        alert('You need manager permissions.');
-                        navigate('/login', { state: { returnTo: window.location.pathname } });
-                    }
-                } catch (error) {
-                    console.log('Error checking user role: ', error);
-                }
-            }
-            setIsCheckingRole(false);
-        };
-
-        checkUserRole();
-    }, [isLoading, isAuthenticated, user, navigate]);
 
     // Validate form
     const validateForm = () => {
@@ -151,24 +115,6 @@ export default function Checkout() {
                 }
 
             }
-
-            // // Make the API call to create the package
-            // const response = fetch(`${process.env.REACT_APP_REST_URL}/get/package`, {
-            // method: 'POST',
-            // headers: {
-            //     'Content-Type': 'application/json',
-            //     'Accept': 'application/json',
-            //     'X-Requested-With': 'XMLHttpRequest'
-            // },
-            // body: JSON.stringify(newOrder)
-            // });
-            
-            // if (!response.ok) {
-            // throw new  Error(`HTTP error! status: ${response.status}`);
-            // }
-            
-            // const data = response.json();
-            // console.log('Response from POST: ', data);
         }
     };
 
