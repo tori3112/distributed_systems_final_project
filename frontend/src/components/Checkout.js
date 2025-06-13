@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCart } from '../context/CartContext';
 import axios from 'axios';
 import moment from 'moment-timezone';
 import  { v4 as uuidv4 } from 'uuid';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate } from 'react-router-dom';
 
 function generateId() {
     const uuid = uuidv4();
@@ -11,6 +13,15 @@ function generateId() {
 }
 
 export default function Checkout() {
+    const { isAuthenticated, 
+    isLoading, 
+    user, 
+    loginWithRedirect, 
+    getAccessTokenSilently
+    } = useAuth0();
+    const [isCheckingRole, setIsCheckingRole] = useState(true);
+    const navigate = useNavigate();
+
     const { cartItems, totalPrice } = useCart();
 
     const [formData, setFormData] = useState({
@@ -30,6 +41,32 @@ export default function Checkout() {
     const [valErrors, setValErrors] = useState({});
 
     // const orderID = useId();
+
+    // Check for required role
+    useEffect(() => {
+        const checkUserRole = async () => {
+            if (!isLoading && isAuthenticated && user) {
+                try {
+                    const roles = user['https://manageTubby/roles'] || [];
+                    const hasManagerRole = roles.includes('Manager');
+
+                    if (!hasManagerRole) {
+                        alert('You need manager permissions.');
+                        setTimeout(() => {
+                            loginWithRedirect({
+                                appState: {returnTo: window.location.pathname }
+                            });
+                        }, 2000);
+                    }
+                } catch (error) {
+                    console.log('Error checking user role: ', error);
+                }
+            }
+            setIsCheckingRole(false);
+        };
+
+        checkUserRole();
+    }, [isLoading, isAuthenticated, user, loginWithRedirect]);
 
     // Validate form
     const validateForm = () => {
@@ -90,9 +127,12 @@ export default function Checkout() {
 
 
             try {
+                const token = await getAccessTokenSilently();
+
                 await axios.post(`${process.env.REACT_APP_REST_URL}/get/package`, newOrder, {
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     }
                 })
                 .then(response => {
@@ -134,6 +174,16 @@ export default function Checkout() {
         }
     };
 
+    if (isLoading || isCheckingRole) {
+        return <div className="loading">Loading checkout...</div>;
+    }
+
+    if (!isAuthenticated) {
+        loginWithRedirect({
+            appState: {returnTo: window.location.pathname}
+        });
+        return <div>Redirecting to login...</div>
+    }
   
   return (
     <div className="relative isolate px-6 pt-24 lg:px-8">
