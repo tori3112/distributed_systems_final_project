@@ -13,7 +13,6 @@ function generateId() {
 
 export default function Checkout() {
     const { isAuthenticated, 
-    isLoading, 
     loginWithRedirect, 
     getAccessTokenSilently
     } = useAuth0();
