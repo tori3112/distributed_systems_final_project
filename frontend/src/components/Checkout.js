@@ -34,7 +34,6 @@ export default function Checkout() {
     const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
     const [transactionHash, setTransactionHash] = useState(null);
     const [isProcessing, setIsProcessing] = useState(false);
-    const [hasError, setHasError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     // Validate form
@@ -251,6 +250,7 @@ export default function Checkout() {
                 transactionHash={transactionHash}
                 proposalTitle={`Order for ${formData.firstName} ${formData.lastName}`}
                 isProcessing={isProcessing}
+                errorMessage={errorMessage}
             />
             )}
     </div>
