@@ -1,6 +1,13 @@
 import React from 'react';
 import { useAllProducts } from '../api/hooks/usePackages';
 import { useCart } from '../context/CartContext';
+import  { v4 as uuidv4 } from 'uuid';
+
+function generateId() {
+    const uuid = uuidv4();
+    const uuidInteger = parseInt(uuid.replace(/-/g, '').substring(0, 8), 16) % 1000000000;
+    return uuidInteger;
+}
 
 function PredefinedPackages() {
   const { data: products, loading, error } = useAllProducts();
@@ -34,8 +41,35 @@ function PredefinedPackages() {
   };
   
   // Function to handle adding to cart
-  const handleAddToCart = (pkg) => {
-    addToCart(pkg);
+  const handleAddToCart = async (pkg) => {
+
+    const ticketUrl = pkg._links["/tickets"]?.href;
+    console.log('Checking ticket url: ', ticketUrl);
+    if (ticketUrl) {
+      const ticketResponse = await axios.get(ticketUrl);
+      console.log('Ticket Response: ', ticketResponse)
+      const ticket_title = ticketResponse.title;
+    }
+
+    const accomUrl = pkg._links["/accoms"]?.href;
+    console.log('Checking ticket url: ', ticketUrl);
+    if (ticketUrl) {
+      const accommodationResponse = await axios.get(accomUrl);
+      console.log('Accommodation Response: ', accommodationResponse)
+      const accom_address = accommodationResponse.address;
+    }
+
+    const predefinedPkg = {
+      package_id: generateId(),
+      accom_id: pkg.accommodation,
+      accom_address: accom_address || "No accommodation address available",
+      ticket_id: pkg.ticket,
+      ticket: ticket_title || "No ticket name available",
+      ticket_quantity: 1,
+      price: price
+    }
+
+    addToCart(predefinedPkg);
   };
   
   return (

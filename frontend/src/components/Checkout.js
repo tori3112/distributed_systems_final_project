@@ -86,21 +86,8 @@ export default function Checkout() {
                 order_time: timestamp,
                 accom_id: item.accommodation || null,
                 ticket_id: item.ticket || null,
-                amount: item.amount
+                ticket_quantity: item.ticket_quantity
             }
-
-            // console.log("Order: ", newOrder);
-            // console.log("Order JSON: ", JSON.stringify(newOrder));
-            // console.log('ID: ', typeof newOrder.id);
-            // console.log('packageID: ', typeof newOrder.package_id);
-            // console.log('address: ', typeof newOrder.address);
-            // console.log('paid: ', typeof newOrder.paid);
-            // console.log('order_time: ', typeof newOrder.order_time);
-            // console.log('accom_id: ', typeof newOrder.accom_id);
-            // console.log('ticket_id: ', typeof newOrder.ticket_id);
-            console.log('amount: ', typeof newOrder.amount);
-            console.log('quantitity: ', typeof newOrder.quantity);
-
 
             try {
                 setIsProcessing(true);
@@ -164,7 +151,7 @@ export default function Checkout() {
                         </thead>
                         <tbody className="bg-white divide-y divide-fuchsia-200">
                             {cartItems.map((item) => (
-                                <tr key={item.id}>
+                                <tr key={item.package_id}>
                                 <td className="py-4 pl-3 pr-3 text-sm font-mw-full sm:w-1/3edium text-gray-900 sm:pl-7">
                                     {item.name}
                                 </td>
@@ -172,7 +159,7 @@ export default function Checkout() {
                                     {item.ticket}
                                 </td>
                                 <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {item.accommodation}
+                                    {item.accom_address}
                                 </td>
                                 <td className="px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     €{item.price}

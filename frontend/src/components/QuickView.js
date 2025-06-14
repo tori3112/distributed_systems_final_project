@@ -17,7 +17,6 @@ export default function QuickView({
 }) {
 
   const { addToCart } = useCart();
-  const packageID = generateId();
 
   const handleAddToCart = () => {
     if (!selectedConcert || !product) {
@@ -27,19 +26,15 @@ export default function QuickView({
 
     // Create a package
     const newPackage = {
-      // Package for API call
-      id: packageID,
-      name: `Custom Package (${product.location}, ${selectedConcert.date})`,
-      ticket: selectedConcert.id,
-      accommodation: product.id,
-
-      // Cart Display Information
-      ticket_name: selectedConcert.title,
-      accommodation_name: product.address,
-      
-      // Calculate total cost
+      package_id: generateId(),
+      accom_id: product.id,
+      accom_address: product.address,
+      ticket_id: selectedConcert.id,
+      ticket: selectedConcert.title,
+      ticket_quantity: ticketQuantity,
       price: (selectedConcert.price || 0) + (product.price || 0),
-      quantity: ticketQuantity
+      
+      name: `Custom Package (${product.location}, ${selectedConcert.date})`,
     };
       
     console.log("Creating package:", newPackage);
