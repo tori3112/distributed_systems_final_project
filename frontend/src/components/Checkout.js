@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import axios from 'axios';
 import moment from 'moment-timezone';
-// import  { v4 as uuidv4 } from 'uuid';
+import  { v4 as uuidv4 } from 'uuid';
 import { useAuth0 } from '@auth0/auth0-react';
 
 import TransactionConfirmation from './TransactionConfirmation';
 
-// function generateId() {
-//     const uuid = uuidv4();
-//     const uuidInteger = parseInt(uuid.replace(/-/g, '').substring(0, 8), 16) % 1000000000;
-//     return uuidInteger;
-// }
+function generateId() {
+    const uuid = uuidv4();
+    const uuidInteger = parseInt(uuid.replace(/-/g, '').substring(0, 8), 16) % 1000000000;
+    return uuidInteger;
+}
 
 export default function Checkout() {
     const { isAuthenticated, 
@@ -79,7 +79,7 @@ export default function Checkout() {
         for (const item of cartItems) {
             // Create an order
             const newOrder = {
-                // id: generateId(),
+                id: generateId(),
                 package_id: item.package_id,
                 address: formData.email,
                 paid: true,
