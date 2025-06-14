@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import axios from 'axios';
 import moment from 'moment-timezone';
-import  { v4 as uuidv4 } from 'uuid';
+// import  { v4 as uuidv4 } from 'uuid';
 import { useAuth0 } from '@auth0/auth0-react';
 
 import TransactionConfirmation from './TransactionConfirmation';
 
-function generateId() {
-    const uuid = uuidv4();
-    const uuidInteger = parseInt(uuid.replace(/-/g, '').substring(0, 8), 16) % 1000000000;
-    return uuidInteger;
-}
+// function generateId() {
+//     const uuid = uuidv4();
+//     const uuidInteger = parseInt(uuid.replace(/-/g, '').substring(0, 8), 16) % 1000000000;
+//     return uuidInteger;
+// }
 
 export default function Checkout() {
     const { isAuthenticated, 
@@ -35,6 +35,14 @@ export default function Checkout() {
     const [transactionHash, setTransactionHash] = useState(null);
     const [isProcessing, setIsProcessing] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+
+    const handleConfirmationModal = () => {
+        console.log('Transaction Confirmation open');
+        setIsConfirmationModalOpen(true);
+    };
+    const closeConfirmationModal = () => {
+        setIsConfirmationModalOpen(false);
+    }
 
     // Validate form
     const validateForm = () => {
@@ -72,7 +80,7 @@ export default function Checkout() {
         for (const item of cartItems) {
             // Create an order
             const newOrder = {
-                id: generateId(),
+                // id: generateId(),
                 package_id: item.id || null,
                 address: formData.email,
                 paid: true,
@@ -235,7 +243,7 @@ export default function Checkout() {
                         <button
                         type="submit"
                         className="w-full bg-fuchsia-600 text-white py-3 px-4 rounded-md hover:bg-fuchsia-700 transition"
-                        // onClick={handleSubmit}
+                        onClick={handleConfirmationModal}
                         >
                         Place Order
                         </button>
@@ -243,10 +251,10 @@ export default function Checkout() {
                 </form>
             </div>
         </div>
+
         {isConfirmationModalOpen && (
             <TransactionConfirmation 
-                isOpen={isConfirmationModalOpen}
-                onClose={() => setIsConfirmationModalOpen(false)}
+                onClose={closeConfirmationModal}
                 transactionHash={transactionHash}
                 proposalTitle={`Order for ${formData.firstName} ${formData.lastName}`}
                 isProcessing={isProcessing}
