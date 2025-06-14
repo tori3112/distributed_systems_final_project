@@ -2,7 +2,6 @@ package com.broker.controllers;
 import com.broker.domain.*;
 import com.broker.domain.Package;
 import com.broker.service.TwopcService;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.CollectionModel;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.client.RestTemplate;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -113,19 +110,6 @@ public class BrokerRestController{
         return CollectionModel.of(accomEntityModels);
     }
 
-//    @GetMapping("/accoms")
-//    CollectionModel<EntityModel<Accommodation>> getAccoms() throws Exception {
-//
-//        Collection<Accommodation> accoms = accomodationRepo.findAll();
-//
-//        List<EntityModel<Accommodation>> accomEntityModels = new ArrayList<>();
-//        for (Accommodation m : accoms) {
-//            EntityModel<Accommodation> em = accomToEntityModel(m.getId(), m);
-//            accomEntityModels.add(em);
-//        }
-//        return CollectionModel.of(accomEntityModels,
-//                linkTo(methodOn(BrokerRestController.class).getAccoms()).withSelfRel());
-//    }
 
     @GetMapping("/accoms/{id}")
     public EntityModel<Accommodation> getAccomById(@PathVariable int id) throws Exception {
@@ -136,7 +120,8 @@ public class BrokerRestController{
     }
 
     @PostMapping("/get/package")
-    public ResponseEntity<Order> getPackage(@RequestBody Order order){
+    public ResponseEntity<String> getPackage(@RequestBody Order order){
+        System.out.println("Order id : "+ order.getId()+"\nTicket Id :"+order.getTicket_id()+"\nAccom Id: "+order.getAccom_id()+"\nAddress: "+order.getAddress()+"\nPackage Id: "+order.getPackage_id()+"\nAmount: "+order.getAmount()+"\n OrderTime : "+order.getOrder_time());
         if(order != null){
             Transaction t = new Transaction();
             t.setOrderId(order.getId());
@@ -156,38 +141,32 @@ public class BrokerRestController{
                  t3.setLastUpdated(LocalDateTime.now());
                  transactionRepository.save(t3);
                 System.out.println("Order prepared");
-//                try {
-//                    System.out.println("Sleeping now");
-//                    Thread.sleep(60000);
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
                 if (twopcService.callCommitPhase(order)) { // all parties committed succesfully
                     Transaction t2 = transactionRepository.findByOrderId(order.getId()).get();
                     t2.setStatus("COMMITTED");
                     t2.setLastUpdated(LocalDateTime.now());
                     transactionRepository.save(t2);
                     System.out.println("Order committed");
-                    return new ResponseEntity<>(order, HttpStatus.OK);
+                    return new ResponseEntity<>("Order is succesful!", HttpStatus.OK);
                 }
-                twopcService.callRollback(order);
                 Transaction t5 = transactionRepository.findByOrderId(order.getId()).get();
                 t5.setStatus("ABORTED");
                 t5.setLastUpdated(LocalDateTime.now());
                 transactionRepository.save(t5);
-                return new ResponseEntity<>(null, HttpStatus.OK);
+                twopcService.callRollback(order);
+                return new ResponseEntity<>("Order failed, please try again later.", HttpStatus.OK);
             }
             Transaction t4 = transactionRepository.findByOrderId(order.getId()).get();
             t4.setStatus("ABORTED");
             t4.setLastUpdated(LocalDateTime.now());
             transactionRepository.save(t4);
             twopcService.callRollback(order);
-            return new ResponseEntity<>(null, HttpStatus.OK);
+            return new ResponseEntity<>("Order is no longer available, please choose another package.", HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    //@PreAuthorize("hasRole('manager')")
+    @PreAuthorize("hasAuthority('Manager')")
     @GetMapping("/orders")
     List<Transaction> getOrders() throws Exception {
         return transactionRepository.findAll();

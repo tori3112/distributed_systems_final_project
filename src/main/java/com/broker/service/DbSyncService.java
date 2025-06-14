@@ -39,8 +39,7 @@ public class DbSyncService {
     }
     @Scheduled(fixedRate = 600000)
     public void syncTicketsFromSupplier(){
-        //TODO: this needs to be an actual endpoint
-        String url = "https://tubbybuddy.japaneast.cloudapp.azure.com:8443/tickets";
+        String url = "https://tubbybud.japaneast.cloudapp.azure.com:8443/tickets";
         ResponseEntity<CollectionModel<EntityModel<Ticket>>> response = restTemplate.exchange(url, HttpMethod.GET,null,
                 new ParameterizedTypeReference<CollectionModel<EntityModel<Ticket>>>() {} );
 
@@ -75,9 +74,6 @@ public class DbSyncService {
         List<Accommodation> accoms =  collection.getContent().stream()
                 .map(EntityModel::getContent)
                 .toList();
-        //get the tickets -> if new then insert into repo
-        // if not new then the only probable characteristic that changed is the stock info so update that
-
         for(Accommodation accom: accoms){
             Optional<Accommodation> a = accomodationRepository.findById(accom.getId());
             if(a.isPresent()){
@@ -92,7 +88,4 @@ public class DbSyncService {
         lastSyncAccom = LocalDateTime.now();
         System.out.println("Synced from accom supplier");
     }
-
-//TODO: what if the supplier is down? does the rest client block? Have a look into that as well!
-    // you basically get the whole http response so you can have a look at the http response code and from there deduct if there is a problem or not i think?
 }

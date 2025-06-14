@@ -49,7 +49,7 @@ public class RecoveryManager {
                 System.out.println("Pending transaction "+t.getId()+" could not be completed");
             }
         }
-       // contact the supplier to commit them -> I need the order info as well
+       // contact the supplier to commit them
        // change the transaction log state
        // if not responding then change the transaction log to aborted
 
