@@ -40,7 +40,9 @@ function PredefinedPackages() {
   
   // Function to check if a package is in the cart
   const isInCart = (pkgId) => {
-    return cartItems.some(item => item.id === pkgId);
+    console.log('Cart Items:', cartItems);
+    console.log('Checking if package is in cart:', pkgId);
+    return cartItems.some(item => item.package_id === pkgId);
   };
   
   // Function to handle adding to cart
@@ -82,7 +84,6 @@ function PredefinedPackages() {
       price: pkg.price
     }
 
-    console.log('Added to cart: ', predefinedPkg);
     addToCart(predefinedPkg);
   };
   
