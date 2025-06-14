@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './components/Home';
 import Packages from './components/Packages';
 import TubbyUs from './components/Tubby';
-import Login from './components/Login';
 import AuthButtons from './components/LoginButtons';
 import Profile from './components/Profile';
 import Checkout from './components/Checkout';
@@ -69,7 +68,6 @@ export default function App() {
               <Route path="/predefinedpackages" element={<PredefinedPackages />} />
               <Route path="/cart" element={<CartDisplay />} />
               <Route path="/tubby" element={<TubbyUs />} />
-              <Route path="/login" element={<Login />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/checkout" element={<Checkout />} />
               {isAuthenticated && (
