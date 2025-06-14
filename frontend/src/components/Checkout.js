@@ -107,7 +107,7 @@ export default function Checkout() {
                 const token = await getAccessTokenSilently();
                 console.log("token!! ", token);
 
-                const tx = await axios.post(`${process.env.REACT_APP_REST_URL}/get/package`, newOrder, {
+                await axios.post(`${process.env.REACT_APP_REST_URL}/get/package`, newOrder, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
