@@ -69,8 +69,8 @@ export default function Checkout() {
                 address: formData.email,
                 paid: true,
                 order_time: timestamp,
-                accom_id: item.accommodationID || null,
-                ticket_id: item.ticketID || null,
+                accom_id: item.accommodation || null,
+                ticket_id: item.ticket || null,
                 amount: item.quantity
             }
 
