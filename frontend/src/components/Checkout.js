@@ -105,7 +105,7 @@ export default function Checkout() {
                 });
 
                 console.log('POST response: ', response);
-                setResponseMessage(response);
+                setResponseMessage(response.data);
 
                 setIsConfirmationModalOpen(true);
                 
