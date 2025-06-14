@@ -135,16 +135,16 @@ function PredefinedPackages() {
                 <td className="px-6 py-4">
                   <button
                     className={`mt-2 w-fit p-2 rounded-md transition ${
-                      pkg.availability <= 0 || isInCart(pkg.id)
+                      pkg.availability <= 0 || isInCart(pkg.package_id)
                         ? 'bg-gray-400 cursor-not-allowed'
                         : 'bg-fuchsia-600 hover:bg-fuchsia-800 text-white'
                     }`}
-                    disabled={pkg.availability <= 0 || isInCart(pkg.id)}
+                    disabled={pkg.availability <= 0 || isInCart(pkg.package_id)}
                     onClick={() => handleAddToCart(pkg)}
                   >
                     {pkg.availability <= 0
                       ? 'Out of Stock'
-                      : isInCart(pkg.id)
+                      : isInCart(pkg.package_id)
                         ? 'In Cart'
                         : 'Get Package'}
                   </button>
