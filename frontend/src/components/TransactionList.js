@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useAllProducts } from "../api/hooks/useTransactions";
 import Loader from "./Loader";
 
