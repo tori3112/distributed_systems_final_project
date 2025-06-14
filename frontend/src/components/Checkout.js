@@ -80,12 +80,12 @@ export default function Checkout() {
             // Create an order
             const newOrder = {
                 // id: generateId(),
-                package_id: item.id || null,
+                package_id: item.id,
                 address: formData.email,
                 paid: true,
                 order_time: timestamp,
-                accom_id: item.accommodation || null,
-                ticket_id: item.ticket || null,
+                accom_id: item.accommodation,
+                ticket_id: item.ticket,
                 ticket_quantity: item.ticket_quantity
             }
 
