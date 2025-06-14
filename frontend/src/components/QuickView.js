@@ -30,12 +30,12 @@ export default function QuickView({
       // Package for API call
       id: packageID,
       name: `Custom Package (${product.location}, ${selectedConcert.date})`,
-      ticketID: selectedConcert.id,
-      accommodationID: product.id,
+      ticket: selectedConcert.id,
+      accommodation: product.id,
 
       // Cart Display Information
-      ticket: selectedConcert.title,
-      accommodation: product.address,
+      ticket_name: selectedConcert.title,
+      accommodation_name: product.address,
       
       // Calculate total cost
       price: (selectedConcert.price || 0) + (product.price || 0),
