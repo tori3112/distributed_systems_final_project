@@ -87,7 +87,7 @@ export default function Checkout() {
                 order_time: timestamp,
                 accom_id: item.accommodation || null,
                 ticket_id: item.ticket || null,
-                amount: item.quantity
+                amount: item.amount
             }
 
             // console.log("Order: ", newOrder);
@@ -99,7 +99,8 @@ export default function Checkout() {
             // console.log('order_time: ', typeof newOrder.order_time);
             // console.log('accom_id: ', typeof newOrder.accom_id);
             // console.log('ticket_id: ', typeof newOrder.ticket_id);
-            // console.log('amount: ', typeof newOrder.amount);
+            console.log('amount: ', typeof newOrder.amount);
+            console.log('quantitity: ', typeof newOrder.quantity);
 
 
             try {

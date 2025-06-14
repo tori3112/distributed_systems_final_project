@@ -64,7 +64,7 @@ const TransactionConfirmation = ({
               <p className="font-medium">Transaction Hash:</p>
               <p className="text-sm text-gray-900 break-all">{safeTransactionHash}</p>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 flex flex-row">
               <p className="font-medium">Order Details:</p>
               <p className="text-gray-900">{safeTitle}</p>
             </div>
