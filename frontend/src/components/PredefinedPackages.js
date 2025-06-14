@@ -13,6 +13,8 @@ function generateId() {
 function PredefinedPackages() {
   const { data: products, loading, error } = useAllProducts();
   const { cartItems, addToCart } = useCart(); 
+
+  console.log("Packages: ", products);
   
   if (loading) return (
     <div className="relative isolate px-6 py-24 sm:py-32 lg:px-8">
@@ -52,7 +54,7 @@ function PredefinedPackages() {
       try {
         const ticketResponse = await axios.get(ticketUrl);
         console.log('Ticket Response: ', ticketResponse)
-        ticket_title = ticketResponse.title;
+        ticket_title = ticketResponse.data.title;
       } catch (error) {
         console.error('Error fetching ticket details:', error);
       }
@@ -64,7 +66,7 @@ function PredefinedPackages() {
       try {
         const accommodationResponse = await axios.get(accomUrl);
         console.log('Accommodation Response: ', accommodationResponse)
-        accom_address = accommodationResponse.address;
+        accom_address = accommodationResponse.data.address;
       } catch (error) {
         console.error('Error fetching accommodation details:', error);
       }
