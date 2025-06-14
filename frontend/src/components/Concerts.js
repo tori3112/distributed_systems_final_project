@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAllProducts } from '../api/hooks/useTickets';
 import { TicketAmountField } from './TicketAmountField';
 
 function Concerts({ onSelectConcert }) {
-  const { data: tickets, loading, error} = useAllProducts();
+  const { data: tickets, loading, error } = useAllProducts();
+  const [ticketQuantity, setTickeQuantity] = useState(1);
+
+  const handleQuantityChange = (concertId, e) => {
+    const newValue = parseInt(e.target.value) || 0;
+    setTicketQuantities({
+      ...ticketQuantities,
+      [concertId]: newValue
+    });
+  }
 
   const handleGetTicket = (concert) => {
-    onSelectConcert(concert);
+    const quantity = ticketQuantities[concert.id] || 0;
+    onSelectConcert({
+      ...concert,
+      quantity: quantity
+    });
   }
 
   if (loading) return (
@@ -53,7 +66,7 @@ function Concerts({ onSelectConcert }) {
                   <p className='mb-2 font-normal text-gray-700'>Ticket Type: {concert.ticketType}</p>
                   <TicketAmountField 
                     id={`ticket-${concert.id}`}
-                    value={ticketQuantities[concert.id] || ''}
+                    value={ticketQuantity[concert.id] || ''}
                     onChange={(e) => handleQuantityChange(concert.id, e)}
                   />
                   <button
