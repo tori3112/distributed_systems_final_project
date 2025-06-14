@@ -17,4 +17,5 @@ public class Order {
     private Date order_time;
     private Integer accom_id;
     private Integer ticket_id;
+    protected Integer amount;
 }

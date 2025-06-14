@@ -11,21 +11,32 @@ import java.util.List;
 public class Accommodation {
 
     //protected Integer id;
+    @Column(name = "address")
     protected String address;
+    @Column(name = "dateIn")
     protected LocalDateTime dateIn;
+    @Column(name = "dateOut")
     protected LocalDateTime dateOut;
+    @Column(name = "imageSrc")
     protected String imageSrc;
+    @Column(name = "imageAlt")
     protected String imageAlt;
+    @Column(name = "price")
     protected float price;
     //change this to appropriate data type later
+    @Column(name = "location")
     protected String location;
+    @Column(name = "reviewCount")
     protected Integer reviewCount;
+    @Column(name = "rating")
     protected float rating;
+    @Column(name = "offer")
     @Convert(converter = OfferConverter.class)
     protected List<String> offer = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
+    @Column(name = "availability")
     protected boolean availability;
 //
 //    public String getPreparationStatus() {
