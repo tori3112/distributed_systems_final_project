@@ -1,38 +1,38 @@
-import React, { useState, useEffect} from "react";
+import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Profile = () => {
-  const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
-  const [ userMetaData, setUserMetaData ] = useState(null);
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  // const [ userMetaData, setUserMetaData ] = useState(null);
 
   console.log('user is ', user);
 
-  useEffect(() => {
-    const getUserMetaData = async () => {
+  // useEffect(() => {
+  //   const getUserMetaData = async () => {
 
-      try {
-        const accessToken = await getAccessTokenSilently({
-          authorizationParams: {
-            audience: `${process.env.AUTH0_IDENTIFIER}`,
-            scope: 'read:users_app_metadata'
-          },
-        });
+  //     try {
+  //       const accessToken = await getAccessTokenSilently({
+  //         authorizationParams: {
+  //           audience: `${process.env.AUTH0_IDENTIFIER}`,
+  //           scope: 'read:users_app_metadata'
+  //         },
+  //       });
 
-        const userDetailsByURL = `${process.env.AUTH0_IDENTIFIER}/users/${user.sub}`;
-        const metaDataResponse = await fetch(userDetailsByURL, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          }
-        });
+  //       const userDetailsByURL = `${process.env.AUTH0_IDENTIFIER}/users/${user.sub}`;
+  //       const metaDataResponse = await fetch(userDetailsByURL, {
+  //         headers: {
+  //           Authorization: `Bearer ${accessToken}`,
+  //         }
+  //       });
 
-        const { user_metadata } = await metaDataResponse.json();
-        setUserMetaData(user_metadata);
-      } catch (error) {
-        console.error('Error when getting user metadata: ', error);
-      }
-    };
-    getUserMetaData();
-  }, [getAccessTokenSilently, user?.sub]);
+  //       const { user_metadata } = await metaDataResponse.json();
+  //       setUserMetaData(user_metadata);
+  //     } catch (error) {
+  //       console.error('Error when getting user metadata: ', error);
+  //     }
+  //   };
+  //   getUserMetaData();
+  // }, [getAccessTokenSilently, user?.sub]);
 
   if (isLoading) {
     return <div>Loading ...</div>;
