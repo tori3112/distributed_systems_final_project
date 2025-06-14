@@ -19,7 +19,7 @@ const AuthButtons = () => {
         <Profile />
         <button
           onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-          className="text-fuchsia-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
+          className="text-fuchsia-600 font-medium border-solild border-fuchsia-600 rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
         >
           Log Out
         </button>

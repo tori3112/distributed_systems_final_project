@@ -1,72 +1,25 @@
-import React from "react";
-
-const transactions = [
-  {
-    id: 1,
-    package_id: 101,
-    address: "123 Main St, Anytown, USA",
-    paid: true,
-    order_time: "2024-05-10T10:00:00Z",
-    accom_id: null,
-    ticket_id: 5001,
-    status: "completed",
-    last_updated: "2024-05-10T10:05:00Z",
-    orderId: 10001
-  },
-  {
-    id: 2,
-    package_id: null,
-    address: "456 Oak Ave, Somewhere, USA",
-    paid: false,
-    order_time: "2024-05-11T11:30:00Z",
-    accom_id: 201,
-    ticket_id: null,
-    status: "pending",
-    last_updated: "2024-05-11T11:30:00Z",
-    orderId: 10002
-  },
-  {
-    id: 3,
-    package_id: 102,
-    address: "789 Pine Rd, Otherville, USA",
-    paid: true,
-    order_time: "2024-05-12T14:00:00Z",
-    accom_id: null,
-    ticket_id: 5002,
-    status: "completed",
-    last_updated: "2024-05-12T14:05:00Z",
-    orderId: 10003
-  },
-  {
-    id: 4,
-    package_id: 103,
-    address: "321 Elm St, Villagetown, USA",
-    paid: true,
-    order_time: "2024-05-13T09:15:00Z",
-    accom_id: 202,
-    ticket_id: null,
-    status: "shipped",
-    last_updated: "2024-05-13T09:30:00Z",
-    orderId: 10004
-  },
-  {
-    id: 5,
-    package_id: null,
-    address: "654 Birch Ln, Cityville, USA",
-    paid: false,
-    order_time: "2024-05-14T16:45:00Z",
-    accom_id: null,
-    ticket_id: 5003,
-    status: "cancelled",
-    last_updated: "2024-05-14T17:00:00Z",
-    orderId: 10005
-  }
-];
-
-console.log(transactions);
+import React, { useState } from "react";
+import { useAllProducts } from "../api/hooks/useTransactions";
+import Loader from "./Loader";
 
 export default function TransactionList() {
+    const { data: orders, loading, error } = useAllProducts();
 
+    if (loading) return (
+        <Loader />
+    );
+
+    if (error) return (
+        <div className="relative isolate px-6 py-24 sm:py-32 lg:px-8">
+            <div>Error: {error.message}</div>
+        </div>
+    );
+
+    if (!orders || orders.length === 0) return (
+        <div className="relative isolate px-6 py-24 sm:py-32 lg:px-8">
+        <div>No orders available</div>
+        </div>
+    ); 
 
     return (
         <div className="relative isolate px-6 pt-24 lg:px-8">
@@ -104,7 +57,7 @@ export default function TransactionList() {
                         </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-fuchsia-200">
-                            {transactions.map((item) => (
+                            {orders.map((item) => (
                                 <tr key={item.id}>
                                 <td className="py-4 pl-3 pr-3 text-sm font-mw-full sm:w-1/3edium text-gray-900 sm:pl-7">
                                     {item.id}

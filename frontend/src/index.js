@@ -14,7 +14,7 @@ root.render(
     authorizationParams={{
       redirect_uri: window.location.origin,
       audience: "https://TubbyRole",
-      scope: "openid profile email"
+      scope: "openid profile email read:transactions"
     }}
     >
     <App />
