@@ -52,7 +52,7 @@ function PredefinedPackages() {
       try {
         const ticketResponse = await axios.get(ticketUrl);
         console.log('Ticket Response: ', ticketResponse)
-        const ticket_title = ticketResponse.title;
+        ticket_title = ticketResponse.title;
       } catch (error) {
         console.error('Error fetching ticket details:', error);
       }
@@ -64,7 +64,7 @@ function PredefinedPackages() {
       try {
         const accommodationResponse = await axios.get(accomUrl);
         console.log('Accommodation Response: ', accommodationResponse)
-        const accom_address = accommodationResponse.address;
+        accom_address = accommodationResponse.address;
       } catch (error) {
         console.error('Error fetching accommodation details:', error);
       }
