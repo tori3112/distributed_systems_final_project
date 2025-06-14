@@ -40,8 +40,6 @@ function PredefinedPackages() {
   
   // Function to check if a package is in the cart
   const isInCart = (pkgId) => {
-    // console.log('Cart Items:', cartItems);
-    // console.log('Checking if package is in cart:', pkgId);
     return cartItems.some(item => item.package_id === pkgId);
   };
   
@@ -55,7 +53,7 @@ function PredefinedPackages() {
     if (ticketUrl) {
       try {
         const ticketResponse = await axios.get(ticketUrl);
-        console.log('Ticket Response: ', ticketResponse)
+        // console.log('Ticket Response: ', ticketResponse)
         ticket_title = ticketResponse.data.title;
       } catch (error) {
         console.error('Error fetching ticket details:', error);
@@ -67,7 +65,7 @@ function PredefinedPackages() {
     if (accomUrl) {
       try {
         const accommodationResponse = await axios.get(accomUrl);
-        console.log('Accommodation Response: ', accommodationResponse)
+        // console.log('Accommodation Response: ', accommodationResponse)
         accom_address = accommodationResponse.data.address;
       } catch (error) {
         console.error('Error fetching accommodation details:', error);
@@ -138,7 +136,7 @@ function PredefinedPackages() {
                 <td className="px-6 py-4">
                   <button
                     className={`mt-2 w-fit p-2 rounded-md transition ${
-                      pkg.availability <= 0 || isInCart(pkg.package_id)
+                      pkg.availability <= 0 || isInCart(pkg.id)
                         ? 'bg-gray-400 cursor-not-allowed'
                         : 'bg-fuchsia-600 hover:bg-fuchsia-800 text-white'
                     }`}
