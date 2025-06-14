@@ -43,8 +43,8 @@ function PredefinedPackages() {
   
   // Function to handle adding to cart
   const handleAddToCart = async (pkg) => {
-    let ticket_title = null;
-    let accom_address = null;
+    let ticket_title = "No ticket name available";
+    let accom_address = "No accommodation address available";
 
     const ticketUrl = pkg._links["/tickets"]?.href;
     console.log('Checking ticket url: ', ticketUrl);
@@ -52,7 +52,7 @@ function PredefinedPackages() {
       try {
         const ticketResponse = await axios.get(ticketUrl);
         console.log('Ticket Response: ', ticketResponse)
-        const ticket_title = ticketResponse.title || null;
+        const ticket_title = ticketResponse.title;
       } catch (error) {
         console.error('Error fetching ticket details:', error);
       }
@@ -64,7 +64,7 @@ function PredefinedPackages() {
       try {
         const accommodationResponse = await axios.get(accomUrl);
         console.log('Accommodation Response: ', accommodationResponse)
-        const accom_address = accommodationResponse.address || null;
+        const accom_address = accommodationResponse.address;
       } catch (error) {
         console.error('Error fetching accommodation details:', error);
       }
@@ -73,9 +73,9 @@ function PredefinedPackages() {
     const predefinedPkg = {
       package_id: generateId(),
       accom_id: pkg.accommodation,
-      accom_address: accom_address || "No accommodation address available",
+      accom_address: accom_address,
       ticket_id: pkg.ticket,
-      ticket: ticket_title || "No ticket name available",
+      ticket: ticket_title,
       ticket_quantity: 1,
       price: pkg.price
     }
