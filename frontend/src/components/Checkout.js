@@ -5,6 +5,8 @@ import moment from 'moment-timezone';
 import  { v4 as uuidv4 } from 'uuid';
 import { useAuth0 } from '@auth0/auth0-react';
 
+import TransactionConfirmation from './TransactionConfirmation';
+
 function generateId() {
     const uuid = uuidv4();
     const uuidInteger = parseInt(uuid.replace(/-/g, '').substring(0, 8), 16) % 1000000000;
@@ -27,6 +29,13 @@ export default function Checkout() {
 
     // State for form validation
     const [valErrors, setValErrors] = useState({});
+
+    // For confirmation window
+    const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+    const [transactionHash, setTransactionHash] = useState(null);
+    const [isProcessing, setIsProcessing] = useState(false);
+    const [hasError, setHasError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     // Validate form
     const validateForm = () => {
@@ -87,32 +96,40 @@ export default function Checkout() {
 
 
             try {
+                setIsProcessing(true);
                 const token = await getAccessTokenSilently();
                 console.log("token!! ", token);
 
-                await axios.post(`${process.env.REACT_APP_REST_URL}/get/package`, newOrder, {
+                const tx = await axios.post(`${process.env.REACT_APP_REST_URL}/get/package`, newOrder, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     }
-                })
-                .then(response => {
-                    console.log('RESPONSE: ', response);
                 });
-                alert('Posted new order!')
+
+                setTransactionHash(tx.transactionHash);
+                setIsConfirmationModalOpen(true);
+                
             } catch (error) {
                 if (error.response) {
                     // The server responded with a status code outside the 2xx range
                     console.error("Server error details:", error.response.data);
                     console.error("Status code:", error.response.status);
+                    setErrorMessage(error.response.data.message || `Server error: ${error.response.status}`);
                 } else if (error.request) {
                     // The request was made but no response was received
                     console.error("No response received:", error.request);
+                    setErrorMessage("No response received from server. Please check your connection.");
                 } else {
                     // Something happened in setting up the request
                     console.error("Error setting up request:", error.message);
+                    setErrorMessage(error.message || "An unexpected error occurred.");
                 }
 
+                setIsConfirmationModalOpen(true);
+
+            } finally {
+                setIsProcessing(false);
             }
         }
     };
@@ -227,6 +244,21 @@ export default function Checkout() {
                 </form>
             </div>
         </div>
+        <TransactionConfirmation 
+            isOpen={isConfirmationModalOpen}
+            onClose={() => {
+                setIsConfirmationModalOpen(false);
+                if (hasError) {
+                    setHasError(false);
+                    setErrorMessage('');
+                }
+            }}
+            transactionHash={transactionHash}
+            proposalTitle={`Order for ${formData.firstName} ${formData.lastName}`}
+            isProcessing={isProcessing}
+            hasError={hasError}
+            errorMessage={errorMessage}
+        />
     </div>
   )
 }
