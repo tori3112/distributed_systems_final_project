@@ -9,6 +9,7 @@ export default function Packages() {
   
   // Add these state variables for package creation
   const [selectedConcert, setSelectedConcert] = useState(null);
+  const [ticketQuantity, setTickeQuantity] = useState(1);
   const [availableAccommodations, setAvailableAccommodations] = useState(null);
   const [isCreatingPackage, setIsCreatingPackage] = useState(false);
   
@@ -18,8 +19,11 @@ export default function Packages() {
   };
   
   // Add this function to handle concert selection
-  const handleConcertSelect = async (concert) => {
+  const handleConcertSelect = async (concertInfo) => {
+    const { quantity, ...concert } = concertInfo;
+
     setSelectedConcert(concert);
+    setTickeQuantity(quantity);
     setIsCreatingPackage(true);
     setActiveTab('tab2-group4'); // Switch to accommodation tab
     
@@ -46,11 +50,11 @@ export default function Packages() {
       // console.log('API response data: ', data);
 
       let accommodations = [];
-      if (data && data._embedded	&& data._embedded.accommodationList) {
+      if (data && data._embedded && data._embedded.accommodationList) {
         accommodations = data._embedded.accommodationList;
       } else {
         console.log('Could not accommodation array in the response: ', data);
-      } 
+      }
       
       // console.log('Setting availableAccommodations to: ', accommodations);
       // console.log('Accommodations length is ', accommodations.length);
@@ -132,9 +136,10 @@ export default function Packages() {
               role="tabpanel"
               aria-labelledby='tab2-group4'
             >
-              <Accommodations 
+              <Accommodations
                 availableAccommodations={availableAccommodations}
                 selectedConcert={selectedConcert}
+                ticketQuantity={ticketQuantity}
                 isCreatingPackage={isCreatingPackage}
               />
             </div>
