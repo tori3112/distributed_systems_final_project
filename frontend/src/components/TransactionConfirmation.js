@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, ModalContent, ModalFooter, ModalHeader } from 'react-modal';
-import { Loader } from './Loader';
+import Loader from './Loader';
 
 const TransactionConfirmation = ({ 
   isOpen, 
@@ -19,7 +19,7 @@ const TransactionConfirmation = ({
       <ModalContent>
         {isProcessing ? (
           <div className="flex flex-col items-center justify-center space-y-4">
-            <Loader size="large" />
+            <Loader />
             <p className="text-gray-600">Processing your proposal...</p>
           </div>
         ) : hasError ? (
