@@ -12,7 +12,7 @@ export function TicketAmountField({ value, onChange, id = "ticketAmount" }) {
           onChange={onChange}
           min="1"
           max="10"
-          className="peer w-ful h-14 px-3 py-2 text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fuchsia-600 focus:border-transparent appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          className="peer w-full h-14 px-3 py-2 text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fuchsia-600 focus:border-transparent appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
           placeholder=" "
         />
         <label

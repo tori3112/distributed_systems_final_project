@@ -50,7 +50,7 @@ function CartDisplay() {
               </div>
             </div>
             <button
-              onClick={() => removeFromCart(item.id)}
+              onClick={() => removeFromCart(item.package_id)}
               className="bg-red-500 text-white p-2 rounded-md hover:bg-red-700 transition"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
