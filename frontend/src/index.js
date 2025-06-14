@@ -15,7 +15,6 @@ root.render(
       redirect_uri: window.location.origin,
     }}
     audience="https://manageTubby/"
-    scope="openid profile email read:roles"
     >
     <App />
   </Auth0Provider>
