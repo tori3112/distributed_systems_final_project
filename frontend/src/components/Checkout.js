@@ -121,7 +121,6 @@ export default function Checkout() {
                     // The server responded with a status code outside the 2xx range
                     console.error("Server error details:", error.response.data);
                     console.error("Status code:", error.response.status);
-                    setHas
                     setErrorMessage(error.response.data.message || `Server error: ${error.response.status}`);
                 } else if (error.request) {
                     // The request was made but no response was received
