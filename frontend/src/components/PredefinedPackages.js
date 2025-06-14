@@ -49,7 +49,7 @@ function PredefinedPackages() {
     let accom_address = "No accommodation address available";
 
     const ticketUrl = pkg._links["/tickets"]?.href;
-    console.log('Checking ticket url: ', ticketUrl);
+    // console.log('Checking ticket url: ', ticketUrl);
     if (ticketUrl) {
       try {
         const ticketResponse = await axios.get(ticketUrl);
@@ -61,7 +61,7 @@ function PredefinedPackages() {
     }
 
     const accomUrl = pkg._links["/accoms"]?.href;
-    console.log('Checking ticket url: ', ticketUrl);
+    // console.log('Checking ticket url: ', ticketUrl);
     if (accomUrl) {
       try {
         const accommodationResponse = await axios.get(accomUrl);
@@ -136,7 +136,9 @@ function PredefinedPackages() {
                 <td className="px-6 py-4">
                   <button
                     className={`mt-2 w-fit p-2 rounded-md transition ${
-                      pkg.availability <= 0 || isInCart(pkg.id)
+                      pkg.availability <= 0
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : isInCart(pkg.id)
                         ? 'bg-gray-400 cursor-not-allowed'
                         : 'bg-fuchsia-600 hover:bg-fuchsia-800 text-white'
                     }`}
