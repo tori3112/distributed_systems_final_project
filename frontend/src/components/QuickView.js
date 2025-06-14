@@ -24,6 +24,9 @@ export default function QuickView({
       return;
     }
 
+    console.log("concert: ", selectedConcert);
+    console.log("accom: ", product);
+
     // Create a package
     const newPackage = {
       package_id: generateId(),
