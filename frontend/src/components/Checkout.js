@@ -244,21 +244,15 @@ export default function Checkout() {
                 </form>
             </div>
         </div>
-        <TransactionConfirmation 
-            isOpen={isConfirmationModalOpen}
-            onClose={() => {
-                setIsConfirmationModalOpen(false);
-                if (hasError) {
-                    setHasError(false);
-                    setErrorMessage('');
-                }
-            }}
-            transactionHash={transactionHash}
-            proposalTitle={`Order for ${formData.firstName} ${formData.lastName}`}
-            isProcessing={isProcessing}
-            hasError={hasError}
-            errorMessage={errorMessage}
-        />
+        {isConfirmationModalOpen && (
+            <TransactionConfirmation 
+                isOpen={isConfirmationModalOpen}
+                onClose={() => setIsConfirmationModalOpen(false)}
+                transactionHash={transactionHash}
+                proposalTitle={`Order for ${formData.firstName} ${formData.lastName}`}
+                isProcessing={isProcessing}
+            />
+            )}
     </div>
   )
 }
