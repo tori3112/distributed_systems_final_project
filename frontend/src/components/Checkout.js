@@ -95,7 +95,6 @@ export default function Checkout() {
             try {
                 setIsProcessing(true);
                 const token = await getAccessTokenSilently();
-                console.log(token);
 
                 const response = await axios.post(`${process.env.REACT_APP_REST_URL}/get/package`, newOrder, {
                     headers: {

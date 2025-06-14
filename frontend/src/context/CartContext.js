@@ -7,7 +7,7 @@ export const CartProvider = ({ children }) => {
   const [amount, setAmount] = useState(1);
   const [cartItems, setCartItems] = useState([]);
   const { isAuthenticated, user } = useAuth0();
-  
+
   // Load cart when component mounts or authentication state changes
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -64,13 +64,13 @@ export const CartProvider = ({ children }) => {
       if (existingItem) {
         return prevItems;
       } else {
-        return [...prevItems, item];
+        return [...prevItems, { ...item, quantity: 1 }];
       }
     });
   };
 
   const removeFromCart = (itemId) => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
+    setCartItems(prevItems => prevItems.filter(item => item.package_id !== itemId));
   };
 
   const clearCart = () => {
@@ -79,7 +79,7 @@ export const CartProvider = ({ children }) => {
 
   const totalPrice = () => {
     return cartItems.reduce((total, item) => {
-      const quantity = amount;
+      const quantity = item.quantity || 1;
       return total + (item.price * quantity);
     }, 0);
   };
@@ -102,9 +102,9 @@ export const CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider value={{ 
-      cartItems, 
-      addToCart, 
-      removeFromCart, 
+      cartItems,
+      addToCart,
+      removeFromCart,
       clearCart,
       isUserCart: isAuthenticated,
       totalPrice,
