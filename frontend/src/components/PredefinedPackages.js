@@ -11,13 +11,13 @@ function PredefinedPackages() {
   
   // This effect will run whenever cartItems changes
   useEffect(() => {
-    console.log("Cart items updated:", cartItems);
+    // console.log("Cart items updated:", cartItems);
     // Force a re-render
     forceUpdate({});
   }, [cartItems]);
   
-  console.log("Packages: ", products);
-  console.log("Current cart items:", cartItems);
+  // console.log("Packages: ", products);
+  // console.log("Current cart items:", cartItems);
   
   if (loading) return (
     <div className="relative isolate px-6 py-24 sm:py-32 lg:px-8">
@@ -44,10 +44,10 @@ function PredefinedPackages() {
   // Improved isInCart function with better logging
   const isInCart = (pkgId) => {
     const result = cartItems.some(item => {
-      console.log(`Comparing item.package_id (${item.package_id}) with pkgId (${pkgId})`);
+      // console.log(`Comparing item.package_id (${item.package_id}) with pkgId (${pkgId})`);
       return item.package_id === pkgId;
     });
-    console.log(`Is package ${pkgId} in cart? ${result}`);
+    // console.log(`Is package ${pkgId} in cart? ${result}`);
     return result;
   };
   
