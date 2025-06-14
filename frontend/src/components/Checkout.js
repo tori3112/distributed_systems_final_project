@@ -96,12 +96,14 @@ export default function Checkout() {
                 const token = await getAccessTokenSilently();
                 console.log(token);
 
-                await axios.post(`${process.env.REACT_APP_REST_URL}/get/package`, newOrder, {
+                const response = await axios.post(`${process.env.REACT_APP_REST_URL}/get/package`, newOrder, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     }
                 });
+
+                console.log('POST response: ', response);
 
                 setIsConfirmationModalOpen(true);
                 
@@ -246,6 +248,7 @@ export default function Checkout() {
                 proposalTitle={`Order for ${formData.firstName} ${formData.lastName}`}
                 isProcessing={isProcessing}
                 errorMessage={errorMessage}
+                responseMessage={response}
             />
             )}
     </div>

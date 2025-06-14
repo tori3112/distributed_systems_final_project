@@ -5,11 +5,13 @@ const TransactionConfirmation = ({
   onClose,
   proposalTitle,
   isProcessing,
-  errorMessage
+  errorMessage,
+  responseMessage
 }) => {
 
     const safeErrorMessage = errorMessage || "Unexpected error occurred.";
     const safeTitle = proposalTitle || "Your Order";
+    const safeResponse = responseMessage || "No Response Message";
 
     try {
       if (isProcessing) {
@@ -52,7 +54,16 @@ const TransactionConfirmation = ({
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
               </svg>
-              <p className="text-fuchsia-600 font-semibold">Order Submitted Successfully</p>
+              <div> 
+              {safeResponse !== "Order is succesful!" ? (
+                <div>
+                  <p className='text-red-600 font-semibold'>Order Submission Failed</p>
+                  <p>{safeResponse}</p>
+                </div>
+              ) : (
+                <p className="text-fuchsia-600 font-semibold">Order Submitted Successfully</p>
+              )}
+            </div>
             </div>
             <div className="space-y-2">
               <p className="font-medium">Order Details:</p>
