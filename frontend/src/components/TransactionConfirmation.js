@@ -10,8 +10,6 @@ const TransactionConfirmation = ({
 
     const safeErrorMessage = errorMessage || "Unexpected error occurred.";
     const safeTitle = proposalTitle || "Your Order";
-    console.log('Error message: ', safeErrorMessage);
-    console.log('Title: ', safeTitle);
 
     try {
       if (isProcessing) {

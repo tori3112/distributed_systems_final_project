@@ -89,10 +89,12 @@ export default function Checkout() {
                 ticket_quantity: item.ticket_quantity
             }
 
+            console.log("New order: ", newOrder);
+
             try {
                 setIsProcessing(true);
                 const token = await getAccessTokenSilently();
-                console.log("token!! ", token);
+                console.log(token);
 
                 await axios.post(`${process.env.REACT_APP_REST_URL}/get/package`, newOrder, {
                     headers: {
