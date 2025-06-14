@@ -84,6 +84,9 @@ function PredefinedPackages() {
       price: pkg.price
     }
 
+    console.log('package: ', pkg);
+    console.log('predefined: ', predefinedPkg);
+
     addToCart(predefinedPkg);
   };
   
@@ -139,12 +142,12 @@ function PredefinedPackages() {
                         ? 'bg-gray-400 cursor-not-allowed'
                         : 'bg-fuchsia-600 hover:bg-fuchsia-800 text-white'
                     }`}
-                    disabled={pkg.availability <= 0 || isInCart(pkg.package_id)}
+                    disabled={pkg.availability <= 0 || isInCart(pkg.id)}
                     onClick={() => handleAddToCart(pkg)}
                   >
                     {pkg.availability <= 0
                       ? 'Out of Stock'
-                      : isInCart(pkg.package_id)
+                      : isInCart(pkg.id)
                         ? 'In Cart'
                         : 'Get Package'}
                   </button>
