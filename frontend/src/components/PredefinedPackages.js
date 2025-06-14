@@ -135,7 +135,7 @@ function PredefinedPackages() {
                         ? 'bg-gray-400 cursor-not-allowed'
                         : 'bg-fuchsia-600 hover:bg-fuchsia-800 text-white'
                     }`}
-                    disabled={pkg.stock <= 0 || isInCart(pkg.id)}
+                    disabled={pkg.availability <= 0 || isInCart(pkg.id)}
                     onClick={() => handleAddToCart(pkg)}
                   >
                     {pkg.stock <= 0
