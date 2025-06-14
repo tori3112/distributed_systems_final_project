@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, ModalHeader, ModalContent, ModalFooter } from './Modal';
+import { Modal, ModalContent, ModalFooter, ModalHeader } from 'react-modal';
 import { Loader } from './Loader';
 
 const TransactionConfirmation = ({ 
