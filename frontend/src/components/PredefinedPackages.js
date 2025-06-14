@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { useAllProducts } from '../api/hooks/usePackages';
 import { useCart } from '../context/CartContext';
 import  { v4 as uuidv4 } from 'uuid';
@@ -42,21 +43,31 @@ function PredefinedPackages() {
   
   // Function to handle adding to cart
   const handleAddToCart = async (pkg) => {
+    let ticket_title = null;
+    let accom_address = null;
 
     const ticketUrl = pkg._links["/tickets"]?.href;
     console.log('Checking ticket url: ', ticketUrl);
     if (ticketUrl) {
-      const ticketResponse = await axios.get(ticketUrl);
-      console.log('Ticket Response: ', ticketResponse)
-      const ticket_title = ticketResponse.title;
+      try {
+        const ticketResponse = await axios.get(ticketUrl);
+        console.log('Ticket Response: ', ticketResponse)
+        const ticket_title = ticketResponse.title || null;
+      } catch (error) {
+        console.error('Error fetching ticket details:', error);
+      }
     }
 
     const accomUrl = pkg._links["/accoms"]?.href;
     console.log('Checking ticket url: ', ticketUrl);
-    if (ticketUrl) {
-      const accommodationResponse = await axios.get(accomUrl);
-      console.log('Accommodation Response: ', accommodationResponse)
-      const accom_address = accommodationResponse.address;
+    if (accomUrl) {
+      try {
+        const accommodationResponse = await axios.get(accomUrl);
+        console.log('Accommodation Response: ', accommodationResponse)
+        const accom_address = accommodationResponse.address || null;
+      } catch (error) {
+        console.error('Error fetching accommodation details:', error);
+      }
     }
 
     const predefinedPkg = {
@@ -66,7 +77,7 @@ function PredefinedPackages() {
       ticket_id: pkg.ticket,
       ticket: ticket_title || "No ticket name available",
       ticket_quantity: 1,
-      price: price
+      price: pkg.price
     }
 
     addToCart(predefinedPkg);
