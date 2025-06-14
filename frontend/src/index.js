@@ -13,8 +13,9 @@ root.render(
     clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
     authorizationParams={{
       redirect_uri: window.location.origin,
-      audience: `${process.env.AUTH0_AUDIENCE}`,
     }}
+    audience="https://manageTubby/"
+    scope="openid profile email read:roles"
     >
     <App />
   </Auth0Provider>

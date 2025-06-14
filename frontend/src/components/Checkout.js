@@ -12,8 +12,13 @@ function generateId() {
 }
 
 export default function Checkout() {
-    const { isAuthenticated, loginWithRedirect, getAccessTokenSilently } = useAuth0();
+    const { isAuthenticated, 
+    loginWithRedirect, 
+    getAccessTokenSilently
+    } = useAuth0();
+
     const { cartItems, totalPrice } = useCart();
+
     const [formData, setFormData] = useState({
             firstName: '',
             lastName: '',
@@ -71,19 +76,19 @@ export default function Checkout() {
 
             // console.log("Order: ", newOrder);
             // console.log("Order JSON: ", JSON.stringify(newOrder));
-            // console.log('ID: ', typeof newOrder.id);
-            // console.log('packageID: ', typeof newOrder.package_id);
-            // console.log('address: ', typeof newOrder.address);
-            // console.log('paid: ', typeof newOrder.paid);
-            // console.log('order_time: ', typeof newOrder.order_time);
-            // console.log('accom_id: ', typeof newOrder.accom_id);
-            // console.log('ticket_id: ', typeof newOrder.ticket_id);
-            // console.log('amount: ', typeof newOrder.amount);
+            console.log('ID: ', typeof newOrder.id);
+            console.log('packageID: ', typeof newOrder.package_id);
+            console.log('address: ', typeof newOrder.address);
+            console.log('paid: ', typeof newOrder.paid);
+            console.log('order_time: ', typeof newOrder.order_time);
+            console.log('accom_id: ', typeof newOrder.accom_id);
+            console.log('ticket_id: ', typeof newOrder.ticket_id);
+            console.log('amount: ', typeof newOrder.amount);
 
 
             try {
                 const token = await getAccessTokenSilently();
-                console.log(token);
+                console.log("token!! ", token);
 
                 await axios.post(`${process.env.REACT_APP_REST_URL}/get/package`, newOrder, {
                     headers: {

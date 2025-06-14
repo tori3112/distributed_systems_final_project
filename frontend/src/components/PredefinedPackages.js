@@ -42,32 +42,32 @@ function PredefinedPackages() {
     <div className="relative isolate px-6 py-24 sm:py-32 lg:px-8">
       <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">Available Packages</h5>
       <div className="relative overflow-x-auto">
-        <table className="min-w-full text-sm text-left rtl:text-right text-gray-500">
-          <thead className="text-xs font-bold text-gray-700 uppercase bg-fuchsia-50">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+          <thead className="text-xs font-bold text-gray-700 uppercase bg-gray-50">
             <tr>
-              <th scope="col" className="px-3 py-3">
+              <th scope="col" className="px-6 py-3">
                 Package Name
               </th>
-              <th scope="col" className="px-3 py-3">
+              <th scope="col" className="px-6 py-3">
                 Concert
               </th>
-              <th scope="col" className="px-3 py-3">
+              <th scope="col" className="px-6 py-3">
                 Accommodation
               </th>
-              <th scope="col" className="px-3 py-3">
+              <th scope="col" className="px-6 py-3">
                 Availability
               </th>
-              <th scope="col" className="px-3 py-3">
+              <th scope="col" className="px-6 py-3">
                 Price
               </th>
-              <th scope="col" className="px-3 py-3">
+              <th scope="col" className="px-6 py-3">
                 Reserve
               </th>
             </tr>
           </thead>
           <tbody>
             {products.map(pkg => (
-              <tr key={pkg.id} className="bg-white border-b border-fuchsia-200">
+              <tr key={pkg.id} className="bg-white border-b border-gray-200">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                   {pkg.name}
                 </th>
