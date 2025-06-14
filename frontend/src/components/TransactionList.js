@@ -91,8 +91,8 @@ export default function TransactionList() {
             </div>
 
             <div className="w-full px-4 py-5 bg-white space-y-6 sm:p-6">
-                    <table className="min-w-full divide-y divide-fuchsia-200">
-                        <thead className='text-xs font-bold tracking-widest text-gray-700 uppercase bg-fuchsia-50'>
+                    <table className="min-w-full text-sm text-left divide-y divide-fuchsia-200">
+                        <thead className='text-xs font-bold text-gray-700 uppercase bg-fuchsia-50'>
                         <tr>
                             <th className="py-3 pl-3 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-7">Order</th>
                             <th className="px-3 py-3 text-left text-sm font-medium text-gray-900">Address</th>
