@@ -40,8 +40,8 @@ function PredefinedPackages() {
   
   // Function to check if a package is in the cart
   const isInCart = (pkgId) => {
-    console.log('Cart Items:', cartItems);
-    console.log('Checking if package is in cart:', pkgId);
+    // console.log('Cart Items:', cartItems);
+    // console.log('Checking if package is in cart:', pkgId);
     return cartItems.some(item => item.package_id === pkgId);
   };
   
