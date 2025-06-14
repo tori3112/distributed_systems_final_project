@@ -32,7 +32,6 @@ export default function Checkout() {
 
     // For confirmation window
     const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
-    const [transactionHash, setTransactionHash] = useState(null);
     const [isProcessing, setIsProcessing] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -115,7 +114,6 @@ export default function Checkout() {
                     }
                 });
 
-                setTransactionHash(tx.transactionHash);
                 setIsConfirmationModalOpen(true);
                 
             } catch (error) {
@@ -123,6 +121,7 @@ export default function Checkout() {
                     // The server responded with a status code outside the 2xx range
                     console.error("Server error details:", error.response.data);
                     console.error("Status code:", error.response.status);
+                    setHas
                     setErrorMessage(error.response.data.message || `Server error: ${error.response.status}`);
                 } else if (error.request) {
                     // The request was made but no response was received
@@ -256,7 +255,6 @@ export default function Checkout() {
         {isConfirmationModalOpen && (
             <TransactionConfirmation 
                 onClose={closeConfirmationModal}
-                transactionHash={transactionHash}
                 proposalTitle={`Order for ${formData.firstName} ${formData.lastName}`}
                 isProcessing={isProcessing}
                 errorMessage={errorMessage}

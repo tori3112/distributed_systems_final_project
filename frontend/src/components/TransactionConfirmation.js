@@ -3,18 +3,14 @@ import Loader from './Loader';
 
 const TransactionConfirmation = ({
   onClose,
-  transactionHash,
   proposalTitle,
   isProcessing,
-  hasError,
   errorMessage
 }) => {
 
     const safeErrorMessage = errorMessage || "Unexpected error occurred.";
-    const safeTransactionHash = transactionHash || "No transaction hash available.";
     const safeTitle = proposalTitle || "Your Order";
     console.log('Error message: ', safeErrorMessage);
-    console.log('Transaction hash: ', safeTransactionHash);
     console.log('Title: ', safeTitle);
 
     try {
@@ -25,7 +21,7 @@ const TransactionConfirmation = ({
             <p className='text-gray-600'>Processing your order...</p>
           </div>
         );
-      } else if (hasError) {
+      } else if (errorMessage) {
         return (
           <div className='space-y-4'>
             <div className="flex items-center space-x-2">
@@ -60,21 +56,9 @@ const TransactionConfirmation = ({
               </svg>
               <p className="text-fuchsia-600 font-semibold">Order Submitted Successfully</p>
             </div>
-            <div className="bg-gray-100 p-4 rounded-lg">
-              <p className="font-medium">Transaction Hash:</p>
-              <p className="text-sm text-gray-900 break-all">{safeTransactionHash}</p>
-            </div>
-            <div className="space-y-2 flex flex-row">
+            <div className="space-y-2">
               <p className="font-medium">Order Details:</p>
               <p className="text-gray-900">{safeTitle}</p>
-            </div>
-            <div className="mt-6 flex justify-end space-x-3">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-300 text-gray-800 text-sm font-medium rounded-md hover:bg-gray-400"
-            >
-              Close
-            </button>
             </div>
           </div>
         );
