@@ -34,6 +34,7 @@ export default function Checkout() {
     const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [responseMessage, setResponseMessage] = useState('');
 
     const handleConfirmationModal = () => {
         console.log('Transaction Confirmation open');
@@ -104,6 +105,7 @@ export default function Checkout() {
                 });
 
                 console.log('POST response: ', response);
+                setResponseMessage(response);
 
                 setIsConfirmationModalOpen(true);
                 
@@ -248,7 +250,7 @@ export default function Checkout() {
                 proposalTitle={`Order for ${formData.firstName} ${formData.lastName}`}
                 isProcessing={isProcessing}
                 errorMessage={errorMessage}
-                responseMessage={response}
+                responseMessage={responseMessage}
             />
             )}
     </div>
