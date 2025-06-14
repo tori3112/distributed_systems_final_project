@@ -4,7 +4,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [amount, setAmount] = useState(1);
   const [cartItems, setCartItems] = useState([]);
   const { isAuthenticated, user } = useAuth0();
 
@@ -64,6 +63,7 @@ export const CartProvider = ({ children }) => {
       if (existingItem) {
         return prevItems;
       } else {
+        // Add quantity property to new items
         return [...prevItems, { ...item, quantity: 1 }];
       }
     });
@@ -77,31 +77,36 @@ export const CartProvider = ({ children }) => {
     setCartItems([]);
   };
 
+  const increment = (itemId) => {
+    setCartItems(prevItems => 
+      prevItems.map(item => 
+        item.package_id === itemId 
+          ? { ...item, quantity: (item.quantity || 1) + 1 } 
+          : item
+      )
+    );
+  };
+
+  const decrement = (itemId) => {
+    setCartItems(prevItems => 
+      prevItems.map(item => 
+        item.package_id === itemId && item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 } 
+          : item
+      )
+    );
+  };
+
   const totalPrice = () => {
     return cartItems.reduce((total, item) => {
+      // Use each item's quantity for calculation
       const quantity = item.quantity || 1;
       return total + (item.price * quantity);
     }, 0);
   };
 
-  function increment() {
-    setAmount(function (prevAmount) {
-      return (prevAmount+=1);
-    });
-  }
-
-  function decrement() {
-    setAmount(function (prevAmount) {
-      if (prevAmount > 1) {
-        return (prevAmount-=1);
-      } else {
-        return (prevAmount = 1);
-      }
-    });
-  }
-
   return (
-    <CartContext.Provider value={{ 
+    <CartContext.Provider value={{
       cartItems,
       addToCart,
       removeFromCart,
