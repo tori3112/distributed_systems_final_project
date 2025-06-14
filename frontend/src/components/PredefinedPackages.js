@@ -83,7 +83,8 @@ function PredefinedPackages() {
       ticket_id: pkg.ticket,
       ticket: ticket_title,
       ticket_quantity: 1,
-      price: pkg.price
+      price: pkg.price,
+      name: 'Custom Package'
     };
     
     console.log('Adding to cart:', predefinedPkg);

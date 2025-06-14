@@ -86,7 +86,7 @@ export default function Checkout() {
                 order_time: timestamp,
                 accom_id: item.accom_id,
                 ticket_id: item.ticket_id,
-                stock: item.ticket_quantity
+                amount: item.ticket_quantity
             }
 
             console.log("New order: ", newOrder);
