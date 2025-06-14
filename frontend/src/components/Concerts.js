@@ -8,14 +8,14 @@ function Concerts({ onSelectConcert }) {
 
   const handleQuantityChange = (concertId, e) => {
     const newValue = parseInt(e.target.value) || 0;
-    setTicketQuantities({
-      ...ticketQuantities,
+    setTickeQuantity({
+      ...ticketQuantity,
       [concertId]: newValue
     });
   }
 
   const handleGetTicket = (concert) => {
-    const quantity = ticketQuantities[concert.id] || 0;
+    const quantity = ticketQuantity[concert.id] || 0;
     onSelectConcert({
       ...concert,
       quantity: quantity

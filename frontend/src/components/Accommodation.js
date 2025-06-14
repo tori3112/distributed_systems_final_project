@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import QuickView from './QuickView';
 
-export default function Accommodations({ availableAccommodations, selectedConcert, onSelectAccommodation, isCreatingPackage }) {
+export default function Accommodations({ availableAccommodations, selectedConcert, ticketQuantity, onSelectAccommodation, isCreatingPackage }) {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   const [displayedAccommodations, setDisplayedAccommodations] = useState([]);
@@ -126,6 +126,7 @@ export default function Accommodations({ availableAccommodations, selectedConcer
           onClose={closeModal} 
           isCreatingPackage={isCreatingPackage}
           selectedConcert={selectedConcert}
+          ticketQuantity={ticketQuantity}
         />
       )}
     </div>

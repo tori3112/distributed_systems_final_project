@@ -11,6 +11,7 @@ function generateId() {
 export default function QuickView({ 
   product, 
   onClose,
+  ticketQuantity,
   isCreatingPackage,
   selectedConcert
 }) {
@@ -38,16 +39,13 @@ export default function QuickView({
       
       // Calculate total cost
       price: (selectedConcert.price || 0) + (product.price || 0),
-      quantity: 1
+      quantity: ticketQuantity
     };
       
     console.log("Creating package:", newPackage);
 
     addToCart(newPackage);
     onClose();
-    
-    // Show confirmation to user
-    alert("Package added to cart successfully!");
   };
   
   return (
