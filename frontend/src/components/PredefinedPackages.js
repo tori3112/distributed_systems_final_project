@@ -2,13 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import { useAllProducts } from '../api/hooks/usePackages';
 import { useCart } from '../context/CartContext';
-import  { v4 as uuidv4 } from 'uuid';
+// import  { v4 as uuidv4 } from 'uuid';
 
-function generateId() {
-    const uuid = uuidv4();
-    const uuidInteger = parseInt(uuid.replace(/-/g, '').substring(0, 8), 16) % 1000000000;
-    return uuidInteger;
-}
+// function generateId() {
+//     const uuid = uuidv4();
+//     const uuidInteger = parseInt(uuid.replace(/-/g, '').substring(0, 8), 16) % 1000000000;
+//     return uuidInteger;
+// }
 
 function PredefinedPackages() {
   const { data: products, loading, error } = useAllProducts();
@@ -73,7 +73,7 @@ function PredefinedPackages() {
     }
 
     const predefinedPkg = {
-      package_id: generateId(),
+      package_id: pkg.id,
       accom_id: pkg.accommodation,
       accom_address: accom_address,
       ticket_id: pkg.ticket,
@@ -82,6 +82,7 @@ function PredefinedPackages() {
       price: pkg.price
     }
 
+    console.log('Added to cart: ', predefinedPkg);
     addToCart(predefinedPkg);
   };
   
