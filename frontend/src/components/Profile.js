@@ -41,10 +41,10 @@ const Profile = () => {
   return (
     isAuthenticated && (
       <div className="flex items-center space-x-4">
-        <img src={userMetaData.picture} alt={userMetaData.name} className="w-10 h-10 rounded-full" />
+        <img src={user.picture} alt={user.name} className="w-10 h-10 rounded-full" />
         <div>
-          <h2 className="text-lg font-semibold">{userMetaData.name}</h2>
-          <p className="text-sm text-fuchsia-600">{userMetaData.email}</p>
+          <h2 className="text-lg font-semibold">{user.name}</h2>
+          <p className="text-sm text-fuchsia-600">{user.email}</p>
         </div>
       </div>
     )
