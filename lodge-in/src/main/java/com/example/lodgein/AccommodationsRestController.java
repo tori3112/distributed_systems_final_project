@@ -109,9 +109,13 @@ public class AccommodationsRestController {
 
     @PostMapping("/prepare_accomm")
     public ResponseEntity<String> prepareAccom(@RequestBody Order order){
+        log.info("let's prepare");
+        AccommOrder accOrder = new AccommOrder();
+        log.info("accOrder created here");
         try{
-            AccommOrder accOrder = new AccommOrder();
+            log.info("let's set it up");
             accOrder.setAccommId(order.getAccom_id());
+            log.info("let's order_id");
             accOrder.setOrderId(order.getId());
 
             log.info("got here");
@@ -157,10 +161,12 @@ public class AccommodationsRestController {
             }
             accommOrderRepository.save(accOrder);
 
-
+            log.info("Order prepared success");
             return ResponseEntity.ok("Order prepared successfully.");
         }
         catch (Exception e){
+            accOrder.setPreparationStatus(AccommPreparationStatus.NOT_PREPARED.name());
+            accommOrderRepository.save(accOrder);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during order preparation.");
         }
     }
