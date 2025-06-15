@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAllTransactions } from "../api/hooks/useTransactions";
 import Loader from "./Loader";
 
 export default function TransactionList() {
     const { data: orders, loading, error } = useAllTransactions();
+
+    useEffect(() => {
+        console.log('Orders data: ', orders);
+    }, [orders]);
 
     if (loading) return (
         <Loader />
@@ -57,7 +61,7 @@ export default function TransactionList() {
                         </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-fuchsia-200">
-                            {orders.map((item) => (
+                            {Array.isArray(orders) && orders.map((item) => (
                                 <tr key={item.id}>
                                 <td className="py-4 pl-3 pr-3 text-sm font-mw-full sm:w-1/3edium text-gray-900 sm:pl-7">
                                     {item.id}
