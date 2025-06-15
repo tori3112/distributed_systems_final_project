@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useAuth0 } from '@auth0/auth0-react';
 
 const apiClient = axios.create({
   baseURL: `${process.env.REACT_APP_REST_URL}/` ,
@@ -31,11 +30,9 @@ export const fetchPackages = async () => {
 };
 
 // We need a specialised function for transactions cause token
-export const fetchTransactions = async () => {
+export const fetchWithToken = async (endpoint, token) => {
   try {
-    const { getAccessTokenSilently } = useAuth0();
-    const token = await getAccessTokenSilently();
-    const response = await axios.get(`${process.env.REACT_APP_REST_URL}/`, {
+    const response = await axios.get(`${process.env.REACT_APP_REST_URL}${endpoint}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`

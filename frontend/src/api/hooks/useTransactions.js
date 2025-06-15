@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import axios from 'axios';
+import { fetchWithToken } from '../client';
 
 export const useAllTransactions = () => {
   const [data, setData] = useState([]);
@@ -10,21 +10,16 @@ export const useAllTransactions = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      if (!isAuthenticated) {
+        setError(new Error('User not authenticated'));
+        setLoading(false);
+        return;
+      }
+
       try {
-        // Only attempt to get token if user is authenticated
-        if (isAuthenticated) {
-          const token = await getAccessTokenSilently();
-          const response = await axios.get(`${process.env.REACT_APP_REST_URL}/`, {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            }
-          });
-          setData(response.data);
-        } else {
-          setError(new Error('User not authenticated'));
-        }
+        const token = await getAccessTokenSilently();
+        const result = await fetchWithToken('/', token);
+        setData(result);
       } catch (error) {
         console.error('Error fetching transactions:', error);
         setError(error);
