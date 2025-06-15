@@ -10,6 +10,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -20,6 +22,7 @@ public class TicketRestController {
 
     private final TicketRepository ticketRepository;
     private final TicketOrderRepository ticketOrderRepository;
+    private static final Logger log = LoggerFactory.getLogger(TicketRestController.class);
 
     @Autowired
     TicketRestController(TicketRepository ticketRepository, TicketOrderRepository ticketOrderRepository) {
@@ -94,16 +97,18 @@ public class TicketRestController {
 
     @PostMapping("/prepare_ticket")
     public ResponseEntity<String> prepareTicket(@RequestBody Order order) {
+        TicketOrder ticketOrder = new TicketOrder();
         try {
+            log.info("start prepare ticket");
             // Step 1: 创建 TicketOrder 并填充
-            TicketOrder ticketOrder = new TicketOrder();
             ticketOrder.setTicketId(order.getTicket_id());
             ticketOrder.setOrderId(order.getId());
             ticketOrder.setQuantity(order.getAmount());
+            log.info("setting ticket done..");
 
             // Step 2: 查询当前正在准备的总票数
             Integer quantityBeingPrepared = ticketOrderRepository.totalQuantityBeingPrepared(order.getTicket_id());
-
+            log.info("here here here");
             // Step 3: 获取 Ticket 实体
             Optional<Ticket> optionalTicket = ticketRepository.findById(order.getTicket_id());
             if (optionalTicket.isEmpty()) {
@@ -111,6 +116,7 @@ public class TicketRestController {
             }
 
             Ticket ticket = optionalTicket.get();
+            log.info("here already");
 
             // Step 4: 判断是否还够票
             int remainingStock = ticket.getStock() - quantityBeingPrepared - order.getAmount();
@@ -122,8 +128,11 @@ public class TicketRestController {
             ticketOrder.setPreparationStatus("PREPARING");
             ticketOrderRepository.save(ticketOrder);
 
+            log.info("prepare ticket succeeded");
             return ResponseEntity.ok("Ticket order prepared successfully.");
         } catch (Exception e) {
+            ticketOrder.setPreparationStatus(TicketPreparationStatus.NOT_PREPARED.name());
+            ticketOrderRepository.save(ticketOrder);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during ticket preparation.");
         }
     }
