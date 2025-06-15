@@ -19,7 +19,7 @@ export const useAllTransactions = () => {
 
       try {
         const token = await getAccessTokenSilently();
-        const result = await fetchWithToken('/', token);
+        const result = await fetchWithToken('/orders/', token);
         
         // Check the structure of the response and extract the array if needed
         if (result && Array.isArray(result)) {
