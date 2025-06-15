@@ -22,7 +22,6 @@ public class Ticket {
     @Column(name = "ticket_type")
     private String ticketType;
     private Integer stock;
-    // needs more fields for the price and the type of ticket
 
     public int getId() {
         return id;
