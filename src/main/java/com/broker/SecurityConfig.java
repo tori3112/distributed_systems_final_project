@@ -19,9 +19,10 @@ import java.util.Arrays;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@Configuration
-@EnableWebSecurity
+
+
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Configuration
 public class SecurityConfig {
 
     @Bean
@@ -43,13 +44,14 @@ public class SecurityConfig {
                 .cors(c->c.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.ignoringAntMatchers("/h2-console/**"))
                 .authorizeHttpRequests(auth -> auth
-                        .antMatchers("/h2-console/**","/","/tickets/**","/accoms/**").permitAll() // <--- allow H2
+                        .antMatchers("/h2-console/**","/","/tickets/**","/accoms/**").permitAll()// <--- allow H2
+                        .antMatchers("/orders").hasAuthority("SCOPE_read:transactions")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(withDefaults()))
-                //.oauth2ResourceServer(oauth2 -> oauth2
-                  //      .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
-                //)
+//                .oauth2ResourceServer(oauth2 -> oauth2
+//                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
+//                )
                 .headers(headers -> headers.frameOptions().disable()); // <--- needed for H2's iframe
 
         return http.build();
@@ -62,9 +64,8 @@ public class SecurityConfig {
     private JwtAuthenticationConverter jwtAuthenticationConverter() {
 
         JwtGrantedAuthoritiesConverter rolesConverter = new JwtGrantedAuthoritiesConverter();
-        rolesConverter.setAuthoritiesClaimName("roles"); // or "permissions"
-        rolesConverter.setAuthorityPrefix("ROLE_"); // So "manager" becomes "ROLE_manager"
-
+        rolesConverter.setAuthoritiesClaimName("permissions"); // or "permissions"
+        //rolesConverter.setAuthorityPrefix("ROLE_"); // So "manager" becomes "ROLE_manager"
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
         converter.setJwtGrantedAuthoritiesConverter(rolesConverter);
         return converter;

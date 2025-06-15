@@ -8,6 +8,7 @@ com/broker/SecurityConfig.class
 com/broker/domain/OrderRepository.class
 com/broker/service/DbSyncService$2.class
 com/broker/domain/OfferConverter$1.class
+com/broker/JwtLoggerFilter.class
 com/broker/service/TwopcService.class
 com/broker/domain/PackageRepository.class
 com/broker/domain/AccommodationRepository.class

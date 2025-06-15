@@ -1,6 +1,7 @@
 /home/b/distributed_systems_final_project/src/main/java/com/broker/domain/OfferConverter.java
 /home/b/distributed_systems_final_project/src/main/java/com/broker/SecurityConfig.java
 /home/b/distributed_systems_final_project/src/main/java/com/broker/controllers/BrokerRestController.java
+/home/b/distributed_systems_final_project/src/main/java/com/broker/JwtLoggerFilter.java
 /home/b/distributed_systems_final_project/src/main/java/com/broker/domain/RecoveryManager.java
 /home/b/distributed_systems_final_project/src/main/java/com/broker/domain/OrderRepository.java
 /home/b/distributed_systems_final_project/src/main/java/com/broker/domain/Package.java
