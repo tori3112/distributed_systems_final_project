@@ -1,9 +1,9 @@
 import React from "react";
-import { useAllProducts } from "../api/hooks/useTransactions";
+import { useAllTransactions } from "../api/hooks/useTransactions";
 import Loader from "./Loader";
 
 export default function TransactionList() {
-    const { data: orders, loading, error } = useAllProducts();
+    const { data: orders, loading, error } = useAllTransactions();
 
     if (loading) return (
         <Loader />
