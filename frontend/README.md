@@ -6,7 +6,7 @@ This directory would contain the source code for a **Single Page Application (SP
 
 The frontend application interacts with the `broker/` service's REST API to display products, handle user input, manage the shopping cart, and initiate orders. It provides a dynamic and responsive user experience by handling UI logic on the client-side.
 
-## Key Responsibilities (if implemented)
+## Key Responsibilities
 
 * **User Interface:** Renders the web shop's graphical user interface.
 * **API Communication:** Makes asynchronous requests to the Broker's REST API to fetch data and submit orders.
