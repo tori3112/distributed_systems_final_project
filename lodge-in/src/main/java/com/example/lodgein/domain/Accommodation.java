@@ -1,0 +1,108 @@
+package com.example.lodgein.domain;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Accommodation {
+
+    protected Integer id;
+    protected String address;
+    // TODO: change to LocalDateTime when using Database
+    protected LocalDateTime dateIn;
+    protected LocalDateTime dateOut;
+    protected String imageSrc;
+    protected String imageAlt;
+    protected float price;
+    //change this to appropriate data type later
+    protected String location;
+    protected Integer reviewCount;
+    protected float rating;
+    protected List<String> offer = new ArrayList<>();
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public LocalDateTime getDateIn() {
+        return dateIn;
+    }
+
+    public void setDateIn(LocalDateTime dateIn) {
+        this.dateIn = dateIn;
+    }
+
+    public LocalDateTime getDateOut() {
+        return dateOut;
+    }
+
+    public void setDateOut(LocalDateTime dateOut) {
+        this.dateOut = dateOut;
+    }
+
+    public String getImageSrc() {
+        return imageSrc;
+    }
+
+    public void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
+    }
+
+    public String getImageAlt() {
+        return imageAlt;
+    }
+
+    public void setImageAlt(String imageAlt) {
+        this.imageAlt = imageAlt;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Integer getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(Integer reviewCount) {
+        this.reviewCount = reviewCount;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public List<String> getOffer() {
+        return offer;
+    }
+
+}

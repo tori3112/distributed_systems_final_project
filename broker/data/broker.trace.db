@@ -1,0 +1,10 @@
+2025-06-13 18:03:29 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PACKAGE" not found; SQL statement:
+INSERT INTO PACKAGE (ID, ACCOMMODATION, AVAILABILITY, NAME, PRICE, TICKET) VALUES
+(1, 1, TRUE, 'Vienna Classical Getaway', 180.0, 1),
+(2, 2, TRUE, 'Vienna VIP Music & Relaxation', 210.0, 1),
+(3, 3, TRUE, 'London Indie Escape', 245.0, 2),
+(4, 4, TRUE, 'New York Jazz & Mountain Views', 255.0, 3),
+(5, 3, TRUE, 'London Premium Culture Package', 260.0, 2),
+(6, 1, TRUE, 'Vienna Philharmonic Economy Combo', 170.0, 1),
+(7, 4, TRUE, 'Jazz in the City: NYC Premium Deal', 265.0, 3) [42102-214]
