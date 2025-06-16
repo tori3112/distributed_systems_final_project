@@ -22,7 +22,7 @@ This section details the features implemented, categorized by the project's requ
 - [X] **Multi-Domain Deployment:** The three administration domains (broker and two suppliers) are separated across three Azure accounts of three team members, simulating different companies.
 - [X] **Spring Boot Implementation:** Both broker and supplier services are implemented using Spring Boot.
 
-### Level 2: Advanced Requirements (e.g., good to very good score)
+### Level 2: Advanced Requirements
 
 - [X] **Application-Level Access Control (Auth0 Integration):** The manager authenticates using Auth0, an external identity provider. Managers have a complete overview of orders. JWT tokens are used for authentication and authorization.
 - [X] **Lightweight Hosting:** The application is deployed on lightweight compute services (Azure App Services).
@@ -36,4 +36,4 @@ This section details the features implemented, categorized by the project's requ
 - `broker/`: Contains the source code for the broker back-end logic.
 - `accommodation supplier/`: Contains the source code for one of the external supplier services, specifically providing accommodation.
 - `ticket supplier/`:Contains the source code for one of the external supplier services, specifically providing concert tickets.
-- `frontend`: Contains the source code for the broker web application.
+- `frontend/`: Contains the source code for the broker web application.
